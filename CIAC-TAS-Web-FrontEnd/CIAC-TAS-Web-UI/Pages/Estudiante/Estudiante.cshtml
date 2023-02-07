@@ -1,0 +1,268 @@
+﻿@page "/Estudiante/{handler?}/{id?}"
+@using static CIAC_TAS_Web_UI.Helper.PredefinedListsHelper
+@model CIAC_TAS_Web_UI.Pages.Estudiante.EstudianteModel
+@{
+    ViewData["Title"] = "Estudiante";
+}
+
+<!-- From here, we should put this code as template in each page -->
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+   <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Estudiante Page</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a asp-page="/Index">Home</a></li>
+              <li class="breadcrumb-item active">Estudiante Page</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+      <!-- Default box -->
+      <div class="card card-primary">
+        <div class="card-header">
+          <h3 class="card-title">Estudiante</h3>
+
+          <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+              <i class="fas fa-minus"></i>
+            </button>
+          </div>
+        </div>
+        <div class="card-body">
+
+            <form method="post">
+                    <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+
+                    <div class="form-group">
+                        <label asp-for="EstudianteModelView.UserId">Usuario</label>
+                        <select asp-for="EstudianteModelView.UserId" asp-items="Model.UsuariosOptions" class="form-control" placeholder="Seleccione un Usuario para este Estudiante">
+                            <option value="">Seleccione un Usuario</option>
+                        </select>                        
+                    </div>
+                    <span asp-validation-for="EstudianteModelView.UserId" style="color:red"></span>
+
+                    <div class="form-group">
+                        <label asp-for="EstudianteModelView.Email">Email</label>
+                        <input type="email" asp-for="EstudianteModelView.Email" class="form-control" placeholder="Ingrese un Email">                        
+                    </div>
+                    <span asp-validation-for="EstudianteModelView.Email" style="color:red"></span>
+
+                    <div class="form-group">
+                        <label asp-for="EstudianteModelView.Fecha">Fecha</label>
+                        <input type="date" asp-for="EstudianteModelView.Fecha" class="form-control" placeholder="Ingrese una Fecha" class="form-control datetimepicker-input">                        
+                    </div>
+                    <span asp-validation-for="EstudianteModelView.FechaSeguro" style="color:red"></span>
+
+                    <div class="form-group">
+                        <label asp-for="EstudianteModelView.Nombre">Nombre</label>
+                        <input type="text" asp-for="EstudianteModelView.Nombre" class="form-control" placeholder="Ingrese un Nombre">                        
+                    </div>
+                    <span asp-validation-for="EstudianteModelView.Nombre" style="color:red"></span>
+
+                    <div class="form-group">
+                        <label asp-for="EstudianteModelView.ApellidoPaterno">Apellido Paterno</label>
+                        <input type="text" asp-for="EstudianteModelView.ApellidoPaterno" class="form-control" placeholder="Ingrese un Apellido Paterno">                        
+                    </div>
+                    <span asp-validation-for="EstudianteModelView.ApellidoPaterno" style="color:red"></span>
+
+                    <div class="form-group">
+                        <label asp-for="EstudianteModelView.ApellidoMaterno">Apellido Materno</label>
+                        <input type="text" asp-for="EstudianteModelView.ApellidoMaterno" class="form-control" placeholder="Ingrese un Apellido Materno">                        
+                    </div>
+                    <span asp-validation-for="EstudianteModelView.ApellidoMaterno" style="color:red"></span>
+
+                    <div class="form-group">
+                        <label asp-for="EstudianteModelView.CarnetIdentidad">Carnet de Identidad</label>
+                        <input type="text" asp-for="EstudianteModelView.CarnetIdentidad" class="form-control" placeholder="Ingrese un Carnet de Identidad">                        
+                    </div>
+                    <span asp-validation-for="EstudianteModelView.CarnetIdentidad" style="color:red"></span>
+
+                    <div class="form-group">
+                        <label asp-for="EstudianteModelView.CodigoTas">Codigo Tas</label>
+                        <input type="text" asp-for="EstudianteModelView.CodigoTas" class="form-control" placeholder="Ingrese un CodigoTas">                        
+                    </div>
+                    <span asp-validation-for="EstudianteModelView.CodigoTas" style="color:red"></span>
+
+                    <div class="form-group">
+                        <label asp-for="EstudianteModelView.LugarNacimiento">Lugar de Nacimiento</label>
+                        <input type="text" asp-for="EstudianteModelView.LugarNacimiento" class="form-control" placeholder="Ingrese un Lugar Nacimiento">                        
+                    </div>
+                    <span asp-validation-for="EstudianteModelView.LugarNacimiento" style="color:red"></span>
+
+                    <div class="form-group">
+                        <label asp-for="EstudianteModelView.Sexo">Sexo</label>
+                        <select asp-for="EstudianteModelView.Sexo" asp-items="Html.GetEnumSelectList<SexoEnum>()" class="form-control" placeholder="Seleccione un Sexo">
+                            <option value="">Seleccione un Sexo</option>
+                        </select>                        
+                    </div>
+                    <span asp-validation-for="EstudianteModelView.Sexo" style="color:red"></span>
+
+                    <div class="form-group">
+                        <label asp-for="EstudianteModelView.FechaNacimiento">Fecha Nacimiento</label>
+                        <input type="date" asp-for="EstudianteModelView.FechaNacimiento" class="form-control" placeholder="Ingrese una Fecha Nacimiento" class="form-control datetimepicker-input">                        
+                    </div>
+                    <span asp-validation-for="EstudianteModelView.FechaNacimiento" style="color:red"></span>
+
+                    <div class="form-group">
+                        <label asp-for="EstudianteModelView.Nacionalidad">Nacionalidad</label>
+                        <input type="text" asp-for="EstudianteModelView.Nacionalidad" class="form-control" placeholder="Ingrese una Nacionalidad">                        
+                    </div>
+                    <span asp-validation-for="EstudianteModelView.Nacionalidad" style="color:red"></span>
+
+                    <div class="form-group">
+                        <label asp-for="EstudianteModelView.EstadoCivil">EstadoCivil</label>
+                        <input type="text" asp-for="EstudianteModelView.EstadoCivil" class="form-control" placeholder="Ingrese un EstadoCivil">                        
+                    </div>
+                    <span asp-validation-for="EstudianteModelView.EstadoCivil" style="color:red"></span>
+
+                    <div class="form-group">
+                        <label asp-for="EstudianteModelView.Domicilio">Domicilio</label>
+                        <input type="text" asp-for="EstudianteModelView.Domicilio" class="form-control" placeholder="Ingrese un Domicilio">                        
+                    </div>
+                    <span asp-validation-for="EstudianteModelView.Domicilio" style="color:red"></span>
+
+                    <div class="form-group">
+                        <label asp-for="EstudianteModelView.Telefono">Telefono</label>
+                        <input type="text" asp-for="EstudianteModelView.Telefono" class="form-control" placeholder="Ingrese un Telefono">                        
+                    </div>
+                    <span asp-validation-for="EstudianteModelView.Telefono" style="color:red"></span>
+
+                    <div class="form-group">
+                        <label asp-for="EstudianteModelView.Celular">Celular</label>
+                        <input type="text" asp-for="EstudianteModelView.Celular" class="form-control" placeholder="Ingrese un Celular">                        
+                    </div>
+                    <span asp-validation-for="EstudianteModelView.Celular" style="color:red"></span>
+
+                    <div class="form-group">
+                        <label asp-for="EstudianteModelView.FamiliarTutor">FamiliarTutor</label>
+                        <input type="text" asp-for="EstudianteModelView.FamiliarTutor" class="form-control" placeholder="Ingrese un FamiliarTutor">                        
+                    </div>
+                    <span asp-validation-for="EstudianteModelView.FamiliarTutor" style="color:red"></span>
+
+                    <div class="form-group">
+                        <label asp-for="EstudianteModelView.NombrePadre">NombrePadre</label>
+                        <input type="text" asp-for="EstudianteModelView.NombrePadre" class="form-control" placeholder="Ingrese un Nombre Padre">                        
+                    </div>
+                    <span asp-validation-for="EstudianteModelView.NombrePadre" style="color:red"></span>
+
+                    <div class="form-group">
+                        <label asp-for="EstudianteModelView.CelularPadre">CelularPadre</label>
+                        <input type="text" asp-for="EstudianteModelView.CelularPadre" class="form-control" placeholder="Ingrese un CelularPadre">                        
+                    </div>
+                    <span asp-validation-for="EstudianteModelView.CelularPadre" style="color:red"></span>
+
+                    <div class="form-group">
+                        <label asp-for="EstudianteModelView.NombreMadre">NombreMadre</label>
+                        <input type="text" asp-for="EstudianteModelView.NombreMadre" class="form-control" placeholder="Ingrese un NombreMadre">                        
+                    </div>
+                    <span asp-validation-for="EstudianteModelView.NombreMadre" style="color:red"></span>
+
+                    <div class="form-group">
+                        <label asp-for="EstudianteModelView.CelularMadre">CelularMadre</label>
+                        <input type="text" asp-for="EstudianteModelView.CelularMadre" class="form-control" placeholder="Ingrese un CelularMadre">                        
+                    </div>
+                    <span asp-validation-for="EstudianteModelView.CelularMadre" style="color:red"></span>
+
+                    <div class="form-group">
+                        <label asp-for="EstudianteModelView.NombreTutor">NombreTutor</label>
+                        <input type="text" asp-for="EstudianteModelView.NombreTutor" class="form-control" placeholder="Ingrese un NombreTutor">                        
+                    </div>
+                    <span asp-validation-for="EstudianteModelView.NombreTutor" style="color:red"></span>
+
+                    <div class="form-group">
+                        <label asp-for="EstudianteModelView.CelularTutor">CelularTutor</label>
+                        <input type="text" asp-for="EstudianteModelView.CelularTutor" class="form-control" placeholder="Ingrese un CelularTutor">                        
+                    </div>
+                    <span asp-validation-for="EstudianteModelView.CelularTutor" style="color:red"></span>
+
+                    <div class="form-group">
+                        <label asp-for="EstudianteModelView.VacunaAntitetanica">Vacuna Antitetanica</label>
+                        <select asp-for="EstudianteModelView.VacunaAntitetanica" asp-items="Model.VacunaAntitetanicaOptions" class="form-control" placeholder="Seleccione una opcion">
+                        </select>                        
+                    </div>
+                    <span asp-validation-for="EstudianteModelView.VacunaAntitetanica" style="color:red"></span>
+
+                    <div class="form-group">
+                        <label asp-for="EstudianteModelView.ExamenPsicofisiologico">Examen Psicofisiologico</label>
+                        <select asp-for="EstudianteModelView.ExamenPsicofisiologico" asp-items="Model.ExamenPsicofisiologico" class="form-control" placeholder="Seleccione una opcion">
+                        </select>                        
+                    </div>
+                    <span asp-validation-for="EstudianteModelView.ExamenPsicofisiologico" style="color:red"></span>
+
+                    <div class="form-group">
+                        <label asp-for="EstudianteModelView.InstruccionPrevia">Instruccion Previa</label>
+                        <select asp-for="EstudianteModelView.InstruccionPrevia" asp-items="Model.InstruccionPrevia" class="form-control" placeholder="Seleccione una opcion">
+                        </select>                        
+                    </div>
+                    <span asp-validation-for="EstudianteModelView.InstruccionPrevia" style="color:red"></span>
+
+                    <div class="form-group">
+                        <label asp-for="EstudianteModelView.ExperienciaPrevia">Experiencia Previa</label>
+                        <select asp-for="EstudianteModelView.ExperienciaPrevia" asp-items="Model.ExamenPsicofisiologico" class="form-control" placeholder="Seleccione una opcion">
+                        </select>                        
+                    </div>
+                    <span asp-validation-for="EstudianteModelView.ExperienciaPrevia" style="color:red"></span>
+                   
+                    <div class="form-group">
+                        <label asp-for="EstudianteModelView.FechaSeguro">Fecha Seguro</label>
+                        <input type="date" asp-for="EstudianteModelView.FechaSeguro" class="form-control" placeholder="Ingrese una Fecha Seguro" class="form-control datetimepicker-input">                        
+                    </div>
+                    <span asp-validation-for="EstudianteModelView.FechaSeguro" style="color:red"></span>
+                    
+                    <div class="form-group">
+                        <label asp-for="EstudianteModelView.CodigoSeguro">Codigo Seguro</label>
+                        <input type="text" asp-for="EstudianteModelView.CodigoSeguro" class="form-control" placeholder="Ingrese un CodigoSeguro">                        
+                    </div>
+                    <span asp-validation-for="EstudianteModelView.CodigoSeguro" style="color:red"></span>
+
+                    <div class="row">
+                        @{
+                            if (Model.EstudianteModelView?.Id > 0)
+                            {
+                                <div class="col-4">
+                                    <input type="submit" asp-page-handler="EditEstudiante" class="btn btn-primary btn-block" value="Guardar">
+                                </div>
+                                
+                            } else
+                            {
+                                <div class="col-4">
+                                    <input type="submit" asp-page-handler="NewEstudiante" class="btn btn-primary btn-block" value="Crear">
+                                </div>
+                            }
+                        }
+                       
+                        <!-- /.col -->
+                    </div>
+            </form>
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+            @{
+                    if (Model.Message != null && Model.Message != string.Empty)
+                    {
+                                    <div id="mensajeDiv" class="callout callout-danger">
+                                        @Model.Message
+                                    </div>
+                    }
+              }
+        </div>
+        <!-- /.card-footer-->
+      </div>
+      <!-- /.card -->
+
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+  <!-- To here -->

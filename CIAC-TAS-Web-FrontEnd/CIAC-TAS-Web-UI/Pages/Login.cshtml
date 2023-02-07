@@ -1,0 +1,113 @@
+﻿@page "/{handler?}"
+@model CIAC_TAS_Web_UI.Pages.LoginModel
+@{
+    Layout = "";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CIAC TAS</title>
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
+    <!-- icheck bootstrap -->
+    <link rel="stylesheet" href="../../plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="../../dist/css/adminlte.min.css">
+</head>
+<body class="hold-transition login-page">
+    <div class="login-box">
+        <!-- /.login-logo -->
+        <div class="card card-outline card-primary">
+            <div class="card-header text-center">
+                <img class="my-logo" src="../../dist/img/Logomediano.png" alt="image">
+                <br />
+                <b>CIAC</b>TAS</a>
+            </div>
+            <div class="card-body">
+                <p class="login-box-msg">Ingrese sus datos para iniciar sesion</p>
+
+                <form method="post">
+                    <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+                    <div class="input-group mb-3">
+                        <input type="text" asp-for="LoginModelView.UserName" class="form-control" placeholder="Usuario">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-user"></span>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <span asp-validation-for="LoginModelView.UserName" style="color:red"></span>
+                    <div class="input-group mb-3">
+                        <input type="password" asp-for="LoginModelView.Password" class="form-control" placeholder="Password">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <span asp-validation-for="LoginModelView.Password" style="color:red"></span>
+                    <div class="row">
+                        <div class="col-4">
+                            <input type="submit" asp-page-handler="Login" class="btn btn-primary btn-block" value="Sign In">
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                </form>
+
+                @{
+                    if (Model.Message != null && Model.Message != string.Empty)
+                    {
+                        <div id="mensajeDiv" class="callout callout-danger">
+                            @Model.Message
+                        </div>
+                    }
+                }
+
+
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+    </div>
+    <!-- /.login-box -->
+    <!-- jQuery -->
+    <script src="../../plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="../../dist/js/adminlte.min.js"></script>
+   
+
+     <script type="text/javascript">
+        $(document).ready(function () {
+
+        });
+    </script>
+    <style>
+
+        img.my-logo {
+            width: 50%;
+            height: 50%
+        }
+
+        body {
+            background-image: url(../../dist/img/avion.jpeg);
+            background-repeat: no-repeat;
+            min-height: 100%;
+            background-attachment: fixed;
+            background-size: cover;
+            -moz-background-size: cover;
+            margin: 0;
+        }
+
+    </style>
+</body>
+</html>

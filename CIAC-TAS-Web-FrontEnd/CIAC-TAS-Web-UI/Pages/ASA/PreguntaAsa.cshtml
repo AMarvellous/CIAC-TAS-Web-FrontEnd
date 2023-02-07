@@ -1,0 +1,177 @@
+﻿@page "/PreguntaAsa/{handler?}/{id?}"
+@model CIAC_TAS_Web_UI.Pages.ASA.PreguntAsaModel
+@{
+    ViewData["Title"] = "PreguntaAsa";
+}
+
+<!-- From here, we should put this code as template in each page -->
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+   <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Pregunta Page</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a asp-page="/Index">Home</a></li>
+              <li class="breadcrumb-item active">Pregunta Page</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+      <!-- Default box -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Pregunta ASA</h3>
+
+          <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+              <i class="fas fa-minus"></i>
+            </button>
+          </div>
+        </div>
+        <div class="card-body">
+
+           <form method="post" enctype="multipart/form-data">
+                    <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+
+                    <div class="form-group">
+                        <label asp-for="PreguntaAsaModelView.NumeroPregunta" class="control-label"></label>
+                        <input asp-for="PreguntaAsaModelView.NumeroPregunta" class="form-control" />
+                        <span asp-validation-for="PreguntaAsaModelView.NumeroPregunta" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="PreguntaAsaModelView.Pregunta" class="control-label"></label>
+                        <input asp-for="PreguntaAsaModelView.Pregunta" class="form-control" />
+                        <span asp-validation-for="PreguntaAsaModelView.Pregunta" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="PreguntaAsaModelView.GrupoPreguntaAsaId" class="control-label">Grupo Pregunta</label>
+                        <select asp-for="PreguntaAsaModelView.GrupoPreguntaAsaId" asp-items="Model.GrupoPreguntaAsaOptions" class="form-control" placeholder="Seleccione una opcion">
+                            <option value="">Seleccione una opcion</option>
+                        </select>             
+                        <span asp-validation-for="PreguntaAsaModelView.GrupoPreguntaAsaId" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label asp-for="PreguntaAsaModelView.EstadoPreguntaAsaId" class="control-label">Estado Pregunta</label>
+                        <select asp-for="PreguntaAsaModelView.EstadoPreguntaAsaId" asp-items="Model.EstadoPreguntaAsaOptions" class="form-control" placeholder="Seleccione una opcion">
+                            <option value="">Seleccione una opcion</option>
+                        </select>             
+                        <span asp-validation-for="PreguntaAsaModelView.EstadoPreguntaAsaId" class="text-danger"></span>
+                    </div>
+
+                    @{
+                        if (Model.PreguntaAsaModelView?.Ruta != null && Model.PreguntaAsaModelView?.Ruta != "")
+                        {
+                            <div class="item">
+                                <img style="width: 300px; height: 300px;" 
+                                src="@Url.Content("~/Uploads/PreguntaAsa/" + Model.PreguntaAsaModelView.Ruta)" />
+                                <input asp-for="PreguntaAsaModelView.Ruta" hidden="hidden"></input>
+                            </div>
+                        } else
+                        {
+                            <div class="form-group">
+                                <label asp-for="PreguntaAsaModelView.Ruta" class="control-label">Imagen</label>
+                                <input type="file" asp-for="UploadFile" class="form-control" accept="image/*"/>
+                                <span asp-validation-for="PreguntaAsaModelView.Ruta" class="text-danger"></span>
+                            </div>
+                        }
+                    }
+                    
+                    @{
+                        if (Model.PreguntaAsaModelView?.Id > 0)
+                        {
+                            <br />
+
+                            <div class="card-body">
+
+                                <p>
+                                    <a asp-page="/ASA/PreguntaAsaOpcion" asp-page-handler="NewPreguntaAsaOpcion" asp-route-preguntaAsaId="@Model.PreguntaAsaModelView.Id" class="fa fa-plus" style="font-size:20px;"></a>
+                                </p>
+                                <table class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.PreguntaAsaModelView.PreguntaAsaOpcionesModelViews[0].Opcion)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.PreguntaAsaModelView.PreguntaAsaOpcionesModelViews[0].Texto)
+                                            </th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                @foreach (var item in Model.PreguntaAsaModelView.PreguntaAsaOpcionesModelViews) {
+                                        <tr>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Opcion)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Texto)
+                                            </td>
+                                            <td>
+                                                <a asp-page-handler="EditPreguntaAsaOpcion" asp-page="/ASA/PreguntaAsaOpcion" asp-route-id="@item.Id" asp-route-preguntaAsaId="@Model.PreguntaAsaModelView.Id" class="fa fa-edit" style="font-size:15px;"></a>
+                                            </td>
+                                        </tr>
+                                }
+                                    </tbody>
+                                </table>
+
+                            </div>
+                            <!-- /.card-body -->
+                        }
+                    }
+                    
+
+                    <br />
+                    <div class="row">
+                        @{
+                            if (Model.PreguntaAsaModelView?.Id > 0)
+                            {
+                                    <div class="col-4">
+                                        <input type="submit" asp-page-handler="EditPreguntaAsa" class="btn btn-primary btn-block" value="Guardar">
+                                    </div>
+                                
+                            } else
+                            {
+                                    <div class="col-4">
+                                        <input type="submit" asp-page-handler="NewPreguntaAsa" class="btn btn-primary btn-block" value="Crear">
+                                    </div>
+                            }
+                        }
+                       
+                        <!-- /.col -->
+                    </div>
+            </form>
+
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+            @{
+                    if (Model.Message != null && Model.Message != string.Empty)
+                    {
+                                <div id="mensajeDiv" class="callout callout-danger">
+                                    @Model.Message
+                                </div>
+                    }
+              }
+        </div>
+        <!-- /.card-footer-->
+      </div>
+      <!-- /.card -->
+
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+  <!-- To here -->

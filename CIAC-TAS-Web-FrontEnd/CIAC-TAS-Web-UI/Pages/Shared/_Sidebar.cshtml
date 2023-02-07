@@ -1,0 +1,78 @@
+﻿@using CIAC_TAS_Service.Contracts.V1.Responses
+@using Microsoft.AspNetCore.Http
+@using CIAC_TAS_Web_UI.Helper;
+@using System.Text.Json
+
+@{
+    var roles = Context.Session.GetString(Session.SessionRoles);
+    var roleImage = "~/dist/img/Gnome-stock_person_check2.svg.png";
+
+    if (roles == "Admin")
+    {
+        roleImage = "~/dist/img/Gnome-stock_person_steward2.svg.png";
+    } else if (roles == "Instructor")
+    {
+        roleImage = "~/dist/img/Gnome-stock_person_bureau.svg.png";
+    }
+
+    var menuModulos = Context.Session.GetString(Session.SessionMenus);
+    var menuModulosDeserialized = JsonSerializer.Deserialize
+    <IEnumerable<MenuModulosWebResponse>>(menuModulos);
+}
+<!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Sidebar user (optional) -->
+      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="image">
+          <img src="@Url.Content(roleImage)" class="img-circle elevation-2" alt="User Image">
+        </div>
+        <div class="info">
+          <a href="#" class="d-block">@Context.Session.GetString(Session.SessionUserName).ToString()</a>
+        </div>
+      </div>
+
+      <!-- SidebarSearch Form -->
+      <div class="form-inline">
+        <div class="input-group" data-widget="sidebar-search">
+          <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+          <div class="input-group-append">
+            <button class="btn btn-sidebar">
+              <i class="fas fa-search fa-fw"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+          @foreach (var menuModulosWeb in menuModulosDeserialized)
+            {
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="nav-icon fas @menuModulosWeb.Estilo"></i>
+                  <p>
+                    @menuModulosWeb.Nombre
+                    <i class="fas fa-angle-left right"></i>
+                  </p>
+                </a>
+                @foreach (var menuSubModulosWeb in menuModulosWeb.MenuSubModulosWebResponse)
+                    {
+                        <ul class="nav nav-treeview">
+                          <li class="nav-item">
+                            <a href="@Url.Page(menuSubModulosWeb.Pagina)" class="nav-link">
+                              <i class="far fa-circle nav-icon"></i>
+                              <p>@menuSubModulosWeb.Nombre</p>
+                            </a>
+                          </li>
+                        </ul>
+                    } 
+              </li>
+            }   
+        </ul>
+      </nav>
+      <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
