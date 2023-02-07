@@ -1,0 +1,101 @@
+is_global = true
+build_property.RefitInternalNamespace = CIAC_TAS_Web_UI
+build_property.TargetFramework = net6.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = CIAC_TAS_Web_UI
+build_property.RootNamespace = CIAC_TAS_Web_UI
+build_property.ProjectDir = F:\repo temp\CIAC-TAS-Web-FrontEnd\CIAC-TAS-Web-FrontEnd\CIAC-TAS-Web-UI\
+build_property.RazorLangVersion = 6.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = F:\repo temp\CIAC-TAS-Web-FrontEnd\CIAC-TAS-Web-FrontEnd\CIAC-TAS-Web-UI
+build_property._RazorSourceGeneratorDebug = 
+
+[F:/repo temp/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/ASA/CuestionarioASA.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQVNBXEN1ZXN0aW9uYXJpb0FTQS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/repo temp/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/ASA/CuestionarioASAPractica.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQVNBXEN1ZXN0aW9uYXJpb0FTQVByYWN0aWNhLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/repo temp/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/ASA/PreguntaAsa.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQVNBXFByZWd1bnRhQXNhLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/repo temp/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/ASA/PreguntaAsaOpcion.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQVNBXFByZWd1bnRhQXNhT3BjaW9uLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/repo temp/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/ASA/PreguntasAsa.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQVNBXFByZWd1bnRhc0FzYS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/repo temp/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/repo temp/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/Estudiante/Estudiante.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXN0dWRpYW50ZVxFc3R1ZGlhbnRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/repo temp/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/Estudiante/Estudiantes.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXN0dWRpYW50ZVxFc3R1ZGlhbnRlcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/repo temp/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/repo temp/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW4uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/repo temp/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/Logout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9nb3V0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/repo temp/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/repo temp/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/Usuario/Usuario.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXN1YXJpb1xVc3VhcmlvLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/repo temp/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/Usuario/Usuarios.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXN1YXJpb1xVc3Vhcmlvcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/repo temp/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/repo temp/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/repo temp/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/Shared/_BrandLogo.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9CcmFuZExvZ28uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-edqs8cpnm5
+
+[F:/repo temp/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/Shared/_Footer.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9Gb290ZXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-v6ojum46is
+
+[F:/repo temp/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/Shared/_Header.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9IZWFkZXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-af4y6ddwtl
+
+[F:/repo temp/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-nncxhmn0z0
+
+[F:/repo temp/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/Shared/_Sidebar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9TaWRlYmFyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = b-702u7kq7hl
