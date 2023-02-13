@@ -24,6 +24,12 @@
       </div><!-- /.container-fluid -->
     </section>
 
+    <!-- /.box-header -->
+    <div class="col-sm-12">
+        <a asp-page="/ASA/PreguntasAsa" class="fa fa-arrow-circle-left" style="font-size:25px;"></a>
+    </div>
+    <br />
+
     <!-- Main content -->
     <section class="content">
 
@@ -74,8 +80,8 @@
                         if (Model.PreguntaAsaModelView?.Ruta != null && Model.PreguntaAsaModelView?.Ruta != "")
                         {
                             <div class="item">
-                                <img style="width: 300px; height: 300px;" 
-                                src="@Url.Content("~/Uploads/PreguntaAsa/" + Model.PreguntaAsaModelView.Ruta)" />
+                                <img style="width: 300px; height: 300px;"
+                                 src="@Url.Content("~/dist/uploads/PreguntaAsa/" +Model.PreguntaAsaModelView.Ruta)" />
                                 <input asp-for="PreguntaAsaModelView.Ruta" hidden="hidden"></input>
                             </div>
                         } else
@@ -120,7 +126,33 @@
                                                 @Html.DisplayFor(modelItem => item.Texto)
                                             </td>
                                             <td>
-                                                <a asp-page-handler="EditPreguntaAsaOpcion" asp-page="/ASA/PreguntaAsaOpcion" asp-route-id="@item.Id" asp-route-preguntaAsaId="@Model.PreguntaAsaModelView.Id" class="fa fa-edit" style="font-size:15px;"></a>
+                                                    <a asp-page-handler="EditPreguntaAsaOpcion" asp-page="/ASA/PreguntaAsaOpcion" asp-route-id="@item.Id" asp-route-preguntaAsaId="@Model.PreguntaAsaModelView.Id" class="fa fa-edit" style="font-size:15px;"></a> |
+                                                    <!-- Button trigger modal -->
+                                                    <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modal-@item.Id">
+                                                        <span class="btn-label"><i class="fa fa-trash"></i></span>
+                                                    </button>
+
+                                                    <!-- Modal -->
+                                                    <div class="modal fade" id="modal-@item.Id" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    Esta seguro que desea borrar este registro? <br />
+                                                                    [@item.Texto]
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                                    <a asp-page-handler="RemovePreguntaAsaOpcion" asp-route-preguntaAsaId="@Model.PreguntaAsaModelView.Id" asp-route-preguntaAsaOpcionId="@item.Id" id="deleteBtn" class="btn bg-danger mr-1">Borrar</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                             </td>
                                         </tr>
                                 }

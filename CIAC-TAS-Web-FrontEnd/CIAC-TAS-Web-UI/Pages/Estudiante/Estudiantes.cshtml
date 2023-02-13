@@ -41,8 +41,8 @@
         <div class="card-body">
 
             <a asp-page="/Estudiante/Estudiante" asp-page-handler="NewEstudiante" class="fa fa-plus" style="font-size:20px;"></a>
-            
-            <table id="example2" class="table table-bordered table-hover">
+
+                <table id="paginated-table" class="table table-bordered table-hover">
                   <thead>
                   <tr>
                     <th>Nombre</th>
@@ -89,3 +89,17 @@
   </div>
   <!-- /.content-wrapper -->
   <!-- To here -->
+            <script>
+    $(function () {
+      $('#paginated-table').DataTable({
+        "paging": true,
+        "lengthChange": false,
+        "searching": false,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+        "responsive": true,
+        "pageLength": 30
+      });
+    });
+</script>

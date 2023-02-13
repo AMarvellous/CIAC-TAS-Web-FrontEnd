@@ -1,703 +1,628 @@
 ﻿@page "/CuestionarioASAPractica/{handler?}"
 @model CIAC_TAS_Web_UI.Pages.ASA.CuestionarioASAPracticaModel
 @{
-    ViewData["Title"] = "CuestionarioASAPractica";
+	ViewData["Title"] = "CuestionarioASAPractica";
 }
-
 
 <!-- From here, we should put this code as template in each page -->
 <!-- Content Wrapper. Contains page content -->
-<div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1>CuestionarioASA Practica Page</h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a asp-page="/Index">Home</a></li>
-                        <li class="breadcrumb-item active">CuestionarioASA Practica</li>
-                    </ol>
-                </div>
-            </div>
-        </div><!-- /.container-fluid -->
-    </section>
+<div class="content-wrapper ">
 
-    <!-- Main content -->
-    <section class="content">
+	<!-- Main content -->
+	<section class="content wrapperbody">
+		<!-- Default box -->
+		<div class="box">
 
-        <!-- Default box -->
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">CuestionarioASA Practica</h3>
-
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                        <i class="fas fa-minus"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="card-body">
-
-
-
-                <!-- Main content -->
-                <section class="content">
-                    <!-- Default box -->
-                    <div class="box">
-
-                        <div class="tiempoRestantediv box-header with-border">
-                            <h3 class="tiempoRestante box-title">Tiempo Restante: <b class="cambioClass"> 60 Min </b> Preg. Total: <b>@Model.ThumbnailViewModel.NumeroPreguntas</b></h3>
-                            <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" title="Refresh" onClick="window.location.reload(true)">
-                                    <i class="fa fa-refresh">Refresh</i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="box-header with-border">
-                            <h3 class="tiempoRestante box-title">
-                                <span id="NumPreguntasAdvertencia" class="label label-warning pull-right">No Segura: 0</span>
-                                <span id="NumPreguntasNoRespondidas" class="label label-default pull-right">No Resp: 0</span>
-                                <span id="NumPreguntasRespondidas" class="label label-info pull-right">Resp: 0</span>
-                            </h3>
-                        </div>
-
-                        <div class="box-body">
-                            <!-- GROUPING -->
-                            <div class="container">
-                                <div>
-                                    <div class="row">
-                                        <nav aria-label="...">
-                                            <ul class="pager" role="tablist">
-                                                <li class="previous" onclick="goTo(1);"><a href="#"><span aria-hidden="true">←</span> Previous</a></li>
-                                                @{
-                                                    foreach (var item in Model.ThumbnailViewModel.ThumbnailModelList)
-                                                    {
-                                                        if (item.Thumbnail_ItemPosition == "first")
-                                                        {
-                                                            <li class="active" id="@item.Thumbnail_ItemPosition">
-                                                                <a aria-controls="@item.Thumbnail_Aria_Controls" data-toggle="tab" href="@item.Thumbnail_Href" role="tab">@item.ThumbnailTabNo</a>
-                                                            </li>
-                                                        }
+			<div class="tiempoRestantediv box-header with-border">
+				<h3 style="text-align:center;" class="tiempoRestante box-title">Tiempo Restante: <b class="cambioClass"> 60 Min </b> Preg. Total: <b>@Model.ThumbnailViewModel.NumeroPreguntas</b></h3>
+				@*<div class="box-tools pull-right">
+					<button type="button" class="btn btn-box-tool" title="Refresh" onClick="window.location.reload(true)">
+						<i class="fa fa-refresh">Refresh</i>
+					</button>
+				</div>*@
+			</div>
+			<div class="box-header with-border">
+				<h3 class="tiempoRestante box-title">
+					<span id="NumPreguntasAdvertencia" class="label label-warning pull-right">No Segura: 0</span>
+					<span id="NumPreguntasNoRespondidas" class="label label-default pull-right">No Resp: 0</span>
+					<span id="NumPreguntasRespondidas" class="label label-info pull-right">Resp: 0</span>
+				</h3>
+			</div>
+            <br /><br />
+			<div class="box-body">
+				<!-- GROUPING -->
+				<div class="container">
+					<div>
+						<div class="row" style="display:block;">
+							<nav aria-label="...">
+								<ul class="pager" role="tablist">
+									<li class="previous" onclick="goTo(1);"><a href="#"><span aria-hidden="true">←</span> Previous</a></li>
+									@{
+										foreach (var item in Model.ThumbnailViewModel.ThumbnailModelList)
+										{
+											if (item.Thumbnail_ItemPosition == "first")
+											{
+												<li class="active" id="@item.Thumbnail_ItemPosition">
+													<a aria-controls="@item.Thumbnail_Aria_Controls" data-toggle="tab" href="@item.Thumbnail_Href" role="tab">@item.ThumbnailTabNo</a>
+												</li>
+											}
 
 
-                                                        else if (item.Thumbnail_ItemPosition == "last")
-                                                        {
-                                                            <li id="@item.Thumbnail_ItemPosition">
-                                                                <a aria-controls="@item.Thumbnail_Aria_Controls" data-toggle="tab" href="@item.Thumbnail_Href" role="tab">@item.ThumbnailTabNo</a>
-                                                            </li>
-                                                        }
-                                                        else
-                                                        {
-                                                            <li>
-                                                                <a aria-controls="@item.Thumbnail_Aria_Controls" data-toggle="tab" href="@item.Thumbnail_Href" role="tab">@item.ThumbnailTabNo</a>
-                                                            </li>
-                                                        }
+											else if (item.Thumbnail_ItemPosition == "last")
+											{
+												<li id="@item.Thumbnail_ItemPosition">
+													<a aria-controls="@item.Thumbnail_Aria_Controls" data-toggle="tab" href="@item.Thumbnail_Href" role="tab">@item.ThumbnailTabNo</a>
+												</li>
+											}
+											else
+											{
+												<li>
+													<a aria-controls="@item.Thumbnail_Aria_Controls" data-toggle="tab" href="@item.Thumbnail_Href" role="tab">@item.ThumbnailTabNo</a>
+												</li>
+											}
 
-                                                    }
-                                                }
-                                                <li class="next" onclick="goTo(2);"><a href="#">Next <span aria-hidden="true">→</span></a></li>
-                                            </ul>
-                                        </nav>
-                                    </div>
+										}
+									}
+									<li class="next" onclick="goTo(2);"><a href="#">Next <span aria-hidden="true">→</span></a></li>
+								</ul>
+							</nav>
+						</div>
 
-                                    <!-- Tab panes -->
-                                    <div class="tab-content">
+						<!-- Tab panes -->
+						<div class="tab-content">
 
-                                        @{
-                                            foreach (var item in Model.ThumbnailViewModel.ThumbnailModelList)
-                                            {
-                                                if (item.Thumbnail_ItemPosition == "first")
-                                                {
+							@{
+								foreach (var item in Model.ThumbnailViewModel.ThumbnailModelList)
+								{
+									if (item.Thumbnail_ItemPosition == "first")
+									{
 
-                                                    <div class="tab-pane active" id="@item.ThumbnailTabId" role="tabpanel">
+										<div class="tab-pane active" id="@item.ThumbnailTabId" role="tabpanel">
 
-                                                        @{
-                                                            foreach (var detailsitem in item.CuestionarioPreguntasAndRespuestasAsaView)
-                                                            {
-                                                                <div class="col-sm-12">
-                                                                    <div class="thumbnail thumbnailContainer">
+											@{
+												foreach (var detailsitem in item.CuestionarioPreguntasAndRespuestasAsaView)
+												{
+													<div class="col-sm-12">
+														<div class="thumbnail thumbnailContainer">
 
-                                                                        <div class="caption">
+															<div class="caption">
 
-                                                                            <h3>@detailsitem.PreguntaAsa.Pregunta</h3>
-                                                                            @*<p>
-                                                        @detailsitem.Pregunta
-                                                        </p>*@
-                                                                            <div class="form-group">
-                                                                                @{
-                                                                                    foreach (var respuesta in detailsitem.PreguntaAsa.PreguntaAsaOpcionesResponse)
-                                                                                    {
-                                                                                        @*<div class="checkbox">
-                                                            <label>
-                                                            <input type="checkbox" id="@respuesta.NroPregunta+'-'+@respuesta.Opcion">
-                                                            @respuesta.Respuesta
-                                                            </label>
-                                                            </div>*@
-                                                                                        <div class="radio">
-                                                                                            <label>
-                                                                                                @if (detailsitem.OpcionSeleccionadaId != null && detailsitem.OpcionSeleccionadaId == respuesta.Id /*"Marcado"*/)
-                                                                                                {
-                                                                                                    <input class="checkboxCuestionario contarcheckboxCuestionario" onclick="checkFluency(this)" type="radio" name="optionsRadios+@respuesta.Id" id="@respuesta.Id-@respuesta.Opcion" checked="checked" data-idPregunta="@detailsitem.PreguntaAsa.Id">
-                                                                                                }
-                                                                                                else
-                                                                                                {
-                                                                                                    <input class="checkboxCuestionario contarcheckboxCuestionario" onclick="checkFluency(this)" type="radio" name="optionsRadios+@respuesta.Id" id="@respuesta.Id-@respuesta.Opcion" data-idPregunta="@detailsitem.PreguntaAsa.Id">
-                                                                                                }
-                                                                                                @respuesta.Texto
-                                                                                            </label>
-                                                                                        </div>
-                                                                                    }
-                                                                                }
-                                                                            </div>
-                                                                            <div class="text-left">
+																<h3>@detailsitem.PreguntaAsa.Pregunta</h3>
+																@*<p>
+											@detailsitem.Pregunta
+											</p>*@
+																<div class="form-group">
+																	@{
+																		foreach (var respuesta in detailsitem.PreguntaAsa.PreguntaAsaOpcionesResponse)
+																		{
+																			@*<div class="checkbox">
+												<label>
+												<input type="checkbox" id="@respuesta.NroPregunta+'-'+@respuesta.Opcion">
+												@respuesta.Respuesta
+												</label>
+												</div>*@
+																			<div class="radio">
+																				<label>
+																					@if (detailsitem.OpcionSeleccionadaId != null && detailsitem.OpcionSeleccionadaId == respuesta.Id /*"Marcado"*/)
+																					{
+																						<input class="checkboxCuestionario contarcheckboxCuestionario" onclick="checkFluency(this)" type="radio" name="optionsRadios+@respuesta.Id" id="@respuesta.Id-@respuesta.Opcion" checked="checked" data-idPregunta="@detailsitem.PreguntaAsa.Id">
+																					}
+																					else
+																					{
+																						<input class="checkboxCuestionario contarcheckboxCuestionario" onclick="checkFluency(this)" type="radio" name="optionsRadios+@respuesta.Id" id="@respuesta.Id-@respuesta.Opcion" data-idPregunta="@detailsitem.PreguntaAsa.Id">
+																					}
+																					@respuesta.Texto
+																				</label>
+																			</div>
+																		}
+																	}
+																</div>
+																<div class="text-left">
 
-                                                                                @{
-                        //var ltASATRespuestaMarcados = (List<adminlte.ASATRespuestaService.ASATRespuestaEntity>)ViewBag.ltASATRespuestaMarcados;
-                                                                                    //int index = ltASATRespuestaMarcados.FindIndex(i => i.NroPregunta == detailsitem.ltASAPregunta.First().NroPregunta);
+																	@{
+						//var ltASATRespuestaMarcados = (List<adminlte.ASATRespuestaService.ASATRespuestaEntity>)ViewBag.ltASATRespuestaMarcados;
+						//int index = ltASATRespuestaMarcados.FindIndex(i => i.NroPregunta == detailsitem.ltASAPregunta.First().NroPregunta);
 
-                                                                                }
+																	}
 
-                                                                                @{
-                        //if (index >= 0)
-                        //{
-                        //    if (ltASATRespuestaMarcados[index].UClase == "Amarillo")
-                                                                                    //    {
-                                                                                    //        <button id="checkear_@detailsitem.ltASAPregunta.First().NroPregunta" style="visibility:hidden;" type="button" class="btn btn-info btnRespondido">
-                                                                                    //            <span class="glyphicon glyphicon glyphicon-ok-sign"></span>
-                                                                                    //        </button>
-                                                                                    //        <button id="inseguro_@detailsitem.ltASAPregunta.First().NroPregunta" style="visibility:visible;" type="button" class="btn btn-warning btnInseguro">
-                                                                                    //            <span class="glyphicon glyphicon-alert"></span>
-                                                                                    //        </button>
-                                                                                    //    }
-                                                                                    //    else
-                                                                                    //    {
-                                                                                    //        <button id="checkear_@detailsitem.ltASAPregunta.First().NroPregunta" style="visibility:visible;" type="button" class="btn btn-info btnRespondido">
-                                                                                    //            <span class="glyphicon glyphicon glyphicon-ok-sign"></span>
-                                                                                    //        </button>
-                                                                                    //        <button id="inseguro_@detailsitem.ltASAPregunta.First().NroPregunta" style="visibility:hidden;" type="button" class="btn btn-warning btnInseguro">
-                                                                                    //            <span class="glyphicon glyphicon-alert"></span>
-                                                                                    //        </button>
-                                                                                    //    }
+																	@{
+						//if (index >= 0)
+						//{
+						//    if (ltASATRespuestaMarcados[index].UClase == "Amarillo")
+						//    {
+																		//        <button id="checkear_@detailsitem.ltASAPregunta.First().NroPregunta" style="visibility:hidden;" type="button" class="btn btn-info btnRespondido">
+																		//            <span class="glyphicon glyphicon glyphicon-ok-sign"></span>
+																		//        </button>
+																		//        <button id="inseguro_@detailsitem.ltASAPregunta.First().NroPregunta" style="visibility:visible;" type="button" class="btn btn-warning btnInseguro">
+																		//            <span class="glyphicon glyphicon-alert"></span>
+																		//        </button>
+																		//    }
+																		//    else
+																		//    {
+																		//        <button id="checkear_@detailsitem.ltASAPregunta.First().NroPregunta" style="visibility:visible;" type="button" class="btn btn-info btnRespondido">
+																		//            <span class="glyphicon glyphicon glyphicon-ok-sign"></span>
+																		//        </button>
+																		//        <button id="inseguro_@detailsitem.ltASAPregunta.First().NroPregunta" style="visibility:hidden;" type="button" class="btn btn-warning btnInseguro">
+																		//            <span class="glyphicon glyphicon-alert"></span>
+																		//        </button>
+																		//    }
 
-                                                                                    //}
-                                                                                    //else
-                                                                                    //{
-                                                                                    //    <button id="checkear_@detailsitem.ltASAPregunta.First().NroPregunta" style="visibility:hidden;" type="button" class="btn btn-info btnRespondido">
-                                                                                    //        <span class="glyphicon glyphicon glyphicon-ok-sign"></span>
-                                                                                    //    </button>
-                                                                                    //    <button id="inseguro_@detailsitem.ltASAPregunta.First().NroPregunta" style="visibility:hidden;" type="button" class="btn btn-warning btnInseguro">
-                                                                                    //        <span class="glyphicon glyphicon-alert"></span>
-                                                                                    //    </button>
-                                                                                    //}
-                                                                                }
+																		//}
+																		//else
+																		//{
+																		//    <button id="checkear_@detailsitem.ltASAPregunta.First().NroPregunta" style="visibility:hidden;" type="button" class="btn btn-info btnRespondido">
+																		//        <span class="glyphicon glyphicon glyphicon-ok-sign"></span>
+																		//    </button>
+																		//    <button id="inseguro_@detailsitem.ltASAPregunta.First().NroPregunta" style="visibility:hidden;" type="button" class="btn btn-warning btnInseguro">
+																		//        <span class="glyphicon glyphicon-alert"></span>
+																		//    </button>
+																		//}
+																	}
 
-                                                                            </div>
-                                                                            <div class="text-right">
-                                                                                <button type="button" class="btn btn-light" onclick="checkNotSecure(this)" data-idPregunta="@detailsitem.Id"><span class="glyphicon glyphicon-exclamation-sign"></span></button>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                //if (@detailsitem.ltASAPregunta.First().Texto0 != "")
-                                                                //{
-                                                                //    <div class="item">
-                                                                //        <img style="width: 280px; height: 280px; display: block; margin: auto;" src="@Url.Content(String.Format("~//Uploads/Imagenes/ASAPregunta/{0}", @detailsitem.ltASAPregunta.First().Texto0))" />
-                                                                //    </div>
-                                                                //}
+																</div>
+																<div class="text-right">
+																	<button type="button" class="btn btn-light" onclick="checkNotSecure(this)" data-idPregunta="@detailsitem.Id"><span class="glyphicon glyphicon-exclamation-sign"></span></button>
+																</div>
+															</div>
+														</div>
+													</div>
+													//if (@detailsitem.ltASAPregunta.First().Texto0 != "")
+													//{
+													//    <div class="item">
+													//        <img style="width: 280px; height: 280px; display: block; margin: auto;" src="@Url.Content(String.Format("~//Uploads/Imagenes/ASAPregunta/{0}", @detailsitem.ltASAPregunta.First().Texto0))" />
+													//    </div>
+													//}
 
-                                                            }
-                                                        }
-
-
-                                                    </div>
-
-                                                }
-                                                else
-                                                {
-                                                    <div class="tab-pane" id="@item.ThumbnailTabId" role="tabpanel">
-
-                                                        @{
-
-                                                            foreach (var detailsitem in item.CuestionarioPreguntasAndRespuestasAsaView)
-                                                            {
-                                                                <div class="col-sm-12">
-                                                                    <div class="thumbnail thumbnailContainer">
-
-                                                                        <div class="caption">
-
-                                                                            <h3>@detailsitem.PreguntaAsa.Pregunta</h3>
-
-                                                                            <div class="form-group">
-                                                                                @{
-                                                                                    foreach (var respuesta in detailsitem.PreguntaAsa.PreguntaAsaOpcionesResponse)
-                                                                                    {
-                                                                                        <div class="radio">
-                                                                                            <label>
-                                                                                                @if (detailsitem.OpcionSeleccionadaId != null && detailsitem.OpcionSeleccionadaId == respuesta.Id /*"Marcado"*/)
-                                                                                                {
-                                                                                                    <input class="checkboxCuestionario contarcheckboxCuestionario" onclick="checkFluency(this)" type="radio" name="optionsRadios+@respuesta.Id" id="@respuesta.Id-@respuesta.Opcion" checked="checked" data-idPregunta="@detailsitem.PreguntaAsa.Id">
-                                                                                                }
-                                                                                                else
-                                                                                                {
-                                                                                                    <input class="checkboxCuestionario contarcheckboxCuestionario" onclick="checkFluency(this)" type="radio" name="optionsRadios+@respuesta.Id" id="@respuesta.Id-@respuesta.Opcion" data-idPregunta="@detailsitem.PreguntaAsa.Id">
-                                                                                                }
-                                                                                                @respuesta.Texto
-                                                                                            </label>
-                                                                                        </div>
-                                                                                    }
-                                                                                }
-                                                                            </div>
-                                                                            <div class="text-left">
-                                                                                @{
-                        //var ltASATRespuestaMarcados = (List<adminlte.ASATRespuestaService.ASATRespuestaEntity>)ViewBag.ltASATRespuestaMarcados;
-                                                                                    //int index = ltASATRespuestaMarcados.FindIndex(i => i.NroPregunta == detailsitem.ltASAPregunta.First().NroPregunta);
-
-                                                                                }
-                                                                                @{
-                        //if (index >= 0)
-                        //{
-                        //    if (ltASATRespuestaMarcados[index].UClase == "Amarillo")
-                                                                                    //    {
-                                                                                    //        <button id="checkear_@detailsitem.ltASAPregunta.First().NroPregunta" style="visibility:hidden;" type="button" class="btn btn-info btnRespondido">
-                                                                                    //            <span class="glyphicon glyphicon glyphicon-ok-sign"></span>
-                                                                                    //        </button>
-                                                                                    //        <button id="inseguro_@detailsitem.ltASAPregunta.First().NroPregunta" style="visibility:visible;" type="button" class="btn btn-warning btnInseguro">
-                                                                                    //            <span class="glyphicon glyphicon-alert"></span>
-                                                                                    //        </button>
-                                                                                    //    }
-                                                                                    //    else
-                                                                                    //    {
-                                                                                    //        <button id="checkear_@detailsitem.ltASAPregunta.First().NroPregunta" style="visibility:visible;" type="button" class="btn btn-info btnRespondido">
-                                                                                    //            <span class="glyphicon glyphicon glyphicon-ok-sign"></span>
-                                                                                    //        </button>
-                                                                                    //        <button id="inseguro_@detailsitem.ltASAPregunta.First().NroPregunta" style="visibility:hidden;" type="button" class="btn btn-warning btnInseguro">
-                                                                                    //            <span class="glyphicon glyphicon-alert"></span>
-                                                                                    //        </button>
-                                                                                    //    }
-
-                                                                                    //}
-                                                                                    //else
-                                                                                    //{
-                                                                                    //    <button id="checkear_@detailsitem.ltASAPregunta.First().NroPregunta" style="visibility:hidden;" type="button" class="btn btn-info btnRespondido">
-                                                                                    //        <span class="glyphicon glyphicon glyphicon-ok-sign"></span>
-                                                                                    //    </button>
-                                                                                    //    <button id="inseguro_@detailsitem.ltASAPregunta.First().NroPregunta" style="visibility:hidden;" type="button" class="btn btn-warning btnInseguro">
-                                                                                    //        <span class="glyphicon glyphicon-alert"></span>
-                                                                                    //    </button>
-                                                                                    //}
-                                                                                }
-                                                                            </div>
-                                                                            <div class="text-right">
-                                                                                <button type="button" class="btn btn-light" onclick="checkNotSecure(this)" data-idPregunta="@detailsitem.PreguntaAsa.Id"><span class="glyphicon glyphicon-exclamation-sign"></span></button>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                //if (@detailsitem.ltASAPregunta.First().Texto0 != "")
-                                                                //{
-                                                                //    <div class="col-sm-12">
-                                                                //        <img style="width: 280px; height: 280px; display: block;margin: auto;" src="@Url.Content(String.Format("~//Uploads/Imagenes/ASAPregunta/{0}", @detailsitem.ltASAPregunta.First().Texto0))" />
-                                                                //    </div>
-                                                                //}
-                                                            }
-                                                        }
-                                                    </div>
-
-                                                }
-
-                                            }
-                                        }
-
-                                    </div>
+												}
+											}
 
 
-                                </div>
-                            </div>
-                            <!-- /.GROUPING -->
-                        </div>
+										</div>
 
-                        <div class="box-footer">
-                            <!-- /.col -->
-                            <div class="text-center">
-                                <button type="button" id="btnAceptar" class="btn btn-primary">Finalizar Cuestionario</button>
-                            </div>
-                            <!-- /.col -->
-                        </div>
-                    </div>
-                    <!-- /.box -->
-                </section>
-                <!-- /.content -->
+									}
+									else
+									{
+										<div class="tab-pane" id="@item.ThumbnailTabId" role="tabpanel">
+
+											@{
+
+												foreach (var detailsitem in item.CuestionarioPreguntasAndRespuestasAsaView)
+												{
+													<div class="col-sm-12">
+														<div class="thumbnail thumbnailContainer">
+
+															<div class="caption">
+
+																<h3>@detailsitem.PreguntaAsa.Pregunta</h3>
+
+																<div class="form-group">
+																	@{
+																		foreach (var respuesta in detailsitem.PreguntaAsa.PreguntaAsaOpcionesResponse)
+																		{
+																			<div class="radio">
+																				<label>
+																					@if (detailsitem.OpcionSeleccionadaId != null && detailsitem.OpcionSeleccionadaId == respuesta.Id /*"Marcado"*/)
+																					{
+																						<input class="checkboxCuestionario contarcheckboxCuestionario" onclick="checkFluency(this)" type="radio" name="optionsRadios+@respuesta.Id" id="@respuesta.Id-@respuesta.Opcion" checked="checked" data-idPregunta="@detailsitem.PreguntaAsa.Id">
+																					}
+																					else
+																					{
+																						<input class="checkboxCuestionario contarcheckboxCuestionario" onclick="checkFluency(this)" type="radio" name="optionsRadios+@respuesta.Id" id="@respuesta.Id-@respuesta.Opcion" data-idPregunta="@detailsitem.PreguntaAsa.Id">
+																					}
+																					@respuesta.Texto
+																				</label>
+																			</div>
+																		}
+																	}
+																</div>
+																<div class="text-left">
+																	@{
+						//var ltASATRespuestaMarcados = (List<adminlte.ASATRespuestaService.ASATRespuestaEntity>)ViewBag.ltASATRespuestaMarcados;
+						//int index = ltASATRespuestaMarcados.FindIndex(i => i.NroPregunta == detailsitem.ltASAPregunta.First().NroPregunta);
+
+																	}
+																	@{
+						//if (index >= 0)
+						//{
+						//    if (ltASATRespuestaMarcados[index].UClase == "Amarillo")
+						//    {
+																		//        <button id="checkear_@detailsitem.ltASAPregunta.First().NroPregunta" style="visibility:hidden;" type="button" class="btn btn-info btnRespondido">
+																		//            <span class="glyphicon glyphicon glyphicon-ok-sign"></span>
+																		//        </button>
+																		//        <button id="inseguro_@detailsitem.ltASAPregunta.First().NroPregunta" style="visibility:visible;" type="button" class="btn btn-warning btnInseguro">
+																		//            <span class="glyphicon glyphicon-alert"></span>
+																		//        </button>
+																		//    }
+																		//    else
+																		//    {
+																		//        <button id="checkear_@detailsitem.ltASAPregunta.First().NroPregunta" style="visibility:visible;" type="button" class="btn btn-info btnRespondido">
+																		//            <span class="glyphicon glyphicon glyphicon-ok-sign"></span>
+																		//        </button>
+																		//        <button id="inseguro_@detailsitem.ltASAPregunta.First().NroPregunta" style="visibility:hidden;" type="button" class="btn btn-warning btnInseguro">
+																		//            <span class="glyphicon glyphicon-alert"></span>
+																		//        </button>
+																		//    }
+
+																		//}
+																		//else
+																		//{
+																		//    <button id="checkear_@detailsitem.ltASAPregunta.First().NroPregunta" style="visibility:hidden;" type="button" class="btn btn-info btnRespondido">
+																		//        <span class="glyphicon glyphicon glyphicon-ok-sign"></span>
+																		//    </button>
+																		//    <button id="inseguro_@detailsitem.ltASAPregunta.First().NroPregunta" style="visibility:hidden;" type="button" class="btn btn-warning btnInseguro">
+																		//        <span class="glyphicon glyphicon-alert"></span>
+																		//    </button>
+																		//}
+																	}
+																</div>
+																<div class="text-right">
+																	<button type="button" class="btn btn-light" onclick="checkNotSecure(this)" data-idPregunta="@detailsitem.PreguntaAsa.Id"><span class="glyphicon glyphicon-exclamation-sign"></span></button>
+																</div>
+															</div>
+														</div>
+													</div>
+													//if (@detailsitem.ltASAPregunta.First().Texto0 != "")
+													//{
+													//    <div class="col-sm-12">
+													//        <img style="width: 280px; height: 280px; display: block;margin: auto;" src="@Url.Content(String.Format("~//Uploads/Imagenes/ASAPregunta/{0}", @detailsitem.ltASAPregunta.First().Texto0))" />
+													//    </div>
+													//}
+												}
+											}
+										</div>
+
+									}
+
+								}
+							}
+
+						</div>
 
 
-            </div>
-            <!-- /.card-body -->
+					</div>
+				</div>
+				<!-- /.GROUPING -->
+			</div>
 
-        </div>
-        <!-- /.card -->
+			<div class="box-footer">
+				<!-- /.col -->
+				<div class="text-center">
+					<button type="button" id="btnAceptar" class="btn btn-primary">Finalizar Cuestionario</button>
+				</div>
+				<!-- /.col -->
+			</div>
+		</div>
+		<!-- /.box -->
+	</section>
+	<!-- /.content -->
 
-    </section>
-    <!-- /.content -->
+	</section>
+	<!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
 <!-- To here -->
 
 
+@section Styles{
+    <link rel="stylesheet" href="~/css/asacuestionario.css" type="text/css" />
+    @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" type="text/css" />*@
+    @*<link rel="stylesheet" href="~/scripts-adminlte-old/components/bootstrap/dist/css/bootstrap.min.css" type="text/css" />*@
+    @*<link rel="stylesheet" href="~/scripts-adminlte-old/components/font-awesome/css/font-awesome.min.css" type="text/css" />*@
+    @*<link rel="stylesheet" href="~/scripts-adminlte-old/components/Ionicons/css/ionicons.min.css" type="text/css" />*@
+    @*<link rel="stylesheet" href="~/scripts-adminlte-old/components/bootstrap-slider/slider.css" type="text/css" />*@
+    @*<link rel="stylesheet" href="~/scripts-adminlte-old/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" type="text/css" />*@
+}
 
-<style>
-    .pager .active a {
-        background-color: #337AB7 !important;
-        color: #FFF !important;
-        border: 0px;
-    }
+    @*<script src="~/scripts-adminlte-old/components/bootstrap/dist/js/bootstrap.min.js" />*@
+    <script type="text/javascript">
 
-    .container {
-        width: auto !important;
-    }
+        var NumeroPreguntas = 0;
+        var NumeroPreguntasGlobal = 0;
 
-    #back-to-top {
-        position: fixed;
-        bottom: 40px;
-        right: 30px;
-        z-index: 9999;
-        width: 32px;
-        height: 32px;
-        text-align: center;
-        line-height: 30px;
-        background: #f5f5f5;
-        color: #444;
-        cursor: pointer;
-        border: 0;
-        border-radius: 2px;
-        text-decoration: none;
-        transition: opacity 0.2s ease-out;
-        opacity: 0;
-    }
-
-        #back-to-top:hover {
-            background: #e9ebec;
+        function goTo(number) {
+            $('ul.pager li:eq(' + number + ') a').tab('show');
+            upgradePreNext(number);
         }
 
-        #back-to-top.show {
-            opacity: 1;
-        }
-
-    #content {
-        height: 2000px;
-    }
-
-</style>
-
-<script type="text/javascript">
-    var NumeroPreguntas = 0;
-    var NumeroPreguntasGlobal = 0;
-
-    function goTo(number) {
-        $('ul.pager li:eq(' + number + ') a').tab('show');
-        upgradePreNext(number);
-    }
-
-    function upgradePreNext(number) {
-        if (number > 1) {
-            $('ul.pager li:eq(0)').attr("onclick", "goTo(" + (number - 1) + ")");
-            $('ul.pager li:eq(0)').attr("class", "previous");
-        } else {
-            $('ul.pager li:eq(0)').attr("class", "disabled");
-        }
-
-        if (number < NumeroPreguntas) {
-            var numeropreguntasmasuno = NumeroPreguntas + 1;
-            $('ul.pager li:eq(' + numeropreguntasmasuno + ')').attr("onclick", "goTo(" + (number + 1) + ")");
-            $('ul.pager li:eq(' + numeropreguntasmasuno + ')').attr("class", "next");
-        } else {
-            $('ul.pager li:eq(' + numeropreguntasmasuno + ')').attr("class", "disabled");
-        }
-    }
-
-    $(document).ready(function() {
-        $('li a').on('click', function(e) {
-            goTo((e.target.innerHTML) - 0);
-        });
-        if (@Model.ThumbnailViewModel.NumeroPreguntas != null) {
-            NumeroPreguntasGlobal = @Model.ThumbnailViewModel.NumeroPreguntas;
-            NumeroPreguntas = @Model.ThumbnailViewModel.NumeroPreguntas;
-            NumeroPreguntas = NumeroPreguntas / 10;
-            NumeroPreguntas = parseInt(NumeroPreguntas) + 1;
-            if (NumeroPreguntas > 10) {
-                NumeroPreguntas = 10;
+        function upgradePreNext(number) {
+            if (number > 1) {
+                $('ul.pager li:eq(0)').attr("onclick", "goTo(" + (number - 1) + ")");
+                $('ul.pager li:eq(0)').attr("class", "previous");
+            } else {
+                $('ul.pager li:eq(0)').attr("class", "disabled");
             }
-            //alert(parseInt(NumeroPreguntas))
+
+            if (number < NumeroPreguntas) {
+                var numeropreguntasmasuno = NumeroPreguntas + 1;
+                $('ul.pager li:eq(' + numeropreguntasmasuno + ')').attr("onclick", "goTo(" + (number + 1) + ")");
+                $('ul.pager li:eq(' + numeropreguntasmasuno + ')').attr("class", "next");
+            } else {
+                $('ul.pager li:eq(' + numeropreguntasmasuno + ')').attr("class", "disabled");
+            }
         }
 
-        $("div.tab-pane").each(function(index, item) {
-            //var existeNoRespondido = false;
-            var existeNoSeguro = false;
+        $(document).ready(function () {
+            $('li a').on('click', function (e) {
+                goTo((e.target.innerHTML) - 0);
+            });
+            if (@Model.ThumbnailViewModel.NumeroPreguntas != null) {
+                NumeroPreguntasGlobal = @Model.ThumbnailViewModel.NumeroPreguntas;
+                NumeroPreguntas = @Model.ThumbnailViewModel.NumeroPreguntas;
+                NumeroPreguntas = NumeroPreguntas / 10;
+                NumeroPreguntas = parseInt(NumeroPreguntas) + 1;
+                if (NumeroPreguntas > 10) {
+                    NumeroPreguntas = 10;
+                }
+                //alert(parseInt(NumeroPreguntas))
+            }
 
-            var ContadorRespondidos = 0;
-            var TotalAResponder = 0;
-            $(item).find('div.thumbnailContainer').each(function(ind, input) {
-                $(input).find('input:radio:checked').each(function(indexCheckbox, inputCheckbox) {
-                    ContadorRespondidos = ContadorRespondidos + 1;
+            $("div.tab-pane").each(function (index, item) {
+                //var existeNoRespondido = false;
+                var existeNoSeguro = false;
+
+                var ContadorRespondidos = 0;
+                var TotalAResponder = 0;
+                $(item).find('div.thumbnailContainer').each(function (ind, input) {
+                    $(input).find('input:radio:checked').each(function (indexCheckbox, inputCheckbox) {
+                        ContadorRespondidos = ContadorRespondidos + 1;
+                    });
+                    TotalAResponder = TotalAResponder + 1;
                 });
-                TotalAResponder = TotalAResponder + 1;
-            });
 
 
-            $(item).find('.btnInseguro').each(function(ind, input) {
-                if (!($(input).css('visibility') == 'hidden' || $(input).css('display') == 'none')) {
-                    existeNoSeguro = true;
+                $(item).find('.btnInseguro').each(function (ind, input) {
+                    if (!($(input).css('visibility') == 'hidden' || $(input).css('display') == 'none')) {
+                        existeNoSeguro = true;
+                    }
+                });
+
+                $("body").find("[aria-controls='" + $(item).attr('id') + "']").css('background-color', '#fff');
+
+                if (existeNoSeguro) {
+                    var idTab = $(item).attr('id');
+                    $("body").find("[aria-controls='" + idTab + "']").css('background-color', '#f39c12');
+                }
+
+                if (TotalAResponder != ContadorRespondidos) {
+                    var idTab = $(item).attr('id');
+                    $("body").find("[aria-controls='" + idTab + "']").css('background-color', '#d2d6de');
                 }
             });
 
-            $("body").find("[aria-controls='" + $(item).attr('id') + "']").css('background-color', '#fff');
 
-            if (existeNoSeguro) {
-                var idTab = $(item).attr('id');
-                $("body").find("[aria-controls='" + idTab + "']").css('background-color', '#f39c12');
+            if ($('#back-to-top').length) {
+                var scrollTrigger = 100, // px
+                    backToTop = function () {
+                        var scrollTop = $(window).scrollTop();
+                        if (scrollTop > scrollTrigger) {
+                            $('#back-to-top').addClass('show');
+                        } else {
+                            $('#back-to-top').removeClass('show');
+                        }
+                    };
+                backToTop();
+                $(window).on('scroll', function () {
+                    backToTop();
+                });
+                $('#back-to-top').on('click', function (e) {
+                    e.preventDefault();
+                    $('html,body').animate({
+                        scrollTop: 0
+                    }, 700);
+                });
             }
 
-            if (TotalAResponder != ContadorRespondidos) {
-                var idTab = $(item).attr('id');
-                $("body").find("[aria-controls='" + idTab + "']").css('background-color', '#d2d6de');
-            }
         });
 
+        $("#btnAceptar").click(function () {
 
-        if ($('#back-to-top').length) {
-            var scrollTrigger = 100, // px
-                backToTop = function() {
-                    var scrollTop = $(window).scrollTop();
-                    if (scrollTop > scrollTrigger) {
-                        $('#back-to-top').addClass('show');
-                    } else {
-                        $('#back-to-top').removeClass('show');
+            var selected = [];
+            $('.checkboxCuestionario:radio:checked').each(function () {
+                selected.push($(this).attr('id'));
+                console.log($(this).attr('id'))
+            });
+
+            $.ajax({
+                url: "CerrarCuestionario",
+                type: "POST",
+                data: "Respuesta=" + selected,
+                error: function (ex) {
+                    console.log(ex.responseText);
+                },
+                success: function (result) {
+                    if (result.success) {
+                        window.location = result.url;
                     }
-                };
-            backToTop();
-            $(window).on('scroll', function() {
-                backToTop();
+                }
+
             });
-            $('#back-to-top').on('click', function(e) {
-                e.preventDefault();
-                $('html,body').animate({
-                    scrollTop: 0
-                }, 700);
+        });
+
+        function checkFluency(check) {
+            //$.ajax({
+            //    url: "ActualizarRespuesta",
+            //    type: "POST",
+            //    data: "Respuesta=" + $(check).attr('id'),
+            //    error: function(ex) {
+            //        console.log(ex.responseText);
+            //    },
+            //    success: function(data) {
+            //        //console.log(data);
+            //    }
+
+            //});
+
+            var Color = "Azul";
+            //$.ajax({
+            //    url: "ActualizarEstadoVisualRespuesta",
+            //    type: "POST",
+            //    data: "NroPregunta=" + $(check).attr('data-idPregunta') + "&Color=" + Color,
+            //    error: function(ex) {
+            //        console.log(ex.responseText);
+            //    },
+            //    success: function(data) {
+            //        $('#checkear_' + $(check).attr('data-idPregunta')).attr('style', 'visibility:visible');
+            //        $('#inseguro_' + $(check).attr('data-idPregunta')).attr('style', 'visibility:hidden');
+
+            //        var NumPreguntasAdvertencia = 0;
+            //        $('.btnInseguro').each(function() {
+            //            if (!($(this).css('visibility') == 'hidden' || $(this).css('display') == 'none')) {
+            //                NumPreguntasAdvertencia = NumPreguntasAdvertencia + 1;
+            //            }
+            //        });
+
+            //        $("#NumPreguntasAdvertencia").text("No Segura: " + NumPreguntasAdvertencia);
+
+            //        $("div.tab-pane").each(function(index, item) {
+            //            var existeNoSeguro = false;
+
+            //            var ContadorRespondidos = 0;
+            //            var TotalAResponder = 0;
+            //            $(item).find('div.thumbnailContainer').each(function(ind, input) {
+            //                $(input).find('input:radio:checked').each(function(indexCheckbox, inputCheckbox) {
+            //                    ContadorRespondidos = ContadorRespondidos + 1;
+            //                });
+            //                TotalAResponder = TotalAResponder + 1;
+            //            });
+
+
+            //            $(item).find('.btnInseguro').each(function(ind, input) {
+            //                if (!($(input).css('visibility') == 'hidden' || $(input).css('display') == 'none')) {
+            //                    existeNoSeguro = true;
+            //                }
+            //            });
+
+
+            //            $("body").find("[aria-controls='" + $(item).attr('id') + "']").css('background-color', '#fff');
+
+            //            if (existeNoSeguro) {
+            //                var idTab = $(item).attr('id');
+            //                $("body").find("[aria-controls='" + idTab + "']").css('background-color', '#f39c12');
+            //            }
+
+            //            if (TotalAResponder != ContadorRespondidos) {
+            //                var idTab = $(item).attr('id');
+            //                $("body").find("[aria-controls='" + idTab + "']").css('background-color', '#d2d6de');
+            //            }
+            //        });
+            //    }
+
+            //});
+
+            var NumPreguntasRespondidas = 0;
+            var NumPreguntasNoRespondidas = 0;
+            $('.contarcheckboxCuestionario:radio:checked').each(function () {
+                NumPreguntasRespondidas = NumPreguntasRespondidas + 1;
             });
+            NumPreguntasNoRespondidas = NumeroPreguntasGlobal - NumPreguntasRespondidas;
+
+            $("#NumPreguntasRespondidas").text("Resp: " + NumPreguntasRespondidas);
+
+            $("#NumPreguntasNoRespondidas").text("No Resp: " + NumPreguntasNoRespondidas);
         }
 
-    });
 
-    $("#btnAceptar").click(function() {
+        setInterval(refrescarTiempo, 60000);
 
-        var selected = [];
-        $('.checkboxCuestionario:radio:checked').each(function() {
-            selected.push($(this).attr('id'));
-            console.log($(this).attr('id'))
-        });
+        function refrescarTiempo() {
 
-        $.ajax({
-            url: "CerrarCuestionario",
-            type: "POST",
-            data: "Respuesta=" + selected,
-            error: function(ex) {
-                console.log(ex.responseText);
-            },
-            success: function(result) {
-                if (result.success) {
-                    window.location = result.url;
-                }
-            }
+            //$.ajax({
+            //    url: "GetTiempoRestantePractica",
+            //    type: "POST",
+            //    data: "TiempoMaximo=" + NumeroPreguntasGlobal,
+            //    error: function(jqXHR, textStatus, errorThrown) {
 
-        });
-    });
+            //        if (jqXHR.status === 0) {
+            //            window.location.reload(true);
+            //        } else {
+            //            var tiempo = $("div.tiempoRestantediv").find("h3 b.cambioClass").html()
+            //            if (tiempo <= 0) {
+            //                $("#btnAceptar").click();
+            //            } else {
+            //                $("div.tiempoRestantediv").find("h3 b.cambioClass").html(tiempo - 1)
+            //            }
+            //            //window.location.reload(true);
+            //        }
+            //        //console.log("error");
 
-    function checkFluency(check) {
-        //$.ajax({
-        //    url: "ActualizarRespuesta",
-        //    type: "POST",
-        //    data: "Respuesta=" + $(check).attr('id'),
-        //    error: function(ex) {
-        //        console.log(ex.responseText);
-        //    },
-        //    success: function(data) {
-        //        //console.log(data);
-        //    }
+            //    },
+            //    success: function(data) {
+            //        //console.log(data);
+            //        if (data.TiempoRestante <= 0) {
+            //            $("#btnAceptar").click();
+            //        } else {
+            //            $("div.tiempoRestantediv").find("h3 b.cambioClass").html(data.TiempoRestante)
+            //        }
+            //    },
+            //    fail: function() {
+            //        //alert("fail");
+            //    }
 
-        //});
-
-        var Color = "Azul";
-        //$.ajax({
-        //    url: "ActualizarEstadoVisualRespuesta",
-        //    type: "POST",
-        //    data: "NroPregunta=" + $(check).attr('data-idPregunta') + "&Color=" + Color,
-        //    error: function(ex) {
-        //        console.log(ex.responseText);
-        //    },
-        //    success: function(data) {
-        //        $('#checkear_' + $(check).attr('data-idPregunta')).attr('style', 'visibility:visible');
-        //        $('#inseguro_' + $(check).attr('data-idPregunta')).attr('style', 'visibility:hidden');
-
-        //        var NumPreguntasAdvertencia = 0;
-        //        $('.btnInseguro').each(function() {
-        //            if (!($(this).css('visibility') == 'hidden' || $(this).css('display') == 'none')) {
-        //                NumPreguntasAdvertencia = NumPreguntasAdvertencia + 1;
-        //            }
-        //        });
-
-        //        $("#NumPreguntasAdvertencia").text("No Segura: " + NumPreguntasAdvertencia);
-
-        //        $("div.tab-pane").each(function(index, item) {
-        //            var existeNoSeguro = false;
-
-        //            var ContadorRespondidos = 0;
-        //            var TotalAResponder = 0;
-        //            $(item).find('div.thumbnailContainer').each(function(ind, input) {
-        //                $(input).find('input:radio:checked').each(function(indexCheckbox, inputCheckbox) {
-        //                    ContadorRespondidos = ContadorRespondidos + 1;
-        //                });
-        //                TotalAResponder = TotalAResponder + 1;
-        //            });
+            //});
+        }
 
 
-        //            $(item).find('.btnInseguro').each(function(ind, input) {
-        //                if (!($(input).css('visibility') == 'hidden' || $(input).css('display') == 'none')) {
-        //                    existeNoSeguro = true;
-        //                }
-        //            });
+        function checkNotSecure(check) {
+            var Color = "Amarillo";
+            //$.ajax({
+            //    url: "ActualizarEstadoVisualRespuesta",
+            //    type: "POST",
+            //    data: "NroPregunta=" + $(check).attr('data-idPregunta') + "&Color=" + Color,
+            //    error: function(ex) {
+            //        console.log(ex.responseText);
+            //    },
+            //    success: function(data) {
+            //        //console.log(data);
+            //        //appear icono
+            //        $('#inseguro_' + $(check).attr('data-idPregunta')).attr('style', 'visibility:visible');
+            //        $('#checkear_' + $(check).attr('data-idPregunta')).attr('style', 'visibility:hidden');
+
+            //        var NumPreguntasAdvertencia = 0;
+            //        $('.btnInseguro').each(function() {
+            //            if (!($(this).css('visibility') == 'hidden' || $(this).css('display') == 'none')) {
+            //                NumPreguntasAdvertencia = NumPreguntasAdvertencia + 1;
+            //                //console.log($(this).attr('id'));
+            //            }
+            //        });
+
+            //        $("#NumPreguntasAdvertencia").text("No Segura: " + NumPreguntasAdvertencia);
+
+            //        $("div.tab-pane").each(function(index, item) {
+            //            //var existeNoRespondido = false;
+            //            var existeNoSeguro = false;
+
+            //            var ContadorRespondidos = 0;
+            //            var TotalAResponder = 0;
+            //            $(item).find('div.thumbnailContainer').each(function(ind, input) {
+            //                $(input).find('input:radio:checked').each(function(indexCheckbox, inputCheckbox) {
+            //                    ContadorRespondidos = ContadorRespondidos + 1;
+            //                });
+            //                TotalAResponder = TotalAResponder + 1;
+            //            });
 
 
-        //            $("body").find("[aria-controls='" + $(item).attr('id') + "']").css('background-color', '#fff');
-
-        //            if (existeNoSeguro) {
-        //                var idTab = $(item).attr('id');
-        //                $("body").find("[aria-controls='" + idTab + "']").css('background-color', '#f39c12');
-        //            }
-
-        //            if (TotalAResponder != ContadorRespondidos) {
-        //                var idTab = $(item).attr('id');
-        //                $("body").find("[aria-controls='" + idTab + "']").css('background-color', '#d2d6de');
-        //            }
-        //        });
-        //    }
-
-        //});
-
-        var NumPreguntasRespondidas = 0;
-        var NumPreguntasNoRespondidas = 0;
-        $('.contarcheckboxCuestionario:radio:checked').each(function() {
-            NumPreguntasRespondidas = NumPreguntasRespondidas + 1;
-        });
-        NumPreguntasNoRespondidas = NumeroPreguntasGlobal - NumPreguntasRespondidas;
-
-        $("#NumPreguntasRespondidas").text("Resp: " + NumPreguntasRespondidas);
-
-        $("#NumPreguntasNoRespondidas").text("No Resp: " + NumPreguntasNoRespondidas);
-    }
+            //            $(item).find('.btnInseguro').each(function(ind, input) {
+            //                if (!($(input).css('visibility') == 'hidden' || $(input).css('display') == 'none')) {
+            //                    existeNoSeguro = true;
+            //                }
+            //            });
 
 
-    setInterval(refrescarTiempo, 60000);
+            //            $("body").find("[aria-controls='" + $(item).attr('id') + "']").css('background-color', '#fff');
 
-    function refrescarTiempo() {
+            //            if (existeNoSeguro) {
+            //                var idTab = $(item).attr('id');
+            //                $("body").find("[aria-controls='" + idTab + "']").css('background-color', '#f39c12');
+            //            }
 
-        //$.ajax({
-        //    url: "GetTiempoRestantePractica",
-        //    type: "POST",
-        //    data: "TiempoMaximo=" + NumeroPreguntasGlobal,
-        //    error: function(jqXHR, textStatus, errorThrown) {
+            //            if (TotalAResponder != ContadorRespondidos) {
+            //                var idTab = $(item).attr('id');
+            //                $("body").find("[aria-controls='" + idTab + "']").css('background-color', '#d2d6de');
+            //            }
+            //        });
 
-        //        if (jqXHR.status === 0) {
-        //            window.location.reload(true);
-        //        } else {
-        //            var tiempo = $("div.tiempoRestantediv").find("h3 b.cambioClass").html()
-        //            if (tiempo <= 0) {
-        //                $("#btnAceptar").click();
-        //            } else {
-        //                $("div.tiempoRestantediv").find("h3 b.cambioClass").html(tiempo - 1)
-        //            }
-        //            //window.location.reload(true);
-        //        }
-        //        //console.log("error");
+            //    }
+            //});
+        }
 
-        //    },
-        //    success: function(data) {
-        //        //console.log(data);
-        //        if (data.TiempoRestante <= 0) {
-        //            $("#btnAceptar").click();
-        //        } else {
-        //            $("div.tiempoRestantediv").find("h3 b.cambioClass").html(data.TiempoRestante)
-        //        }
-        //    },
-        //    fail: function() {
-        //        //alert("fail");
-        //    }
-
-        //});
-    }
-
-
-    function checkNotSecure(check) {
-        var Color = "Amarillo";
-        //$.ajax({
-        //    url: "ActualizarEstadoVisualRespuesta",
-        //    type: "POST",
-        //    data: "NroPregunta=" + $(check).attr('data-idPregunta') + "&Color=" + Color,
-        //    error: function(ex) {
-        //        console.log(ex.responseText);
-        //    },
-        //    success: function(data) {
-        //        //console.log(data);
-        //        //appear icono
-        //        $('#inseguro_' + $(check).attr('data-idPregunta')).attr('style', 'visibility:visible');
-        //        $('#checkear_' + $(check).attr('data-idPregunta')).attr('style', 'visibility:hidden');
-
-        //        var NumPreguntasAdvertencia = 0;
-        //        $('.btnInseguro').each(function() {
-        //            if (!($(this).css('visibility') == 'hidden' || $(this).css('display') == 'none')) {
-        //                NumPreguntasAdvertencia = NumPreguntasAdvertencia + 1;
-        //                //console.log($(this).attr('id'));
-        //            }
-        //        });
-
-        //        $("#NumPreguntasAdvertencia").text("No Segura: " + NumPreguntasAdvertencia);
-
-        //        $("div.tab-pane").each(function(index, item) {
-        //            //var existeNoRespondido = false;
-        //            var existeNoSeguro = false;
-
-        //            var ContadorRespondidos = 0;
-        //            var TotalAResponder = 0;
-        //            $(item).find('div.thumbnailContainer').each(function(ind, input) {
-        //                $(input).find('input:radio:checked').each(function(indexCheckbox, inputCheckbox) {
-        //                    ContadorRespondidos = ContadorRespondidos + 1;
-        //                });
-        //                TotalAResponder = TotalAResponder + 1;
-        //            });
-
-
-        //            $(item).find('.btnInseguro').each(function(ind, input) {
-        //                if (!($(input).css('visibility') == 'hidden' || $(input).css('display') == 'none')) {
-        //                    existeNoSeguro = true;
-        //                }
-        //            });
-
-
-        //            $("body").find("[aria-controls='" + $(item).attr('id') + "']").css('background-color', '#fff');
-
-        //            if (existeNoSeguro) {
-        //                var idTab = $(item).attr('id');
-        //                $("body").find("[aria-controls='" + idTab + "']").css('background-color', '#f39c12');
-        //            }
-
-        //            if (TotalAResponder != ContadorRespondidos) {
-        //                var idTab = $(item).attr('id');
-        //                $("body").find("[aria-controls='" + idTab + "']").css('background-color', '#d2d6de');
-        //            }
-        //        });
-
-        //    }
-        //});
-    }
-
-</script>
+    </script>

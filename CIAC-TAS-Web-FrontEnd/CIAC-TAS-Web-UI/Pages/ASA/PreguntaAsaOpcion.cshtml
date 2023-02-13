@@ -25,6 +25,12 @@
       </div><!-- /.container-fluid -->
     </section>
 
+    <!-- /.box-header -->
+    <div class="col-sm-12">
+        <a asp-page="/ASA/PreguntaAsa" asp-page-handler="EditPreguntaAsa" asp-route-id="@ViewContext.RouteData.Values["preguntaAsaId"]" class="fa fa-arrow-circle-left" style="font-size:25px;"></a>
+    </div>
+    <br />
+
     <!-- Main content -->
     <section class="content">
 
@@ -58,7 +64,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label asp-for="PreguntaAsaOpcionModelView.RespuestaValida" class="control-label"></label>           
+                        @*<label asp-for="PreguntaAsaOpcionModelView.RespuestaValida" class="control-label"></label>*@
+                            <label asp-for="PreguntaAsaOpcionModelView.RespuestaValida" class="control-label">Respuesta Valida</label> &ensp;&ensp;&ensp;
                         <input asp-for="PreguntaAsaOpcionModelView.RespuestaValida" class="form-check-input" />
                         <span asp-validation-for="PreguntaAsaOpcionModelView.RespuestaValida" class="text-danger"></span>
                     </div>

@@ -52,7 +52,7 @@ namespace CIAC_TAS_Web_UI.Pages.ASA
             if (UploadFile != null && !string.IsNullOrEmpty(UploadFile.FileName))
             {
                 var fileName = DateTime.Now.Ticks + "_" + UploadFile.FileName;
-                string preguntaAsaContainerPath = Path.Combine(_environment.ContentRootPath, "Uploads/PreguntaAsa");
+                string preguntaAsaContainerPath = Path.Combine(_environment.WebRootPath, "dist/uploads/PreguntaAsa");
                 var fullPath = Path.Combine(preguntaAsaContainerPath, fileName);
                 PreguntaAsaModelView.Ruta = fileName;
                 
@@ -141,7 +141,7 @@ namespace CIAC_TAS_Web_UI.Pages.ASA
             if (UploadFile != null && !string.IsNullOrEmpty(UploadFile.FileName))
             {
                 var fileName = DateTime.Now.Ticks + "_" + UploadFile.FileName;
-                string preguntaAsaContainerPath = Path.Combine(_environment.ContentRootPath, "Uploads/PreguntaAsa");
+                string preguntaAsaContainerPath = Path.Combine(_environment.WebRootPath, "dist/uploads/PreguntaAsa");
                 var fullPath = Path.Combine(preguntaAsaContainerPath, fileName);
                 PreguntaAsaModelView.Ruta = fileName;
 
@@ -185,10 +185,33 @@ namespace CIAC_TAS_Web_UI.Pages.ASA
             return RedirectToPage("/ASA/PreguntasAsa");
         }
 
+        public async Task<IActionResult> OnGetRemovePreguntaAsaOpcionAsync(int preguntaAsaId, int preguntaAsaOpcionId)
+        {
+            var preguntaAsaOpcionServiceApi = GetIPreguntaAsaOpcionServiceApi();
+            var preguntaAsaOpcionResponse = await preguntaAsaOpcionServiceApi.DeleteAsync(preguntaAsaOpcionId);
+
+            if (!preguntaAsaOpcionResponse.IsSuccessStatusCode)
+            {
+                Message = "Ocurrio un error inesperado";
+
+                return RedirectToPage("/ASA/PreguntaAsa", "EditPreguntaAsa", new { id = preguntaAsaId });
+            }
+
+            return RedirectToPage("/ASA/PreguntaAsa", "EditPreguntaAsa", new { id = preguntaAsaId });
+        }
+
 
         private IPreguntaAsaServiceApi GetIPreguntaAsaServiceApi()
         {
             return RestService.For<IPreguntaAsaServiceApi>(_configuration.GetValue<string>("ServiceUrl"), new RefitSettings
+            {
+                AuthorizationHeaderValueGetter = () => Task.FromResult(HttpContext.Session.GetString(Session.SessionToken))
+            });
+        }
+
+        private IPreguntaAsaOpcionServiceApi GetIPreguntaAsaOpcionServiceApi()
+        {
+            return RestService.For<IPreguntaAsaOpcionServiceApi>(_configuration.GetValue<string>("ServiceUrl"), new RefitSettings
             {
                 AuthorizationHeaderValueGetter = () => Task.FromResult(HttpContext.Session.GetString(Session.SessionToken))
             });

@@ -8,9 +8,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\**" />
+    <Compile Remove="Middlewares\**" />
     <Compile Remove="Uploads\**" />
+    <Content Remove="Controllers\**" />
+    <Content Remove="Middlewares\**" />
     <Content Remove="Uploads\**" />
+    <EmbeddedResource Remove="Controllers\**" />
+    <EmbeddedResource Remove="Middlewares\**" />
     <EmbeddedResource Remove="Uploads\**" />
+    <None Remove="Controllers\**" />
+    <None Remove="Middlewares\**" />
     <None Remove="Uploads\**" />
   </ItemGroup>
 
@@ -1612,16 +1620,11 @@
 
   <ItemGroup>
     <Reference Include="CIAC-TAS-Service.Contracts">
-      <HintPath>..\..\CIAC-TAS-Service-API\CIAC-TAS-Service.Sdk\bin\Release\net6.0\CIAC-TAS-Service.Contracts.dll</HintPath>
+      <HintPath>..\..\..\CIAC-TAS-Service-API\CIAC-TAS-Service.Sdk\bin\Release\net6.0\CIAC-TAS-Service.Contracts.dll</HintPath>
     </Reference>
     <Reference Include="CIAC-TAS-Service.Sdk">
-      <HintPath>..\..\CIAC-TAS-Service-API\CIAC-TAS-Service.Sdk\bin\Release\net6.0\CIAC-TAS-Service.Sdk.dll</HintPath>
+      <HintPath>..\..\..\CIAC-TAS-Service-API\CIAC-TAS-Service.Sdk\bin\Release\net6.0\CIAC-TAS-Service.Sdk.dll</HintPath>
     </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-    <Folder Include="Middlewares\" />
   </ItemGroup>
 
 </Project>
