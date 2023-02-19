@@ -1,4 +1,5 @@
 using CIAC_TAS_Service.Contracts.V1.Requests;
+using CIAC_TAS_Service.Contracts.V1.Responses;
 using CIAC_TAS_Service.Sdk;
 using CIAC_TAS_Web_UI.Helper;
 using CIAC_TAS_Web_UI.ModelViews.ASA;
@@ -48,7 +49,10 @@ namespace CIAC_TAS_Web_UI.Pages.ASA
 
             var hasRespuestas = respuestasAsaHasRespuestasResponse.Content;
             if (!hasRespuestas) //If it's new Quiz, show filters in UI
-            {                
+            {
+                CuestionarioASAModelView = new CuestionarioASAModelView();
+                CuestionarioASAModelView.HasQuizInProgress = false;
+
                 return Page();
             }
 
@@ -81,7 +85,72 @@ namespace CIAC_TAS_Web_UI.Pages.ASA
                 CuestionarioASAModelView.GrupoPreguntaAsaIds = new List<int>();
             }
 
-            var preguntaAsaServiceApi = GetIPreguntaAsaServiceApi();
+            if (CuestionarioASAModelView.NumeroPreguntas <= 0 || CuestionarioASAModelView.NumeroPreguntas > 100)
+            {
+				Message = "El numero de preguntas debe ser minimo 1 y maximo 100";
+				var grupoPreguntaAsaServiceApi = GetIGrupoPreguntaAsaServiceApi();
+				var grupoPreguntaAsaResponse = await grupoPreguntaAsaServiceApi.GetAllAsync();
+
+				if (grupoPreguntaAsaResponse.IsSuccessStatusCode)
+				{
+					GrupoPreguntaAsaOptions = grupoPreguntaAsaResponse.Content.Data.Select(x => new SelectListItem { Text = x.Nombre, Value = x.Id.ToString() }).ToList();
+				}
+
+				CuestionarioASAModelView.HasQuizInProgress = false;
+
+				return Page();
+			}
+
+			if (CuestionarioASAModelView.PreguntaIni >= CuestionarioASAModelView.PreguntaFin)
+			{
+				Message = "El rango de preguntas iniciales debe ser menor al rango de preguntas finales";
+				var grupoPreguntaAsaServiceApi = GetIGrupoPreguntaAsaServiceApi();
+				var grupoPreguntaAsaResponse = await grupoPreguntaAsaServiceApi.GetAllAsync();
+
+				if (grupoPreguntaAsaResponse.IsSuccessStatusCode)
+				{
+					GrupoPreguntaAsaOptions = grupoPreguntaAsaResponse.Content.Data.Select(x => new SelectListItem { Text = x.Nombre, Value = x.Id.ToString() }).ToList();
+				}
+
+				CuestionarioASAModelView.HasQuizInProgress = false;
+
+				return Page();
+			}
+
+			if (CuestionarioASAModelView.PreguntaIni > CuestionarioASAHelper.NUMERO_PREGUNTA_MAXIMA)
+			{
+				Message = $"El rango de maximo es {CuestionarioASAHelper.NUMERO_PREGUNTA_MAXIMA}";
+				var grupoPreguntaAsaServiceApi = GetIGrupoPreguntaAsaServiceApi();
+				var grupoPreguntaAsaResponse = await grupoPreguntaAsaServiceApi.GetAllAsync();
+
+				if (grupoPreguntaAsaResponse.IsSuccessStatusCode)
+				{
+					GrupoPreguntaAsaOptions = grupoPreguntaAsaResponse.Content.Data.Select(x => new SelectListItem { Text = x.Nombre, Value = x.Id.ToString() }).ToList();
+				}
+
+				CuestionarioASAModelView.HasQuizInProgress = false;
+
+				return Page();
+			}
+
+			if (CuestionarioASAModelView.PreguntaIni < 0 ||
+				CuestionarioASAModelView.PreguntaFin < 0)
+			{
+				Message = $"Los rangos de preguntas no pueden ser negativos";
+				var grupoPreguntaAsaServiceApi = GetIGrupoPreguntaAsaServiceApi();
+				var grupoPreguntaAsaResponse = await grupoPreguntaAsaServiceApi.GetAllAsync();
+
+				if (grupoPreguntaAsaResponse.IsSuccessStatusCode)
+				{
+					GrupoPreguntaAsaOptions = grupoPreguntaAsaResponse.Content.Data.Select(x => new SelectListItem { Text = x.Nombre, Value = x.Id.ToString() }).ToList();
+				}
+
+				CuestionarioASAModelView.HasQuizInProgress = false;
+
+				return Page();
+			}
+
+			var preguntaAsaServiceApi = GetIPreguntaAsaServiceApi();
             var preguntasRandomResponse = await preguntaAsaServiceApi.GetPreguntasRandomAsync((int)CuestionarioASAModelView.NumeroPreguntas, (int)CuestionarioASAModelView.PreguntaIni, (int)CuestionarioASAModelView.PreguntaFin, CuestionarioASAModelView.GrupoPreguntaAsaIds);
 
             if (!preguntasRandomResponse.IsSuccessStatusCode)
@@ -95,10 +164,29 @@ namespace CIAC_TAS_Web_UI.Pages.ASA
                     GrupoPreguntaAsaOptions = grupoPreguntaAsaResponse.Content.Data.Select(x => new SelectListItem { Text = x.Nombre, Value = x.Id.ToString() }).ToList();
                 }
 
-                return Page();
+				CuestionarioASAModelView.HasQuizInProgress = false;
+
+				return Page();
             }
 
             var preguntaAsaRandomData = preguntasRandomResponse.Content.Data; //TODO: Que obtenga solo los IDs
+
+            if (preguntaAsaRandomData.Count() <= 0)
+            {
+                Message = $"No se pudo generar un cuestionario con los datos configurados";
+                var grupoPreguntaAsaServiceApi = GetIGrupoPreguntaAsaServiceApi();
+                var grupoPreguntaAsaResponse = await grupoPreguntaAsaServiceApi.GetAllAsync();
+
+                if (grupoPreguntaAsaResponse.IsSuccessStatusCode)
+                {
+                    GrupoPreguntaAsaOptions = grupoPreguntaAsaResponse.Content.Data.Select(x => new SelectListItem { Text = x.Nombre, Value = x.Id.ToString() }).ToList();
+                }
+
+                CuestionarioASAModelView.HasQuizInProgress = false;
+
+                return Page();
+            }
+
             var userId = HttpContext.Session.GetString(Session.SessionUserId);
             var fechaEntrada = DateTime.Now;
 

@@ -8,27 +8,28 @@
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper ">
 
+	@Html.AntiForgeryToken()
 	<!-- Main content -->
 	<section class="content wrapperbody">
 		<!-- Default box -->
 		<div class="box">
 
 			<div class="tiempoRestantediv box-header with-border">
-				<h3 style="text-align:center;" class="tiempoRestante box-title">Tiempo Restante: <b class="cambioClass"> 60 Min </b> Preg. Total: <b>@Model.ThumbnailViewModel.NumeroPreguntas</b></h3>
+				<h3 style="text-align:center;" class="tiempoRestante box-title">Tiempo Restante: <b class="cambioClass">@Model.ThumbnailViewModel.TiempoRestante</b> min Preg. Total: <b>@Model.ThumbnailViewModel.NumeroPreguntas</b></h3>
 				@*<div class="box-tools pull-right">
-					<button type="button" class="btn btn-box-tool" title="Refresh" onClick="window.location.reload(true)">
-						<i class="fa fa-refresh">Refresh</i>
-					</button>
+				<button type="button" class="btn btn-box-tool" title="Refresh" onClick="window.location.reload(true)">
+				<i class="fa fa-refresh">Refresh</i>
+				</button>
 				</div>*@
 			</div>
 			<div class="box-header with-border">
 				<h3 class="tiempoRestante box-title">
-					<span id="NumPreguntasAdvertencia" class="label label-warning pull-right">No Segura: 0</span>
-					<span id="NumPreguntasNoRespondidas" class="label label-default pull-right">No Resp: 0</span>
-					<span id="NumPreguntasRespondidas" class="label label-info pull-right">Resp: 0</span>
+					<span id="NumPreguntasAdvertencia" class="label label-warning pull-right">No Segura: @Model.ThumbnailViewModel.RespuestasNoSeguras</span>
+					<span id="NumPreguntasNoRespondidas" class="label label-default pull-right">No Resp: @Model.ThumbnailViewModel.RespuestasNoRespondidas</span>
+					<span id="NumPreguntasRespondidas" class="label label-info pull-right">Resp: @Model.ThumbnailViewModel.RespuestasRespondidas</span>
 				</h3>
 			</div>
-            <br /><br />
+			<br /><br />
 			<div class="box-body">
 				<!-- GROUPING -->
 				<div class="container">
@@ -42,22 +43,20 @@
 										{
 											if (item.Thumbnail_ItemPosition == "first")
 											{
-												<li class="active" id="@item.Thumbnail_ItemPosition">
-													<a aria-controls="@item.Thumbnail_Aria_Controls" data-toggle="tab" href="@item.Thumbnail_Href" role="tab">@item.ThumbnailTabNo</a>
+												<li class="active tabcontrolclass" id="@item.Thumbnail_ItemPosition">
+													<a class="tabcontrollinksclass" aria-controls="@item.Thumbnail_Aria_Controls" data-toggle="tab" href="@item.Thumbnail_Href" role="tab">@item.ThumbnailTabNo</a>
 												</li>
 											}
-
-
 											else if (item.Thumbnail_ItemPosition == "last")
 											{
-												<li id="@item.Thumbnail_ItemPosition">
-													<a aria-controls="@item.Thumbnail_Aria_Controls" data-toggle="tab" href="@item.Thumbnail_Href" role="tab">@item.ThumbnailTabNo</a>
+												<li class="tabcontrolclass" id="@item.Thumbnail_ItemPosition">
+													<a class="tabcontrollinksclass" aria-controls="@item.Thumbnail_Aria_Controls" data-toggle="tab" href="@item.Thumbnail_Href" role="tab">@item.ThumbnailTabNo</a>
 												</li>
 											}
 											else
 											{
-												<li>
-													<a aria-controls="@item.Thumbnail_Aria_Controls" data-toggle="tab" href="@item.Thumbnail_Href" role="tab">@item.ThumbnailTabNo</a>
+												<li class="tabcontrolclass">
+													<a class="tabcontrollinksclass" aria-controls="@item.Thumbnail_Aria_Controls" data-toggle="tab" href="@item.Thumbnail_Href" role="tab">@item.ThumbnailTabNo</a>
 												</li>
 											}
 
@@ -88,28 +87,20 @@
 															<div class="caption">
 
 																<h3>@detailsitem.PreguntaAsa.Pregunta</h3>
-																@*<p>
-											@detailsitem.Pregunta
-											</p>*@
+
 																<div class="form-group">
 																	@{
 																		foreach (var respuesta in detailsitem.PreguntaAsa.PreguntaAsaOpcionesResponse)
 																		{
-																			@*<div class="checkbox">
-												<label>
-												<input type="checkbox" id="@respuesta.NroPregunta+'-'+@respuesta.Opcion">
-												@respuesta.Respuesta
-												</label>
-												</div>*@
 																			<div class="radio">
 																				<label>
 																					@if (detailsitem.OpcionSeleccionadaId != null && detailsitem.OpcionSeleccionadaId == respuesta.Id /*"Marcado"*/)
 																					{
-																						<input class="checkboxCuestionario contarcheckboxCuestionario" onclick="checkFluency(this)" type="radio" name="optionsRadios+@respuesta.Id" id="@respuesta.Id-@respuesta.Opcion" checked="checked" data-idPregunta="@detailsitem.PreguntaAsa.Id">
+																						<input class="checkboxCuestionario contarcheckboxCuestionario" onclick="checkFluency(this)" type="radio" name="optionsRadios-@detailsitem.PreguntaAsa.NumeroPregunta" id="@respuesta.Id" checked="checked" data-respuestasAsasId="@detailsitem.Id">
 																					}
 																					else
 																					{
-																						<input class="checkboxCuestionario contarcheckboxCuestionario" onclick="checkFluency(this)" type="radio" name="optionsRadios+@respuesta.Id" id="@respuesta.Id-@respuesta.Opcion" data-idPregunta="@detailsitem.PreguntaAsa.Id">
+																						<input class="checkboxCuestionario contarcheckboxCuestionario" onclick="checkFluency(this)" type="radio" name="optionsRadios-@detailsitem.PreguntaAsa.NumeroPregunta" id="@respuesta.Id" data-respuestasAsasId="@detailsitem.Id">
 																					}
 																					@respuesta.Texto
 																				</label>
@@ -120,58 +111,42 @@
 																<div class="text-left">
 
 																	@{
-						//var ltASATRespuestaMarcados = (List<adminlte.ASATRespuestaService.ASATRespuestaEntity>)ViewBag.ltASATRespuestaMarcados;
-						//int index = ltASATRespuestaMarcados.FindIndex(i => i.NroPregunta == detailsitem.ltASAPregunta.First().NroPregunta);
-
-																	}
-
-																	@{
-						//if (index >= 0)
-						//{
-						//    if (ltASATRespuestaMarcados[index].UClase == "Amarillo")
-						//    {
-																		//        <button id="checkear_@detailsitem.ltASAPregunta.First().NroPregunta" style="visibility:hidden;" type="button" class="btn btn-info btnRespondido">
-																		//            <span class="glyphicon glyphicon glyphicon-ok-sign"></span>
-																		//        </button>
-																		//        <button id="inseguro_@detailsitem.ltASAPregunta.First().NroPregunta" style="visibility:visible;" type="button" class="btn btn-warning btnInseguro">
-																		//            <span class="glyphicon glyphicon-alert"></span>
-																		//        </button>
-																		//    }
-																		//    else
-																		//    {
-																		//        <button id="checkear_@detailsitem.ltASAPregunta.First().NroPregunta" style="visibility:visible;" type="button" class="btn btn-info btnRespondido">
-																		//            <span class="glyphicon glyphicon glyphicon-ok-sign"></span>
-																		//        </button>
-																		//        <button id="inseguro_@detailsitem.ltASAPregunta.First().NroPregunta" style="visibility:hidden;" type="button" class="btn btn-warning btnInseguro">
-																		//            <span class="glyphicon glyphicon-alert"></span>
-																		//        </button>
-																		//    }
-
-																		//}
-																		//else
+																		//if (index >= 0)
 																		//{
-																		//    <button id="checkear_@detailsitem.ltASAPregunta.First().NroPregunta" style="visibility:hidden;" type="button" class="btn btn-info btnRespondido">
-																		//        <span class="glyphicon glyphicon glyphicon-ok-sign"></span>
-																		//    </button>
-																		//    <button id="inseguro_@detailsitem.ltASAPregunta.First().NroPregunta" style="visibility:hidden;" type="button" class="btn btn-warning btnInseguro">
-																		//        <span class="glyphicon glyphicon-alert"></span>
-																		//    </button>
-																		//}
+																		if (@detailsitem.ColorInterfaz == "Warning")
+																		{
+																			//<button id="checkear_@detailsitem.Id" style="visibility:hidden;" type="button" class="btn btn-info btnRespondido">
+																			//	<span class="fa fa-check-circle"></span>
+																			//</button>
+																			<button id="inseguro_@detailsitem.Id" style="visibility:visible;" type="button" class="btn btn-warning btnInseguro">
+																				<span class="fa fa-exclamation-circle"></span>
+																			</button>
+																		}
+																		else
+																		{
+																			//<button id="checkear_@detailsitem.Id" style="visibility:visible;" type="button" class="btn btn-info btnRespondido">
+																			//	<span class="fa fa-check-circle"></span>
+																			//</button>
+																			<button id="inseguro_@detailsitem.Id" style="visibility:hidden;" type="button" class="btn btn-warning btnInseguro">
+																				<span class="fa fa-exclamation-circle"></span>
+																			</button>
+																		}
 																	}
 
 																</div>
 																<div class="text-right">
-																	<button type="button" class="btn btn-light" onclick="checkNotSecure(this)" data-idPregunta="@detailsitem.Id"><span class="glyphicon glyphicon-exclamation-sign"></span></button>
+																	<button type="button" class="btn btn-light" onclick="checkNotSecure(this)" data-idPregunta="@detailsitem.Id"><span class="fa fa-exclamation-circle"></span></button>
 																</div>
 															</div>
 														</div>
+														@if (@detailsitem.PreguntaAsa.Ruta != "")
+														{
+															<div class="col-sm-12">
+																<img style="width: 280px; height: 280px; display: block;margin: auto;" src="@Url.Content("~/dist/uploads/PreguntaAsa/" + @detailsitem.PreguntaAsa.Ruta)" />
+															</div>
+														}
 													</div>
-													//if (@detailsitem.ltASAPregunta.First().Texto0 != "")
-													//{
-													//    <div class="item">
-													//        <img style="width: 280px; height: 280px; display: block; margin: auto;" src="@Url.Content(String.Format("~//Uploads/Imagenes/ASAPregunta/{0}", @detailsitem.ltASAPregunta.First().Texto0))" />
-													//    </div>
-													//}
+
 
 												}
 											}
@@ -203,11 +178,11 @@
 																				<label>
 																					@if (detailsitem.OpcionSeleccionadaId != null && detailsitem.OpcionSeleccionadaId == respuesta.Id /*"Marcado"*/)
 																					{
-																						<input class="checkboxCuestionario contarcheckboxCuestionario" onclick="checkFluency(this)" type="radio" name="optionsRadios+@respuesta.Id" id="@respuesta.Id-@respuesta.Opcion" checked="checked" data-idPregunta="@detailsitem.PreguntaAsa.Id">
+																						<input class="checkboxCuestionario contarcheckboxCuestionario" onclick="checkFluency(this)" type="radio" name="optionsRadios-@detailsitem.PreguntaAsa.NumeroPregunta" id="@respuesta.Id" checked="checked" data-respuestasAsasId="@detailsitem.Id">
 																					}
 																					else
 																					{
-																						<input class="checkboxCuestionario contarcheckboxCuestionario" onclick="checkFluency(this)" type="radio" name="optionsRadios+@respuesta.Id" id="@respuesta.Id-@respuesta.Opcion" data-idPregunta="@detailsitem.PreguntaAsa.Id">
+																						<input class="checkboxCuestionario contarcheckboxCuestionario" onclick="checkFluency(this)" type="radio" name="optionsRadios-@detailsitem.PreguntaAsa.NumeroPregunta" id="@respuesta.Id" data-respuestasAsasId="@detailsitem.Id">
 																					}
 																					@respuesta.Texto
 																				</label>
@@ -217,56 +192,40 @@
 																</div>
 																<div class="text-left">
 																	@{
-						//var ltASATRespuestaMarcados = (List<adminlte.ASATRespuestaService.ASATRespuestaEntity>)ViewBag.ltASATRespuestaMarcados;
-						//int index = ltASATRespuestaMarcados.FindIndex(i => i.NroPregunta == detailsitem.ltASAPregunta.First().NroPregunta);
-
-																	}
-																	@{
-						//if (index >= 0)
-						//{
-						//    if (ltASATRespuestaMarcados[index].UClase == "Amarillo")
-						//    {
-																		//        <button id="checkear_@detailsitem.ltASAPregunta.First().NroPregunta" style="visibility:hidden;" type="button" class="btn btn-info btnRespondido">
-																		//            <span class="glyphicon glyphicon glyphicon-ok-sign"></span>
-																		//        </button>
-																		//        <button id="inseguro_@detailsitem.ltASAPregunta.First().NroPregunta" style="visibility:visible;" type="button" class="btn btn-warning btnInseguro">
-																		//            <span class="glyphicon glyphicon-alert"></span>
-																		//        </button>
-																		//    }
-																		//    else
-																		//    {
-																		//        <button id="checkear_@detailsitem.ltASAPregunta.First().NroPregunta" style="visibility:visible;" type="button" class="btn btn-info btnRespondido">
-																		//            <span class="glyphicon glyphicon glyphicon-ok-sign"></span>
-																		//        </button>
-																		//        <button id="inseguro_@detailsitem.ltASAPregunta.First().NroPregunta" style="visibility:hidden;" type="button" class="btn btn-warning btnInseguro">
-																		//            <span class="glyphicon glyphicon-alert"></span>
-																		//        </button>
-																		//    }
-
-																		//}
-																		//else
+																		//if (index >= 0)
 																		//{
-																		//    <button id="checkear_@detailsitem.ltASAPregunta.First().NroPregunta" style="visibility:hidden;" type="button" class="btn btn-info btnRespondido">
-																		//        <span class="glyphicon glyphicon glyphicon-ok-sign"></span>
-																		//    </button>
-																		//    <button id="inseguro_@detailsitem.ltASAPregunta.First().NroPregunta" style="visibility:hidden;" type="button" class="btn btn-warning btnInseguro">
-																		//        <span class="glyphicon glyphicon-alert"></span>
-																		//    </button>
-																		//}
+																		if (@detailsitem.ColorInterfaz == "Warning")
+																		{
+																			//<button id="checkear_@detailsitem.Id" style="visibility:hidden;" type="button" class="btn btn-info btnRespondido">
+																			//	<span class="fa fa-check-circle"></span>
+																			//</button>
+																			<button id="inseguro_@detailsitem.Id" style="visibility:visible;" type="button" class="btn btn-warning btnInseguro">
+																				<span class="fa fa-exclamation-circle"></span>
+																			</button>
+																		}
+																		else
+																		{
+																			//<button id="checkear_@detailsitem.Id" style="visibility:visible;" type="button" class="btn btn-info btnRespondido">
+																			//	<span class="fa fa-check-circle"></span>
+																			//</button>
+																			<button id="inseguro_@detailsitem.Id" style="visibility:hidden;" type="button" class="btn btn-warning btnInseguro">
+																				<span class="fa fa-exclamation-circle"></span>
+																			</button>
+																		}
 																	}
 																</div>
 																<div class="text-right">
-																	<button type="button" class="btn btn-light" onclick="checkNotSecure(this)" data-idPregunta="@detailsitem.PreguntaAsa.Id"><span class="glyphicon glyphicon-exclamation-sign"></span></button>
+																	<button type="button" class="btn btn-light" onclick="checkNotSecure(this)" data-idPregunta="@detailsitem.Id"><span class="fa fa-exclamation-circle"></span></button>
 																</div>
 															</div>
 														</div>
 													</div>
-													//if (@detailsitem.ltASAPregunta.First().Texto0 != "")
-													//{
-													//    <div class="col-sm-12">
-													//        <img style="width: 280px; height: 280px; display: block;margin: auto;" src="@Url.Content(String.Format("~//Uploads/Imagenes/ASAPregunta/{0}", @detailsitem.ltASAPregunta.First().Texto0))" />
-													//    </div>
-													//}
+													@if (@detailsitem.PreguntaAsa.Ruta != "")
+													{
+														<div class="col-sm-12">
+															<img style="width: 280px; height: 280px; display: block;margin: auto;" src="@Url.Content("~/dist/uploads/PreguntaAsa/" + @detailsitem.PreguntaAsa.Ruta)" />
+														</div>
+													}
 												}
 											}
 										</div>
@@ -287,7 +246,8 @@
 			<div class="box-footer">
 				<!-- /.col -->
 				<div class="text-center">
-					<button type="button" id="btnAceptar" class="btn btn-primary">Finalizar Cuestionario</button>
+					<a asp-page="/ASA/CuestionarioASAPractica" asp-page-handler="FinalizarCuestionarioASAPractica" class="btn btn-primary" onclick="return confirm('Esta seguro que desea finalizar el cuestionario?')">Finalizar Quiz</a>
+					<br />
 				</div>
 				<!-- /.col -->
 			</div>
@@ -296,333 +256,297 @@
 	</section>
 	<!-- /.content -->
 
-	</section>
-	<!-- /.content -->
+	<a href="#" id="back-to-top" title="Back to top">&uarr;</a>
 </div>
 <!-- /.content-wrapper -->
 <!-- To here -->
-
-
 @section Styles{
-    <link rel="stylesheet" href="~/css/asacuestionario.css" type="text/css" />
-    @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" type="text/css" />*@
-    @*<link rel="stylesheet" href="~/scripts-adminlte-old/components/bootstrap/dist/css/bootstrap.min.css" type="text/css" />*@
-    @*<link rel="stylesheet" href="~/scripts-adminlte-old/components/font-awesome/css/font-awesome.min.css" type="text/css" />*@
-    @*<link rel="stylesheet" href="~/scripts-adminlte-old/components/Ionicons/css/ionicons.min.css" type="text/css" />*@
-    @*<link rel="stylesheet" href="~/scripts-adminlte-old/components/bootstrap-slider/slider.css" type="text/css" />*@
-    @*<link rel="stylesheet" href="~/scripts-adminlte-old/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" type="text/css" />*@
+	<link rel="stylesheet" href="~/css/asacuestionario.css" type="text/css" />
 }
 
-    @*<script src="~/scripts-adminlte-old/components/bootstrap/dist/js/bootstrap.min.js" />*@
-    <script type="text/javascript">
+<script type="text/javascript">
 
-        var NumeroPreguntas = 0;
-        var NumeroPreguntasGlobal = 0;
+	var NumeroPreguntas = 0;
+	var NumeroPreguntasGlobal = 0;
 
-        function goTo(number) {
-            $('ul.pager li:eq(' + number + ') a').tab('show');
-            upgradePreNext(number);
-        }
+	function goTo(number) {
+		if (!isNaN(number)) {
+			$('ul.pager li:eq(' + number + ') a').tab('show');
+			upgradePreNext(number);
+			upgradeActiveDiv(number);
+		}
+	}
 
-        function upgradePreNext(number) {
-            if (number > 1) {
-                $('ul.pager li:eq(0)').attr("onclick", "goTo(" + (number - 1) + ")");
-                $('ul.pager li:eq(0)').attr("class", "previous");
-            } else {
-                $('ul.pager li:eq(0)').attr("class", "disabled");
-            }
+	function upgradePreNext(number) {
+		if (number > 1) {
+			$('ul.pager li:eq(0)').attr("onclick", "goTo(" + (number - 1) + ")");
+			$('ul.pager li:eq(0)').attr("class", "previous");
+		} else {
+			$('ul.pager li:eq(0)').attr("class", "disabled");
+			$('ul.pager li:eq(0)').removeAttr('onclick');
+		}
 
-            if (number < NumeroPreguntas) {
-                var numeropreguntasmasuno = NumeroPreguntas + 1;
-                $('ul.pager li:eq(' + numeropreguntasmasuno + ')').attr("onclick", "goTo(" + (number + 1) + ")");
-                $('ul.pager li:eq(' + numeropreguntasmasuno + ')').attr("class", "next");
-            } else {
-                $('ul.pager li:eq(' + numeropreguntasmasuno + ')').attr("class", "disabled");
-            }
-        }
+		if (number < NumeroPreguntas) {
+			var numeropreguntasmasuno = NumeroPreguntas + 1;
+			$('ul.pager li:eq(' + numeropreguntasmasuno + ')').attr("onclick", "goTo(" + (number + 1) + ")");
+			$('ul.pager li:eq(' + numeropreguntasmasuno + ')').attr("class", "next");
+		} else {
+			var numeropreguntasmasuno = NumeroPreguntas + 1;
+			$('ul.pager li:eq(' + numeropreguntasmasuno + ')').attr("class", "disabled");
+			$('ul.pager li:eq(' + numeropreguntasmasuno + ')').removeAttr('onclick');
+		}
 
-        $(document).ready(function () {
-            $('li a').on('click', function (e) {
-                goTo((e.target.innerHTML) - 0);
-            });
-            if (@Model.ThumbnailViewModel.NumeroPreguntas != null) {
-                NumeroPreguntasGlobal = @Model.ThumbnailViewModel.NumeroPreguntas;
-                NumeroPreguntas = @Model.ThumbnailViewModel.NumeroPreguntas;
-                NumeroPreguntas = NumeroPreguntas / 10;
-                NumeroPreguntas = parseInt(NumeroPreguntas) + 1;
-                if (NumeroPreguntas > 10) {
-                    NumeroPreguntas = 10;
-                }
-                //alert(parseInt(NumeroPreguntas))
-            }
+		$('ul.pager li.tabcontrolclass').attr("class", "tabcontrolclass");
+		$('ul.pager li:eq(' + number + ')').attr("class", "tabcontrolclass active");
+	}
 
-            $("div.tab-pane").each(function (index, item) {
-                //var existeNoRespondido = false;
-                var existeNoSeguro = false;
+	function upgradeActiveDiv(number) {
+		$("div.tab-pane").attr("class", "tab-pane");
+		$("div #tab" + number + ".tab-pane").attr("class", "tab-pane active");
+	}
 
-                var ContadorRespondidos = 0;
-                var TotalAResponder = 0;
-                $(item).find('div.thumbnailContainer').each(function (ind, input) {
-                    $(input).find('input:radio:checked').each(function (indexCheckbox, inputCheckbox) {
-                        ContadorRespondidos = ContadorRespondidos + 1;
-                    });
-                    TotalAResponder = TotalAResponder + 1;
-                });
+	$(document).ready(function () {
+		$('ul.pager li a').on('click', function (e) {
+			goTo((e.target.innerHTML) - 0);
+		});
 
+		if (@Model.ThumbnailViewModel.NumeroPreguntas != null) {
+			NumeroPreguntasGlobal = @Model.ThumbnailViewModel.NumeroPreguntas;
+			NumeroPreguntas = @Model.ThumbnailViewModel.NumeroPreguntas;
+			NumeroPreguntas = NumeroPreguntas / 10;
+			//NumeroPreguntas = parseInt(NumeroPreguntas) + 1;
+			if (NumeroPreguntas > 10) {
+				NumeroPreguntas = 10;
+			}
+			//alert(parseInt(NumeroPreguntas))
+			//alert(parseInt(NumeroPreguntasGlobal))
+		}
 
-                $(item).find('.btnInseguro').each(function (ind, input) {
-                    if (!($(input).css('visibility') == 'hidden' || $(input).css('display') == 'none')) {
-                        existeNoSeguro = true;
-                    }
-                });
+		$("div.tab-pane").each(function (index, item) {
+			//var existeNoRespondido = false;
+			var existeNoSeguro = false;
 
-                $("body").find("[aria-controls='" + $(item).attr('id') + "']").css('background-color', '#fff');
+			var ContadorRespondidos = 0;
+			var TotalAResponder = 0;
+			$(item).find('div.thumbnailContainer').each(function (ind, input) {
+				$(input).find('input:radio:checked').each(function (indexCheckbox, inputCheckbox) {
+					ContadorRespondidos = ContadorRespondidos + 1;
+				});
+				TotalAResponder = TotalAResponder + 1;
+			});
+			//console.log(ContadorRespondidos);
+			//console.log(TotalAResponder);
 
-                if (existeNoSeguro) {
-                    var idTab = $(item).attr('id');
-                    $("body").find("[aria-controls='" + idTab + "']").css('background-color', '#f39c12');
-                }
+			$(item).find('.btnInseguro').each(function (ind, input) {
+				if (!($(input).css('visibility') == 'hidden' || $(input).css('display') == 'none')) {
+					existeNoSeguro = true;
+				}
+			});
 
-                if (TotalAResponder != ContadorRespondidos) {
-                    var idTab = $(item).attr('id');
-                    $("body").find("[aria-controls='" + idTab + "']").css('background-color', '#d2d6de');
-                }
-            });
+			$("body").find("[aria-controls='" + $(item).attr('id') + "']").css('background-color', '#fff');
 
+			if (existeNoSeguro) {
+				var idTab = $(item).attr('id');
+				$("body").find("[aria-controls='" + idTab + "']").css('background-color', '#f39c12');
+			}
 
-            if ($('#back-to-top').length) {
-                var scrollTrigger = 100, // px
-                    backToTop = function () {
-                        var scrollTop = $(window).scrollTop();
-                        if (scrollTop > scrollTrigger) {
-                            $('#back-to-top').addClass('show');
-                        } else {
-                            $('#back-to-top').removeClass('show');
-                        }
-                    };
-                backToTop();
-                $(window).on('scroll', function () {
-                    backToTop();
-                });
-                $('#back-to-top').on('click', function (e) {
-                    e.preventDefault();
-                    $('html,body').animate({
-                        scrollTop: 0
-                    }, 700);
-                });
-            }
-
-        });
-
-        $("#btnAceptar").click(function () {
-
-            var selected = [];
-            $('.checkboxCuestionario:radio:checked').each(function () {
-                selected.push($(this).attr('id'));
-                console.log($(this).attr('id'))
-            });
-
-            $.ajax({
-                url: "CerrarCuestionario",
-                type: "POST",
-                data: "Respuesta=" + selected,
-                error: function (ex) {
-                    console.log(ex.responseText);
-                },
-                success: function (result) {
-                    if (result.success) {
-                        window.location = result.url;
-                    }
-                }
-
-            });
-        });
-
-        function checkFluency(check) {
-            //$.ajax({
-            //    url: "ActualizarRespuesta",
-            //    type: "POST",
-            //    data: "Respuesta=" + $(check).attr('id'),
-            //    error: function(ex) {
-            //        console.log(ex.responseText);
-            //    },
-            //    success: function(data) {
-            //        //console.log(data);
-            //    }
-
-            //});
-
-            var Color = "Azul";
-            //$.ajax({
-            //    url: "ActualizarEstadoVisualRespuesta",
-            //    type: "POST",
-            //    data: "NroPregunta=" + $(check).attr('data-idPregunta') + "&Color=" + Color,
-            //    error: function(ex) {
-            //        console.log(ex.responseText);
-            //    },
-            //    success: function(data) {
-            //        $('#checkear_' + $(check).attr('data-idPregunta')).attr('style', 'visibility:visible');
-            //        $('#inseguro_' + $(check).attr('data-idPregunta')).attr('style', 'visibility:hidden');
-
-            //        var NumPreguntasAdvertencia = 0;
-            //        $('.btnInseguro').each(function() {
-            //            if (!($(this).css('visibility') == 'hidden' || $(this).css('display') == 'none')) {
-            //                NumPreguntasAdvertencia = NumPreguntasAdvertencia + 1;
-            //            }
-            //        });
-
-            //        $("#NumPreguntasAdvertencia").text("No Segura: " + NumPreguntasAdvertencia);
-
-            //        $("div.tab-pane").each(function(index, item) {
-            //            var existeNoSeguro = false;
-
-            //            var ContadorRespondidos = 0;
-            //            var TotalAResponder = 0;
-            //            $(item).find('div.thumbnailContainer').each(function(ind, input) {
-            //                $(input).find('input:radio:checked').each(function(indexCheckbox, inputCheckbox) {
-            //                    ContadorRespondidos = ContadorRespondidos + 1;
-            //                });
-            //                TotalAResponder = TotalAResponder + 1;
-            //            });
+			if (TotalAResponder != ContadorRespondidos) {
+				var idTab = $(item).attr('id');
+				$("body").find("[aria-controls='" + idTab + "']").css('background-color', '#d2d6de');
+			}
+		});
 
 
-            //            $(item).find('.btnInseguro').each(function(ind, input) {
-            //                if (!($(input).css('visibility') == 'hidden' || $(input).css('display') == 'none')) {
-            //                    existeNoSeguro = true;
-            //                }
-            //            });
+		if ($('#back-to-top').length) {
+			var scrollTrigger = 100, // px
+				backToTop = function () {
+					var scrollTop = $(window).scrollTop();
+					if (scrollTop > scrollTrigger) {
+						$('#back-to-top').addClass('show');
+					} else {
+						$('#back-to-top').removeClass('show');
+					}
+				};
+			backToTop();
+			$(window).on('scroll', function () {
+				backToTop();
+			});
+			$('#back-to-top').on('click', function (e) {
+				e.preventDefault();
+				$('html,body').animate({
+					scrollTop: 0
+				}, 700);
+			});
+		}
+
+		//Click the first tab as default
+		$('ul.pager li:eq(0)').click()
+
+	});
+
+	function checkFluency(check) {
+		var opcionSeleccionadaId = $(check).attr('id');
+		var respuestasAsaId = $(check).attr('data-respuestasasasid');
+		var Color = "Ok";
+				
+		$.ajax({
+			url: "@Url.Page("/ASA/CuestionarioASAPractica")/?handler=UpdateAnswer",
+			method: "GET",
+			data: "opcionSeleccionadaId=" + opcionSeleccionadaId + "&respuestasAsaId=" + respuestasAsaId + "&color=" + Color,
+			beforeSend: function (xhr) {
+				xhr.setRequestHeader("XSRF-TOKEN",
+					$('input:hidden[name="__RequestVerificationToken"]').val());
+			},
+			error: function (ex) {
+
+			},
+			success: function (data) {
+
+			}
+		});
+		
+		//$('#checkear_' + $(check).attr('data-respuestasasasid')).attr('style', 'visibility:visible');
+		$('#inseguro_' + $(check).attr('data-respuestasasasid')).attr('style', 'visibility:hidden');
+
+		var NumPreguntasAdvertencia = 0;
+		$('.btnInseguro').each(function () {
+			if (!($(this).css('visibility') == 'hidden' || $(this).css('display') == 'none')) {
+				NumPreguntasAdvertencia = NumPreguntasAdvertencia + 1;
+			}
+		});
+
+		$("#NumPreguntasAdvertencia").text("No Segura: " + NumPreguntasAdvertencia);
+
+		$("div.tab-pane").each(function (index, item) {
+			var existeNoSeguro = false;
+
+			var ContadorRespondidos = 0;
+			var TotalAResponder = 0;
+			$(item).find('div.thumbnailContainer').each(function (ind, input) {
+				$(input).find('input:radio:checked').each(function (indexCheckbox, inputCheckbox) {
+					ContadorRespondidos = ContadorRespondidos + 1;
+				});
+				TotalAResponder = TotalAResponder + 1;
+			});
+
+			$(item).find('.btnInseguro').each(function (ind, input) {
+				if (!($(input).css('visibility') == 'hidden' || $(input).css('display') == 'none')) {
+					existeNoSeguro = true;
+				}
+			});
+
+			$("body").find("[aria-controls='" + $(item).attr('id') + "']").css('background-color', '#fff');
+
+			if (existeNoSeguro) {
+				var idTab = $(item).attr('id');
+				$("body").find("[aria-controls='" + idTab + "']").css('background-color', '#f39c12');
+			}
+
+			if (TotalAResponder != ContadorRespondidos) {
+				var idTab = $(item).attr('id');
+				$("body").find("[aria-controls='" + idTab + "']").css('background-color', '#d2d6de');
+			}
+		});		
+
+		var NumPreguntasRespondidas = 0;
+		var NumPreguntasNoRespondidas = 0;
+		$('.contarcheckboxCuestionario:radio:checked').each(function () {
+			NumPreguntasRespondidas = NumPreguntasRespondidas + 1;
+		});
+		NumPreguntasNoRespondidas = NumeroPreguntasGlobal - NumPreguntasRespondidas;
+		$("#NumPreguntasRespondidas").text("Resp: " + NumPreguntasRespondidas);
+
+		$("#NumPreguntasNoRespondidas").text("No Resp: " + NumPreguntasNoRespondidas);
+	}
+
+	SetClientRefresh(@Model.ThumbnailViewModel.TiempoRestante);
+	var cTimeOut = null;
+	function SetClientRefresh(sel) {
+		var newRefresh = sel * 60000;
+		if (cTimeOut != null) {
+			window.clearTimeout(cTimeOut);
+		}
+		cTimeOut = window.setTimeout('ReLoadPage()', newRefresh);
+	}
+
+	function ReLoadPage() {
+		window.location.reload(true);
+	}
 
 
-            //            $("body").find("[aria-controls='" + $(item).attr('id') + "']").css('background-color', '#fff');
+	setInterval(refrescarTiempo, 60000);
 
-            //            if (existeNoSeguro) {
-            //                var idTab = $(item).attr('id');
-            //                $("body").find("[aria-controls='" + idTab + "']").css('background-color', '#f39c12');
-            //            }
-
-            //            if (TotalAResponder != ContadorRespondidos) {
-            //                var idTab = $(item).attr('id');
-            //                $("body").find("[aria-controls='" + idTab + "']").css('background-color', '#d2d6de');
-            //            }
-            //        });
-            //    }
-
-            //});
-
-            var NumPreguntasRespondidas = 0;
-            var NumPreguntasNoRespondidas = 0;
-            $('.contarcheckboxCuestionario:radio:checked').each(function () {
-                NumPreguntasRespondidas = NumPreguntasRespondidas + 1;
-            });
-            NumPreguntasNoRespondidas = NumeroPreguntasGlobal - NumPreguntasRespondidas;
-
-            $("#NumPreguntasRespondidas").text("Resp: " + NumPreguntasRespondidas);
-
-            $("#NumPreguntasNoRespondidas").text("No Resp: " + NumPreguntasNoRespondidas);
-        }
+	function refrescarTiempo() {
+		var tiempo = $("div.tiempoRestantediv").find("h3 b.cambioClass").html();
+		$("div.tiempoRestantediv").find("h3 b.cambioClass").html(tiempo - 1);
+	}
 
 
-        setInterval(refrescarTiempo, 60000);
+	function checkNotSecure(check) {
+		var Color = "Warning";
+		var respuestasAsaId = $(check).attr('data-idPregunta');
 
-        function refrescarTiempo() {
+		$.ajax({
+			url: "@Url.Page("/ASA/CuestionarioASAPractica")/?handler=UpdateAnswerColorInterfaz",
+			method: "GET",
+			data: "color=" + Color + "&respuestasAsaId=" + respuestasAsaId,
+			beforeSend: function (xhr) {
+				xhr.setRequestHeader("XSRF-TOKEN",
+					$('input:hidden[name="__RequestVerificationToken"]').val());
+			},
+			error: function (ex) {
+				console.log(ex.responseText);
+			},
+			success: function (data) {
+				//console.log(data);
+				//appear icono
+				$('#inseguro_' + $(check).attr('data-idPregunta')).attr('style', 'visibility:visible');
+				//$('#checkear_' + $(check).attr('data-idPregunta')).attr('style', 'visibility:hidden');
 
-            //$.ajax({
-            //    url: "GetTiempoRestantePractica",
-            //    type: "POST",
-            //    data: "TiempoMaximo=" + NumeroPreguntasGlobal,
-            //    error: function(jqXHR, textStatus, errorThrown) {
+				var NumPreguntasAdvertencia = 0;
+				$('.btnInseguro').each(function () {
+					if (!($(this).css('visibility') == 'hidden' || $(this).css('display') == 'none')) {
+						NumPreguntasAdvertencia = NumPreguntasAdvertencia + 1;
+					}
+				});
 
-            //        if (jqXHR.status === 0) {
-            //            window.location.reload(true);
-            //        } else {
-            //            var tiempo = $("div.tiempoRestantediv").find("h3 b.cambioClass").html()
-            //            if (tiempo <= 0) {
-            //                $("#btnAceptar").click();
-            //            } else {
-            //                $("div.tiempoRestantediv").find("h3 b.cambioClass").html(tiempo - 1)
-            //            }
-            //            //window.location.reload(true);
-            //        }
-            //        //console.log("error");
+				$("#NumPreguntasAdvertencia").text("No Segura: " + NumPreguntasAdvertencia);
 
-            //    },
-            //    success: function(data) {
-            //        //console.log(data);
-            //        if (data.TiempoRestante <= 0) {
-            //            $("#btnAceptar").click();
-            //        } else {
-            //            $("div.tiempoRestantediv").find("h3 b.cambioClass").html(data.TiempoRestante)
-            //        }
-            //    },
-            //    fail: function() {
-            //        //alert("fail");
-            //    }
+				$("div.tab-pane").each(function (index, item) {
+					var existeNoSeguro = false;
 
-            //});
-        }
-
-
-        function checkNotSecure(check) {
-            var Color = "Amarillo";
-            //$.ajax({
-            //    url: "ActualizarEstadoVisualRespuesta",
-            //    type: "POST",
-            //    data: "NroPregunta=" + $(check).attr('data-idPregunta') + "&Color=" + Color,
-            //    error: function(ex) {
-            //        console.log(ex.responseText);
-            //    },
-            //    success: function(data) {
-            //        //console.log(data);
-            //        //appear icono
-            //        $('#inseguro_' + $(check).attr('data-idPregunta')).attr('style', 'visibility:visible');
-            //        $('#checkear_' + $(check).attr('data-idPregunta')).attr('style', 'visibility:hidden');
-
-            //        var NumPreguntasAdvertencia = 0;
-            //        $('.btnInseguro').each(function() {
-            //            if (!($(this).css('visibility') == 'hidden' || $(this).css('display') == 'none')) {
-            //                NumPreguntasAdvertencia = NumPreguntasAdvertencia + 1;
-            //                //console.log($(this).attr('id'));
-            //            }
-            //        });
-
-            //        $("#NumPreguntasAdvertencia").text("No Segura: " + NumPreguntasAdvertencia);
-
-            //        $("div.tab-pane").each(function(index, item) {
-            //            //var existeNoRespondido = false;
-            //            var existeNoSeguro = false;
-
-            //            var ContadorRespondidos = 0;
-            //            var TotalAResponder = 0;
-            //            $(item).find('div.thumbnailContainer').each(function(ind, input) {
-            //                $(input).find('input:radio:checked').each(function(indexCheckbox, inputCheckbox) {
-            //                    ContadorRespondidos = ContadorRespondidos + 1;
-            //                });
-            //                TotalAResponder = TotalAResponder + 1;
-            //            });
+					var ContadorRespondidos = 0;
+					var TotalAResponder = 0;
+					$(item).find('div.thumbnailContainer').each(function (ind, input) {
+						$(input).find('input:radio:checked').each(function (indexCheckbox, inputCheckbox) {
+							ContadorRespondidos = ContadorRespondidos + 1;
+						});
+						TotalAResponder = TotalAResponder + 1;
+					});
 
 
-            //            $(item).find('.btnInseguro').each(function(ind, input) {
-            //                if (!($(input).css('visibility') == 'hidden' || $(input).css('display') == 'none')) {
-            //                    existeNoSeguro = true;
-            //                }
-            //            });
+					$(item).find('.btnInseguro').each(function (ind, input) {
+						if (!($(input).css('visibility') == 'hidden' || $(input).css('display') == 'none')) {
+							existeNoSeguro = true;
+						}
+					});
 
 
-            //            $("body").find("[aria-controls='" + $(item).attr('id') + "']").css('background-color', '#fff');
+					$("body").find("[aria-controls='" + $(item).attr('id') + "']").css('background-color', '#fff');
 
-            //            if (existeNoSeguro) {
-            //                var idTab = $(item).attr('id');
-            //                $("body").find("[aria-controls='" + idTab + "']").css('background-color', '#f39c12');
-            //            }
+					if (existeNoSeguro) {
+						var idTab = $(item).attr('id');
+						$("body").find("[aria-controls='" + idTab + "']").css('background-color', '#f39c12');
+					}
 
-            //            if (TotalAResponder != ContadorRespondidos) {
-            //                var idTab = $(item).attr('id');
-            //                $("body").find("[aria-controls='" + idTab + "']").css('background-color', '#d2d6de');
-            //            }
-            //        });
+					if (TotalAResponder != ContadorRespondidos) {
+						var idTab = $(item).attr('id');
+						$("body").find("[aria-controls='" + idTab + "']").css('background-color', '#d2d6de');
+					}
+				});
 
-            //    }
-            //});
-        }
+			}
+		});
+	}
 
-    </script>
+</script>

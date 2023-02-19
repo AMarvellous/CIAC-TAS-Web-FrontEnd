@@ -42,33 +42,41 @@
 
             <form method="post" enctype="multipart/form-data">
                     <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+                    @{
+                        if (Model.CuestionarioASAModelView?.HasQuizInProgress == false)
+                        {
+                            <div class="form-group">
+                                <label asp-for="CuestionarioASAModelView.NumeroPreguntas" class="control-label">Numero de Preguntas (Min: 1, Max:100)</label>
+                                <input asp-for="CuestionarioASAModelView.NumeroPreguntas" class="form-control" />
+                                <span asp-validation-for="CuestionarioASAModelView.NumeroPreguntas" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="CuestionarioASAModelView.PreguntaIni" class="control-label">Rango de preguntas Inicial</label>
+                                <input asp-for="CuestionarioASAModelView.PreguntaIni" class="form-control" />
+                                <span asp-validation-for="CuestionarioASAModelView.PreguntaIni" class="text-danger"></span>
+                            </div>
 
-                    <div class="form-group">
-                        <label asp-for="CuestionarioASAModelView.NumeroPreguntas" class="control-label"></label>
-                        <input asp-for="CuestionarioASAModelView.NumeroPreguntas" class="form-control" />
-                        <span asp-validation-for="CuestionarioASAModelView.NumeroPreguntas" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="CuestionarioASAModelView.PreguntaIni" class="control-label"></label>
-                        <input asp-for="CuestionarioASAModelView.PreguntaIni" class="form-control" />
-                        <span asp-validation-for="CuestionarioASAModelView.PreguntaIni" class="text-danger"></span>
-                    </div>
+                            <div class="form-group">
+                                <label asp-for="CuestionarioASAModelView.PreguntaFin" class="control-label">Rango de preguntas Final</label>
+                                <input asp-for="CuestionarioASAModelView.PreguntaFin" class="form-control" />
+                                <span asp-validation-for="CuestionarioASAModelView.PreguntaFin" class="text-danger"></span>
+                            </div>
 
-                    <div class="form-group">
-                        <label asp-for="CuestionarioASAModelView.PreguntaFin" class="control-label"></label>
-                        <input asp-for="CuestionarioASAModelView.PreguntaFin" class="form-control" />
-                        <span asp-validation-for="CuestionarioASAModelView.PreguntaFin" class="text-danger"></span>
-                    </div>
+                            <div class="col-xs-12 form-group">
+                                <p class="bg-info">RANGOS: GENERAL 1 - 537 | AIRFRAME 538 - 1565 | POWERPLANT 1566 - 2571</p>
+                            </div>
 
-                    <div class="form-group">
-                        <label asp-for="CuestionarioASAModelView.GrupoPreguntaAsaIds" class="control-label">Grupo Pregunta</label>
-                        <select class="select2" multiple="multiple" asp-for="CuestionarioASAModelView.GrupoPreguntaAsaIds" asp-items="Model.GrupoPreguntaAsaOptions" placeholder="Seleccione una opcion">   
-                        </select>             
-                        <span asp-validation-for="CuestionarioASAModelView.GrupoPreguntaAsaIds" class="text-danger"></span>
-                    </div>
+                            <div class="form-group">
+                                <label asp-for="CuestionarioASAModelView.GrupoPreguntaAsaIds" class="control-label">Grupo Pregunta</label>
+                                <select class="select2" multiple="multiple" asp-for="CuestionarioASAModelView.GrupoPreguntaAsaIds" asp-items="Model.GrupoPreguntaAsaOptions" placeholder="Seleccione una opcion">
+                                </select>
+                                <span asp-validation-for="CuestionarioASAModelView.GrupoPreguntaAsaIds" class="text-danger"></span>
+                            </div>
+                            <br />
 
-
-                    <br />
+                        }
+                    }
+                    
                     <div class="row">
                         @{
                             if (Model.CuestionarioASAModelView?.HasQuizInProgress == true)
