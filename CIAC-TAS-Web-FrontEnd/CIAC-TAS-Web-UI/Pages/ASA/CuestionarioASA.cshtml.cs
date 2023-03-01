@@ -21,14 +21,34 @@ namespace CIAC_TAS_Web_UI.Pages.ASA
         public string Message { get; set; }
 
         private readonly IConfiguration _configuration;
-        public CuestionarioASAModel(IConfiguration configuration)
+        private readonly ICuestionarioASAHelper _cuestionarioASAHelper;
+        public CuestionarioASAModel(IConfiguration configuration, ICuestionarioASAHelper cuestionarioASAHelper)
         {
             _configuration = configuration;
+            _cuestionarioASAHelper = cuestionarioASAHelper;
         }
 
         public async Task<IActionResult> OnGetAsync()
         {
             var userId = HttpContext.Session.GetString(Session.SessionUserId);
+            var sessionToken = HttpContext.Session.GetString(Session.SessionToken);
+
+            var userHasExamenProgramado = await _cuestionarioASAHelper.UserHasExamenProgramadoAsync(userId, sessionToken);
+            
+            if (userHasExamenProgramado.Item1)
+            {
+                CuestionarioASAModelView = new CuestionarioASAModelView();
+                CuestionarioASAModelView.HasExamenProgramado = true;
+
+                Message = "Hay un examen Programado para este usuario";
+
+                return Page();
+            } else
+            {
+				CuestionarioASAModelView = new CuestionarioASAModelView();
+				CuestionarioASAModelView.HasExamenProgramado = false;
+			}
+
             var respuestasAsaServiceApi = GetIRespuestasAsaServiceApi();
             var respuestasAsaHasRespuestasResponse = await respuestasAsaServiceApi.GetUserIdHasRespuestasAsaAsync(userId);
 
@@ -50,13 +70,11 @@ namespace CIAC_TAS_Web_UI.Pages.ASA
             var hasRespuestas = respuestasAsaHasRespuestasResponse.Content;
             if (!hasRespuestas) //If it's new Quiz, show filters in UI
             {
-                CuestionarioASAModelView = new CuestionarioASAModelView();
                 CuestionarioASAModelView.HasQuizInProgress = false;
 
                 return Page();
             }
 
-            CuestionarioASAModelView = new CuestionarioASAModelView();
             CuestionarioASAModelView.HasQuizInProgress = true;
             //TODO: bloquear campos
 
@@ -67,17 +85,17 @@ namespace CIAC_TAS_Web_UI.Pages.ASA
         {
             if (CuestionarioASAModelView.NumeroPreguntas == null)
             {
-                CuestionarioASAModelView.NumeroPreguntas = CuestionarioASAHelper.NUMERO_PREGUNTAS_DEFAULT;
+                CuestionarioASAModelView.NumeroPreguntas = ICuestionarioASAHelper.NUMERO_PREGUNTAS_DEFAULT;
             }
 
             if (CuestionarioASAModelView.PreguntaIni == null)
             {
-                CuestionarioASAModelView.PreguntaIni = CuestionarioASAHelper.PREGUNTA_INI_DEFAULT;
+                CuestionarioASAModelView.PreguntaIni = ICuestionarioASAHelper.PREGUNTA_INI_DEFAULT;
             }
 
             if (CuestionarioASAModelView.PreguntaFin == null)
             {
-                CuestionarioASAModelView.PreguntaFin = CuestionarioASAHelper.PREGUNTA_FIN_DEFAULT;
+                CuestionarioASAModelView.PreguntaFin = ICuestionarioASAHelper.PREGUNTA_FIN_DEFAULT;
             }
 
             if (CuestionarioASAModelView.GrupoPreguntaAsaIds == null)
@@ -101,7 +119,7 @@ namespace CIAC_TAS_Web_UI.Pages.ASA
 				return Page();
 			}
 
-			if (CuestionarioASAModelView.PreguntaIni >= CuestionarioASAModelView.PreguntaFin)
+			if (CuestionarioASAModelView.PreguntaIni >= CuestionarioASAModelView.PreguntaFin && (CuestionarioASAModelView.PreguntaIni != 0 && CuestionarioASAModelView.PreguntaFin != 0))
 			{
 				Message = "El rango de preguntas iniciales debe ser menor al rango de preguntas finales";
 				var grupoPreguntaAsaServiceApi = GetIGrupoPreguntaAsaServiceApi();
@@ -117,9 +135,9 @@ namespace CIAC_TAS_Web_UI.Pages.ASA
 				return Page();
 			}
 
-			if (CuestionarioASAModelView.PreguntaIni > CuestionarioASAHelper.NUMERO_PREGUNTA_MAXIMA)
+			if (CuestionarioASAModelView.PreguntaIni > ICuestionarioASAHelper.NUMERO_PREGUNTA_MAXIMA)
 			{
-				Message = $"El rango de maximo es {CuestionarioASAHelper.NUMERO_PREGUNTA_MAXIMA}";
+				Message = $"El rango de maximo es {ICuestionarioASAHelper.NUMERO_PREGUNTA_MAXIMA}";
 				var grupoPreguntaAsaServiceApi = GetIGrupoPreguntaAsaServiceApi();
 				var grupoPreguntaAsaResponse = await grupoPreguntaAsaServiceApi.GetAllAsync();
 

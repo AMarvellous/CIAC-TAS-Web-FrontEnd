@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using CIAC_TAS_Web_UI.Data;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using CIAC_TAS_Web_UI.Helper;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +24,7 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
+builder.Services.AddScoped<ICuestionarioASAHelper, CuestionarioASAHelper>();
 
 builder.Services.AddAntiforgery(o => o.HeaderName = "XSRF-TOKEN");
 

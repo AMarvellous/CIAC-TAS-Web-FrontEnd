@@ -17,12 +17,36 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\MyDirectory\CIAC TAS\Projects\CIAC-TAS-Web-FrontEnd\CIAC-TAS-Web-FrontEnd\CIAC-TAS-Web-UI
 build_property._RazorSourceGeneratorDebug = 
 
+[C:/MyDirectory/CIAC TAS/Projects/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/ASA/ConfiguracionPreguntaAsa.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQVNBXENvbmZpZ3VyYWNpb25QcmVndW50YUFzYS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/MyDirectory/CIAC TAS/Projects/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/ASA/ConfiguracionPreguntasAsa.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQVNBXENvbmZpZ3VyYWNpb25QcmVndW50YXNBc2EuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/MyDirectory/CIAC TAS/Projects/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/ASA/CuestionarioASA.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQVNBXEN1ZXN0aW9uYXJpb0FTQS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/MyDirectory/CIAC TAS/Projects/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/ASA/CuestionarioASAPractica.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQVNBXEN1ZXN0aW9uYXJpb0FTQVByYWN0aWNhLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/MyDirectory/CIAC TAS/Projects/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/ASA/CuestionarioExamenAsa.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQVNBXEN1ZXN0aW9uYXJpb0V4YW1lbkFzYS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/MyDirectory/CIAC TAS/Projects/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/ASA/ExamenAsa.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQVNBXEV4YW1lbkFzYS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/MyDirectory/CIAC TAS/Projects/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/ASA/GraficaEstudiante.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQVNBXEdyYWZpY2FFc3R1ZGlhbnRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/MyDirectory/CIAC TAS/Projects/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/ASA/GraficasEstudiante.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQVNBXEdyYWZpY2FzRXN0dWRpYW50ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/MyDirectory/CIAC TAS/Projects/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/ASA/PreguntaAsa.cshtml]
@@ -45,8 +69,16 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXN0dWRpYW50ZVxFc3R1ZGlhbnRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/MyDirectory/CIAC TAS/Projects/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/Estudiante/EstudianteGrupo.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXN0dWRpYW50ZVxFc3R1ZGlhbnRlR3J1cG8uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/MyDirectory/CIAC TAS/Projects/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/Estudiante/Estudiantes.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXN0dWRpYW50ZVxFc3R1ZGlhbnRlcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/MyDirectory/CIAC TAS/Projects/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/Estudiante/EstudiantesGrupos.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXN0dWRpYW50ZVxFc3R1ZGlhbnRlc0dydXBvcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/MyDirectory/CIAC TAS/Projects/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/General/Grupo.cshtml]

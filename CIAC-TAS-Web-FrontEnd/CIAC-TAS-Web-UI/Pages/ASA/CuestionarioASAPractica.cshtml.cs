@@ -17,16 +17,29 @@ namespace CIAC_TAS_Web_UI.Pages.ASA
         public string Message { get; set; }
 
         private readonly IConfiguration _configuration;
-
-        public CuestionarioASAPracticaModel(IConfiguration configuration)
+		private readonly ICuestionarioASAHelper _cuestionarioASAHelper;
+		public CuestionarioASAPracticaModel(IConfiguration configuration, ICuestionarioASAHelper cuestionarioASAHelper)
         {
             _configuration = configuration;
-        }
+            _cuestionarioASAHelper = cuestionarioASAHelper;
+
+		}
 
         public async Task<IActionResult> OnGetCuestionarioASAPracticaAsync()
         {
             var userId = HttpContext.Session.GetString(Session.SessionUserId);
-            var respuestasAsaServiceApi = GetIRespuestasAsaServiceApi();
+			var sessionToken = HttpContext.Session.GetString(Session.SessionToken);
+
+			var userHasExamenProgramado = await _cuestionarioASAHelper.UserHasExamenProgramadoAsync(userId, sessionToken);
+
+			if (userHasExamenProgramado.Item1)
+			{
+				Message = "Hay un examen Programado para este usuario";
+
+				return RedirectToPage("/ASA/CuestionarioASA");
+			}
+
+			var respuestasAsaServiceApi = GetIRespuestasAsaServiceApi();
             var respuestasAsaResponse = await respuestasAsaServiceApi.GetAllByUserIdAsync(userId);
 
             if (!respuestasAsaResponse.IsSuccessStatusCode)
@@ -123,7 +136,12 @@ namespace CIAC_TAS_Web_UI.Pages.ASA
 			var userId = HttpContext.Session.GetString(Session.SessionUserId);
 			var respuestasAsaServiceApi = GetIRespuestasAsaServiceApi();
 
-			var resp = await respuestasAsaServiceApi.ProcessRespuestasAsaAsync(userId);
+			var loteRespuestasIdResponse = await respuestasAsaServiceApi.ProcessRespuestasAsaAsync(userId);
+
+			if (loteRespuestasIdResponse?.Content != null)
+            {
+				return RedirectToPage("/ASA/GraficaEstudiante", "ViewGraficaEstudiante", new { loteRespuestaId = loteRespuestasIdResponse.Content });
+			}
 
 			return RedirectToPage("/ASA/CuestionarioASA");
         }
@@ -164,7 +182,7 @@ namespace CIAC_TAS_Web_UI.Pages.ASA
 
 		private async Task<long> GetTiempoRestanteAsync(IEnumerable<RespuestasAsaResponse> respuestasAsa)
         {
-            var tiempoLimite = Math.Ceiling(respuestasAsa.Count() * CuestionarioASAHelper.TIEMPO_POR_PREGUNTA_DEFAULT);
+            var tiempoLimite = Math.Ceiling(respuestasAsa.Count() * ICuestionarioASAHelper.TIEMPO_POR_PREGUNTA_DEFAULT);
 
             var respuestaAsaFirstRow = respuestasAsa.FirstOrDefault();
             var fechaEntrada = respuestaAsaFirstRow.FechaEntrada;

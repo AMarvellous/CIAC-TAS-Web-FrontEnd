@@ -7,5 +7,6 @@
         public int? PreguntaFin { get; set; }
         public List<int>? GrupoPreguntaAsaIds { get; set; } = new List<int>();
         public bool? HasQuizInProgress { get; set; }
+        public bool? HasExamenProgramado { get; set; }
     }
 }
