@@ -40,6 +40,11 @@ namespace CIAC_TAS_Web_UI.Pages.Estudiante
             var identityApi = GetIIdentityApi();
             var usersResponse = await identityApi.GetUsersAsync();
 
+            EstudianteModelView = new EstudianteModelView();
+            EstudianteModelView.Fecha = DateTime.Today;
+            EstudianteModelView.FechaNacimiento = DateTime.Today;
+            EstudianteModelView.FechaSeguro = DateTime.Today;
+
             if (usersResponse.IsSuccessStatusCode)
             {
                 UsuariosOptions = usersResponse.Content.Data.Select(x => new SelectListItem { Text = x.UserName, Value = x.Id }).ToList();

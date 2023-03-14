@@ -144,12 +144,12 @@ namespace CIAC_TAS_Web_UI.Pages.Estudiante
 
 		private async Task FillEstudiantesOptions()
 		{
-			var estudianteGrupoServiceApi = GetIEstudianteServiceApi();
-			var estudianteGrupoResponse = await estudianteGrupoServiceApi.GetAllAsync();
+			var estudianteServiceApi = GetIEstudianteServiceApi();
+			var estudianteResponse = await estudianteServiceApi.GetAllAsync();
 
-			if (estudianteGrupoResponse.IsSuccessStatusCode)
+			if (estudianteResponse.IsSuccessStatusCode)
 			{
-				EstudiantesOptions = estudianteGrupoResponse.Content.Data.Select(x => new SelectListItem { Text = x.Nombre, Value = x.Id.ToString() }).ToList();
+				EstudiantesOptions = estudianteResponse.Content.Data.Select(x => new SelectListItem { Text = x.Nombre + " " + x.ApellidoPaterno + " " + x.ApellidoMaterno, Value = x.Id.ToString() }).ToList();
 			}
 		}
 

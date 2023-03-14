@@ -16,6 +16,8 @@ namespace CIAC_TAS_Web_UI.Pages.Usuario
         [BindProperty]
         public UsuarioModelView UsuarioModelView { get; set; } = new UsuarioModelView();
 
+        [BindProperty]
+        public bool EditMode { get; set; }
 
         public List<SelectListItem> Roles { get; set; }
 
@@ -25,7 +27,7 @@ namespace CIAC_TAS_Web_UI.Pages.Usuario
         private readonly IConfiguration _configuration;
         public UsuarioModel(IConfiguration configuration)
         {
-            _configuration = configuration;    
+            _configuration = configuration;
         }
 
         public async Task OnGetAsync()
@@ -37,6 +39,8 @@ namespace CIAC_TAS_Web_UI.Pages.Usuario
             {
                 Roles = rolesResponse.Content.Select(x => new SelectListItem { Text = x, Value = x }).ToList();
             }
+
+            EditMode = false;
         }
 
         public async Task<IActionResult> OnPostNewUsuarioAsync()
@@ -52,6 +56,8 @@ namespace CIAC_TAS_Web_UI.Pages.Usuario
                 {
                     Roles = rolesResponse.Content.Select(x => new SelectListItem { Text = x, Value = x }).ToList();
                 }
+
+                EditMode = false;
 
                 return Page();
             }
@@ -75,6 +81,8 @@ namespace CIAC_TAS_Web_UI.Pages.Usuario
                     Roles = rolesResponse.Content.Select(x => new SelectListItem { Text = x, Value = x }).ToList();
                 }
 
+                EditMode = false;
+
                 return Page();
             }
 
@@ -87,6 +95,71 @@ namespace CIAC_TAS_Web_UI.Pages.Usuario
                     UserId = userResponse.Content.Id,
                     RoleName = UsuarioModelView.Role
                 });
+            }
+
+            EditMode = false;
+
+            return RedirectToPage("/Usuario/Usuarios");
+        }
+
+        public async Task<IActionResult> OnGetEditUsuarioAsync(string userName)
+        {
+            var identityApi = GetIIdentityApi();
+            var userResponse = await identityApi.GetUserByNameAsync(userName);
+
+            if (!userResponse.IsSuccessStatusCode)
+            {
+                Message = "Ocurrio un error inesperado";
+
+                return RedirectToPage("/Usuario/Usuarios");
+            }
+
+            var rolesResponse = await identityApi.GetRolesByUserNameAsync(userName);
+            if (!rolesResponse.IsSuccessStatusCode)
+            {
+                Message = "Ocurrio un error inesperado";
+
+                return RedirectToPage("/Usuario/Usuarios");
+            }
+
+            var usuario = userResponse.Content;
+            var roles = rolesResponse.Content;
+
+            UsuarioModelView = new UsuarioModelView
+            {
+                UserName = usuario.UserName,
+                Email = usuario.Email,
+                Role = roles.FirstOrDefault()
+            };
+
+            EditMode = true;
+
+            return Page();
+        }
+
+        public async Task<IActionResult> OnPostEditUsuarioAsync(string userName)
+        {
+            if (UsuarioModelView.Password == null || UsuarioModelView.Password == string.Empty)
+            {
+                EditMode = true;
+
+                return Page();
+            }
+
+            var identityApi = GetIIdentityApi();
+            var updatePasswordResponse = await identityApi.PatchUserPasswordAsync(userName, new CIAC_TAS_Service.Contracts.V1.Requests.PatchUsuarioPasswordRequest
+            {
+                NewPassword = UsuarioModelView.Password
+            });
+
+            if (!updatePasswordResponse.IsSuccessStatusCode)
+            {
+                var authFailedResponse = JsonConvert.DeserializeObject<AuthFailedResponse>(updatePasswordResponse.Error.Content);
+
+                Message = String.Join(", ", authFailedResponse.Errors);
+                EditMode = true;
+
+                return Page();
             }
 
             return RedirectToPage("/Usuario/Usuarios");

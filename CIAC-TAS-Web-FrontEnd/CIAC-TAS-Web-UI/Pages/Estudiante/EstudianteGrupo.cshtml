@@ -51,7 +51,7 @@
 
 					<div class="form-group">
 						<label asp-for="EstudianteGrupoModelView.EstudianteId" class="control-label">Estudiante</label>
-						<select asp-for="EstudianteGrupoModelView.EstudianteId" asp-items="Model.EstudiantesOptions" class="form-control" placeholder="Seleccione una opcion">
+						<select asp-for="EstudianteGrupoModelView.EstudianteId" asp-items="Model.EstudiantesOptions" class="form-control select2" placeholder="Seleccione una opcion">
 							<option value="">Seleccione una opcion</option>
 						</select>
 						<span asp-validation-for="EstudianteGrupoModelView.EstudianteId" class="text-danger"></span>
@@ -112,3 +112,9 @@
 </div>
 <!-- /.content-wrapper -->
 <!-- To here -->
+
+<script>
+	$(function () {
+		$('.select2').select2()
+	});
+</script>

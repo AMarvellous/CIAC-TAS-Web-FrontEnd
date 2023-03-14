@@ -61,6 +61,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQVNBXFByZWd1bnRhc0FzYS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/MyDirectory/CIAC TAS/Projects/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/ASA/ReporteGraficaExamen.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQVNBXFJlcG9ydGVHcmFmaWNhRXhhbWVuLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/MyDirectory/CIAC TAS/Projects/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -111,6 +115,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/MyDirectory/CIAC TAS/Projects/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/Usuario/Usuario.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXN1YXJpb1xVc3VhcmlvLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/MyDirectory/CIAC TAS/Projects/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/Usuario/UsuarioProfile.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXN1YXJpb1xVc3VhcmlvUHJvZmlsZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/MyDirectory/CIAC TAS/Projects/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/Usuario/Usuarios.cshtml]

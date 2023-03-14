@@ -10,16 +10,24 @@
   <ItemGroup>
     <Compile Remove="Controllers\**" />
     <Compile Remove="Middlewares\**" />
+    <Compile Remove="Reports\Reports\**" />
     <Compile Remove="Uploads\**" />
     <Content Remove="Controllers\**" />
     <Content Remove="Middlewares\**" />
+    <Content Remove="Reports\Reports\**" />
     <Content Remove="Uploads\**" />
     <EmbeddedResource Remove="Controllers\**" />
     <EmbeddedResource Remove="Middlewares\**" />
+    <EmbeddedResource Remove="Reports\Reports\**" />
     <EmbeddedResource Remove="Uploads\**" />
     <None Remove="Controllers\**" />
     <None Remove="Middlewares\**" />
+    <None Remove="Reports\Reports\**" />
     <None Remove="Uploads\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\Reports\ASA\ReportExample.rdlc" />
   </ItemGroup>
 
   <ItemGroup>
@@ -1605,9 +1613,11 @@
     <None Include="wwwroot\plugins\uplot\uPlot.esm.js" />
     <None Include="wwwroot\plugins\uplot\uPlot.iife.js" />
     <None Include="wwwroot\plugins\uplot\uPlot.iife.min.js" />
+    <None Include="wwwroot\Reports\ASA\ReportExample.rdlc" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AspNetCore.Reporting" Version="2.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.13" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.13">
       <PrivateAssets>all</PrivateAssets>
@@ -1616,6 +1626,9 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.11" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
     <PackageReference Include="Refit" Version="6.3.2" />
+    <PackageReference Include="ReportViewerCore.NETCore" Version="15.1.17" />
+    <PackageReference Include="System.CodeDom" Version="7.0.0" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="7.0.0" />
   </ItemGroup>
 
   <ItemGroup>

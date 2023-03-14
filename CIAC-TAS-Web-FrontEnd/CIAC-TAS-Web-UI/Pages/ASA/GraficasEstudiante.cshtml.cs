@@ -14,6 +14,9 @@ namespace CIAC_TAS_Web_UI.Pages.ASA
         [BindProperty]
         public IEnumerable<GraficasEstudianteListaModelView> GraficasEstudianteListaModelView { get; set; } = new List<GraficasEstudianteListaModelView>();
 
+        [BindProperty]
+        public string UserIdWhenAdmin { get; set; } = string.Empty;
+
         [TempData]
         public string Message { get; set; }
 
@@ -23,14 +26,24 @@ namespace CIAC_TAS_Web_UI.Pages.ASA
             _configuration = configuration;
         }
 
-        public async Task<IActionResult> OnGetAsync()
+        public async Task<IActionResult> OnGetAsync(string userId = null)
         {
             var respuestasAsaConsolidadoServiceApi = RestService.For<IRespuestasAsaconsolidadoServiceApi>(_configuration.GetValue<string>("ServiceUrl"), new RefitSettings
             {
                 AuthorizationHeaderValueGetter = () => Task.FromResult(HttpContext.Session.GetString(Session.SessionToken))
             });
 
-            var userId = HttpContext.Session.GetString(Session.SessionUserId);
+            var filterByExamen = false;
+            if (userId == null || userId == string.Empty)
+            {
+                userId = HttpContext.Session.GetString(Session.SessionUserId);
+            }
+            else
+            {
+                filterByExamen = true;
+                UserIdWhenAdmin = userId;
+            }
+            
 			var respuestasAsaConsolidadoResponse = await respuestasAsaConsolidadoServiceApi.GetAllHeadersByUserId(userId);
 
             if (!respuestasAsaConsolidadoResponse.IsSuccessStatusCode)
@@ -41,6 +54,12 @@ namespace CIAC_TAS_Web_UI.Pages.ASA
             }
 
             var respuestasAsaConsolidadosLista = respuestasAsaConsolidadoResponse.Content.Data;
+
+            if (filterByExamen)
+            {
+                respuestasAsaConsolidadosLista = respuestasAsaConsolidadosLista.Where(x => x.EsExamen == true);
+            }
+
             GraficasEstudianteListaModelView = respuestasAsaConsolidadosLista.Select(x => new GraficasEstudianteListaModelView {
                 LoteRespuestasId = x.LoteRespuestasId,
                 UserId = x.UserId,

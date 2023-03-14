@@ -26,7 +26,16 @@
 
 	<!-- /.box-header -->
 	<div class="col-sm-12">
-		<a asp-page="/ASA/GraficasEstudiante" class="fa fa-arrow-circle-left" style="font-size:25px;"></a>
+		@{
+			if (Model.UserIdWhenAdmin != string.Empty)
+			{
+				<a asp-page="/ASA/GraficasEstudiante" asp-route-userId="@Model.UserIdWhenAdmin" class="fa fa-arrow-circle-left" style="font-size:25px;"></a>
+			} else
+			{
+				<a asp-page="/ASA/GraficasEstudiante" class="fa fa-arrow-circle-left" style="font-size:25px;"></a>
+			}
+		}
+		
 	</div>
 	<br />
 
@@ -49,7 +58,7 @@
 				<!-- PIE CHART -->
 				<div class="card card-danger">
 					<div class="card-header">
-						<h3 class="card-title">Pie Chart</h3>
+						<h3 class="card-title">Cuestionario Chart</h3>
 
 						<div class="card-tools">
 							<button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -60,6 +69,15 @@
 					<div class="card-body">
 						<label>Numero Total de Preguntas: @Model.GraficaEstudianteModelView.Count()</label>
 						<canvas id="pieChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+						@{
+							if (Model.UserIdWhenAdmin != string.Empty)
+							{
+								<a asp-page-handler="DownloadGraficaEstudianteReport" asp-page="/ASA/GraficaEstudiante" asp-route-loteRespuestaId="@ViewContext.RouteData.Values["loteRespuestaId"]" asp-route-externalUserId="@Model.UserIdWhenAdmin" class="fas fa-file-pdf" style="font-size:15px;"> Download PDF</a>
+							} else
+							{
+								<a asp-page-handler="DownloadGraficaEstudianteReport" asp-page="/ASA/GraficaEstudiante" asp-route-loteRespuestaId="@ViewContext.RouteData.Values["loteRespuestaId"]" class="fas fa-file-pdf" style="font-size:15px;"> Download PDF</a>
+							}
+						}						
 					</div>
 					<!-- /.card-body -->
 				</div>

@@ -5,16 +5,27 @@ VisualStudioVersion = 17.2.32616.157
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIAC-TAS-Web-UI", "CIAC-TAS-Web-UI.csproj", "{451AF9E9-3809-4890-B978-DCF5D49F3C32}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIAC-TAS-Reports", "..\CIAC-TAS-Reports\CIAC-TAS-Reports.csproj", "{B4A717F5-2B97-498E-8302-BCEDA2A2F169}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		DebugLocal|Any CPU = DebugLocal|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{451AF9E9-3809-4890-B978-DCF5D49F3C32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{451AF9E9-3809-4890-B978-DCF5D49F3C32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{451AF9E9-3809-4890-B978-DCF5D49F3C32}.DebugLocal|Any CPU.ActiveCfg = Debug|Any CPU
+		{451AF9E9-3809-4890-B978-DCF5D49F3C32}.DebugLocal|Any CPU.Build.0 = Debug|Any CPU
 		{451AF9E9-3809-4890-B978-DCF5D49F3C32}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{451AF9E9-3809-4890-B978-DCF5D49F3C32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4A717F5-2B97-498E-8302-BCEDA2A2F169}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4A717F5-2B97-498E-8302-BCEDA2A2F169}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4A717F5-2B97-498E-8302-BCEDA2A2F169}.DebugLocal|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4A717F5-2B97-498E-8302-BCEDA2A2F169}.DebugLocal|Any CPU.Build.0 = Debug|Any CPU
+		{B4A717F5-2B97-498E-8302-BCEDA2A2F169}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4A717F5-2B97-498E-8302-BCEDA2A2F169}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

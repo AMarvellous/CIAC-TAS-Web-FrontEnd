@@ -40,7 +40,7 @@ namespace CIAC_TAS_Web_UI.Pages.Estudiante
             EstudiantesModelView = estudiantes.Select(x => new EstudianteModelView
             {
                 Id = x.Id,
-                Nombre = x.Nombre + x.ApellidoPaterno + x.ApellidoMaterno,
+                Nombre = x.Nombre + " " + x.ApellidoPaterno + " " + x.ApellidoMaterno,
                 CarnetIdentidad = x.CarnetIdentidad,
                 Email = x.Email,
                 CodigoTas = x.CodigoTas

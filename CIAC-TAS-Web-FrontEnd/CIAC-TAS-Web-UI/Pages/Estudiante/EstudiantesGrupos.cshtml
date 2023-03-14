@@ -92,12 +92,15 @@
 		$('#paginated-table').DataTable({
 			"paging": true,
 			"lengthChange": false,
-			"searching": false,
+			"searching": true,
 			"ordering": true,
 			"info": true,
 			"autoWidth": false,
 			"responsive": true,
 			"pageLength": 30
 		});
+
+		//align search box to left
+		$("#paginated-table_filter").parent().closest('div').removeClass("col-md-6").addClass("col-md-12")
 	});
 </script>

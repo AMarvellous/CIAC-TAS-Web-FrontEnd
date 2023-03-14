@@ -52,7 +52,7 @@
 
                     <div class="form-group">
                         <label asp-for="EstudianteModelView.UserId">Usuario</label>
-                        <select asp-for="EstudianteModelView.UserId" asp-items="Model.UsuariosOptions" class="form-control" placeholder="Seleccione un Usuario para este Estudiante">
+                        <select asp-for="EstudianteModelView.UserId" asp-items="Model.UsuariosOptions" class="form-control select2" placeholder="Seleccione un Usuario para este Estudiante">
                             <option value="">Seleccione un Usuario</option>
                         </select>                        
                     </div>
@@ -66,7 +66,7 @@
 
                     <div class="form-group">
                         <label asp-for="EstudianteModelView.Fecha">Fecha</label>
-                        <input type="date" asp-for="EstudianteModelView.Fecha" class="form-control" placeholder="Ingrese una Fecha" class="form-control datetimepicker-input">                        
+                        <input type="date" asp-for="EstudianteModelView.Fecha" class="form-control" placeholder="Ingrese una Fecha" class="form-control datetimepicker-input">
                     </div>
                     <span asp-validation-for="EstudianteModelView.FechaSeguro" style="color:red"></span>
 
@@ -272,3 +272,9 @@
   </div>
   <!-- /.content-wrapper -->
   <!-- To here -->
+
+  <script>
+    $(function () {
+        $('.select2').select2()
+    });
+  </script>

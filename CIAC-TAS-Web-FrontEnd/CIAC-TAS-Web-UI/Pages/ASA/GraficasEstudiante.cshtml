@@ -24,6 +24,17 @@
 		</div><!-- /.container-fluid -->
 	</section>
 
+	<!-- /.box-header -->
+	<div class="col-sm-12">
+		@{
+			if (Model.UserIdWhenAdmin != string.Empty)
+			{
+				<a asp-page="/ASA/ReporteGraficaExamen" class="fa fa-arrow-circle-left" style="font-size:25px;"></a>
+			}
+		}
+	</div>
+	<br />
+
 	<!-- Main content -->
 	<section class="content">
 
@@ -57,7 +68,14 @@
 									<td>@(i++)</td>
 									<td>@item.FechaLote.ToString("dd/MM/yyyy HH:mm:ss")</td>
 									<td>@(item.EsExamen ? "Si" : "No")</td>
-									<td><a asp-page-handler="ViewGraficaEstudiante" asp-page="/ASA/GraficaEstudiante" asp-route-loteRespuestaId="@item.LoteRespuestasId" class="fa fa-chart-pie" style="font-size:15px;"></a></td>
+									@if (Model.UserIdWhenAdmin != string.Empty)
+									{
+										<td><a asp-page-handler="ViewGraficaEstudiante" asp-page="/ASA/GraficaEstudiante" asp-route-loteRespuestaId="@item.LoteRespuestasId" asp-route-externalUserId="@Model.UserIdWhenAdmin" class="fa fa-chart-pie" style="font-size:15px;"></a></td>
+									} else
+									{
+										<td><a asp-page-handler="ViewGraficaEstudiante" asp-page="/ASA/GraficaEstudiante" asp-route-loteRespuestaId="@item.LoteRespuestasId" class="fa fa-chart-pie" style="font-size:15px;"></a></td>
+									}
+
 								</tr>
 							}
 						}

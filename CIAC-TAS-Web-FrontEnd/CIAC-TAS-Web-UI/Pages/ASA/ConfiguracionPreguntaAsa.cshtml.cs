@@ -31,8 +31,9 @@ namespace CIAC_TAS_Web_UI.Pages.ASA
         public async Task OnGetNewConfiguracionPreguntaAsaAsync()
         {
 			ConfiguracionPreguntaAsaModelView = new ConfiguracionPreguntaAsaModelView();
+            ConfiguracionPreguntaAsaModelView.FechaInicial = DateTime.Today;
 
-			await FillGrupoOptions();
+            await FillGrupoOptions();
         }
 
         public async Task<IActionResult> OnPostNewConfiguracionPreguntaAsaAsync()
@@ -53,7 +54,7 @@ namespace CIAC_TAS_Web_UI.Pages.ASA
                 GrupoId = ConfiguracionPreguntaAsaModelView.GrupoId,
                 CantitdadPreguntas = ICuestionarioASAHelper.NUMERO_PREGUNTAS_DEFAULT,
                 FechaInicial = ConfiguracionPreguntaAsaModelView.FechaInicial,
-                FechaFin = ConfiguracionPreguntaAsaModelView.FechaInicial.AddHours(1)
+                FechaFin = ConfiguracionPreguntaAsaModelView.FechaInicial.AddHours(1).AddMinutes(40)
 			};
 
             var createConfiguracionPreguntaAsaResponse = await configuracionPreguntaAsaServiceApi.CreateAsync(createConfiguracionPreguntaAsaRequest);
@@ -98,7 +99,7 @@ namespace CIAC_TAS_Web_UI.Pages.ASA
             return Page();
         }
 
-        public async Task<IActionResult> OnPostEditPreguntaAsaAsync(int id)
+        public async Task<IActionResult> OnPostEditConfiguracionPreguntaAsaAsync(int id)
         {
             if (!ModelState.IsValid)
             {
@@ -115,7 +116,7 @@ namespace CIAC_TAS_Web_UI.Pages.ASA
                 GrupoId = ConfiguracionPreguntaAsaModelView.GrupoId,
                 CantitdadPreguntas = ICuestionarioASAHelper.NUMERO_PREGUNTAS_DEFAULT,
                 FechaInicial = ConfiguracionPreguntaAsaModelView.FechaInicial,
-                FechaFin = ConfiguracionPreguntaAsaModelView.FechaInicial.AddHours(1)
+                FechaFin = ConfiguracionPreguntaAsaModelView.FechaInicial.AddHours(1).AddMinutes(40)
 			};
 
             var configuracionPreguntaAsaResponse = await configuracionPreguntaAsaServiceApi.UpdateAsync(id, configuracionPreguntaAsaRequest);
