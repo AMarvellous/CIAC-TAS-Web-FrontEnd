@@ -11,7 +11,7 @@
     </DataSource>
   </DataSources>
   <DataSets>
-    <DataSet Name="dsCuestionarioASA">
+    <DataSet Name="dsExamenGenerado">
       <Query>
         <DataSourceName>CIAC_TAS_DEVDataSet</DataSourceName>
         <CommandText>/* Local Query */</CommandText>
@@ -21,58 +21,42 @@
           <DataField>Id</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
-        <Field Name="LoteRespuestasId">
-          <DataField>LoteRespuestasId</DataField>
+        <Field Name="GrupoId">
+          <DataField>GrupoId</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="Fecha">
+          <DataField>Fecha</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
+        <Field Name="ExamenGeneradoGuid">
+          <DataField>ExamenGeneradoGuid</DataField>
           <rd:TypeName>System.Guid</rd:TypeName>
         </Field>
-        <Field Name="UserId">
-          <DataField>UserId</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="ConfiguracionId">
-          <DataField>ConfiguracionId</DataField>
+        <Field Name="NumeroOpcion">
+          <DataField>NumeroOpcion</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
         <Field Name="NumeroPregunta">
           <DataField>NumeroPregunta</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
+        <Field Name="OpcionTexto">
+          <DataField>OpcionTexto</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
         <Field Name="PreguntaTexto">
           <DataField>PreguntaTexto</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="FechaLote">
-          <DataField>FechaLote</DataField>
-          <rd:TypeName>System.DateTime</rd:TypeName>
-        </Field>
-        <Field Name="Opcion">
-          <DataField>Opcion</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
-        </Field>
-        <Field Name="RespuestaTexto">
-          <DataField>RespuestaTexto</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="RespuestaCorrecta">
-          <DataField>RespuestaCorrecta</DataField>
-          <rd:TypeName>System.Boolean</rd:TypeName>
-        </Field>
-        <Field Name="EsExamen">
-          <DataField>EsExamen</DataField>
-          <rd:TypeName>System.Boolean</rd:TypeName>
-        </Field>
-        <Field Name="RespuestaCorrectaTexto">
-          <DataField>RespuestaCorrectaTexto</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>
       <rd:DataSetInfo>
         <rd:DataSetName>CIAC_TAS_DEVDataSet</rd:DataSetName>
         <rd:SchemaPath>C:\MyDirectory\CIAC TAS\Projects\CIAC-TAS-Web-FrontEnd\CIAC-TAS-Web-FrontEnd\CIAC-TAS-Web-UI\Reports\DataSets\dsCuestionarioASA.xsd</rd:SchemaPath>
-        <rd:TableName>dsRespuestasAsaConsolidado</rd:TableName>
+        <rd:TableName>dsExamenGenerado</rd:TableName>
         <rd:TableAdapterFillMethod>Fill</rd:TableAdapterFillMethod>
         <rd:TableAdapterGetDataMethod>GetData</rd:TableAdapterGetDataMethod>
-        <rd:TableAdapterName>dsRespuestasAsaConsolidadoTableAdapter</rd:TableAdapterName>
+        <rd:TableAdapterName>dsExamenGeneradoTableAdapter</rd:TableAdapterName>
       </rd:DataSetInfo>
     </DataSet>
   </DataSets>
@@ -80,335 +64,6 @@
     <ReportSection>
       <Body>
         <ReportItems>
-          <Tablix Name="Tablix2">
-            <TablixBody>
-              <TablixColumns>
-                <TablixColumn>
-                  <Width>2.44169cm</Width>
-                </TablixColumn>
-                <TablixColumn>
-                  <Width>9.7484cm</Width>
-                </TablixColumn>
-                <TablixColumn>
-                  <Width>6.36928cm</Width>
-                </TablixColumn>
-                <TablixColumn>
-                  <Width>1.90733cm</Width>
-                </TablixColumn>
-              </TablixColumns>
-              <TablixRows>
-                <TablixRow>
-                  <Height>0.6cm</Height>
-                  <TablixCells>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="Textbox12">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>Nº Pregunta</Value>
-                                  <Style />
-                                </TextRun>
-                              </TextRuns>
-                              <Style />
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>Textbox12</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                            </Border>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="Textbox14">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>Pregunta</Value>
-                                  <Style />
-                                </TextRun>
-                              </TextRuns>
-                              <Style />
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>Textbox14</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                            </Border>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="Textbox16">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>Respuesta escogida</Value>
-                                  <Style />
-                                </TextRun>
-                              </TextRuns>
-                              <Style />
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>Textbox16</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                            </Border>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="Textbox22">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>Correcto</Value>
-                                  <Style />
-                                </TextRun>
-                              </TextRuns>
-                              <Style />
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>Textbox22</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                            </Border>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                  </TablixCells>
-                </TablixRow>
-                <TablixRow>
-                  <Height>0.6cm</Height>
-                  <TablixCells>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="NumeroPregunta">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!NumeroPregunta.Value</Value>
-                                  <Style />
-                                </TextRun>
-                              </TextRuns>
-                              <Style />
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>NumeroPregunta</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                            </Border>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="PreguntaTexto">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!PreguntaTexto.Value</Value>
-                                  <Style />
-                                </TextRun>
-                              </TextRuns>
-                              <Style />
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>PreguntaTexto</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                            </Border>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="RespuestaTexto">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!RespuestaTexto.Value</Value>
-                                  <Style />
-                                </TextRun>
-                              </TextRuns>
-                              <Style />
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>RespuestaTexto</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                            </Border>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="RespuestaCorrectaTexto">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!RespuestaCorrectaTexto.Value</Value>
-                                  <Style />
-                                </TextRun>
-                              </TextRuns>
-                              <Style />
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>RespuestaCorrectaTexto</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                            </Border>
-                            <BackgroundColor>=IIf(Fields!RespuestaCorrectaTexto.Value = "Correcto", "LightGreen" , "Red")</BackgroundColor>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                  </TablixCells>
-                </TablixRow>
-              </TablixRows>
-            </TablixBody>
-            <TablixColumnHierarchy>
-              <TablixMembers>
-                <TablixMember />
-                <TablixMember />
-                <TablixMember />
-                <TablixMember />
-              </TablixMembers>
-            </TablixColumnHierarchy>
-            <TablixRowHierarchy>
-              <TablixMembers>
-                <TablixMember>
-                  <KeepWithGroup>After</KeepWithGroup>
-                </TablixMember>
-                <TablixMember>
-                  <Group Name="Details" />
-                </TablixMember>
-              </TablixMembers>
-            </TablixRowHierarchy>
-            <DataSetName>dsCuestionarioASA</DataSetName>
-            <Top>1.62137cm</Top>
-            <Left>0.635cm</Left>
-            <Height>1.2cm</Height>
-            <Width>20.4667cm</Width>
-            <Style>
-              <Border>
-                <Style>None</Style>
-              </Border>
-            </Style>
-          </Tablix>
-          <Textbox Name="FechaExamen">
-            <CanGrow>true</CanGrow>
-            <KeepTogether>true</KeepTogether>
-            <Paragraphs>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value>=Parameters!FechaExamen.Value</Value>
-                    <Style />
-                  </TextRun>
-                </TextRuns>
-                <Style />
-              </Paragraph>
-            </Paragraphs>
-            <rd:DefaultName>FechaExamen</rd:DefaultName>
-            <Top>0.54187cm</Top>
-            <Left>2.4257cm</Left>
-            <Height>0.6cm</Height>
-            <Width>3.49483cm</Width>
-            <ZIndex>1</ZIndex>
-            <Style>
-              <Border>
-                <Style>None</Style>
-              </Border>
-              <PaddingLeft>2pt</PaddingLeft>
-              <PaddingRight>2pt</PaddingRight>
-              <PaddingTop>2pt</PaddingTop>
-              <PaddingBottom>2pt</PaddingBottom>
-            </Style>
-          </Textbox>
           <Textbox Name="Textbox25">
             <CanGrow>true</CanGrow>
             <KeepTogether>true</KeepTogether>
@@ -428,7 +83,6 @@
             <Left>0.66887cm</Left>
             <Height>0.6cm</Height>
             <Width>1.37817cm</Width>
-            <ZIndex>2</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -439,18 +93,277 @@
               <PaddingBottom>2pt</PaddingBottom>
             </Style>
           </Textbox>
+          <Textbox Name="Fecha">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>=First(Fields!Fecha.Value, "dsExamenGenerado")</Value>
+                    <Style>
+                      <Format>dd/MM/yyyy</Format>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>Fecha</rd:DefaultName>
+            <Top>0.54187cm</Top>
+            <Left>2.78553cm</Left>
+            <Height>0.6cm</Height>
+            <Width>2.41533cm</Width>
+            <ZIndex>1</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Tablix Name="Tablix8">
+            <TablixBody>
+              <TablixColumns>
+                <TablixColumn>
+                  <Width>1.66392cm</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>18.63724cm</Width>
+                </TablixColumn>
+              </TablixColumns>
+              <TablixRows>
+                <TablixRow>
+                  <Height>0.64939cm</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox57">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value />
+                                  <Style />
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox57</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox59">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Opcion Texto</Value>
+                                  <Style />
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox59</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>0.64939cm</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="PreguntaTexto2">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!PreguntaTexto.Value</Value>
+                                  <Style />
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>PreguntaTexto2</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                        <ColSpan>2</ColSpan>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell />
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>0.64939cm</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="NumeroOpcion">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!NumeroOpcion.Value</Value>
+                                  <Style />
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>NumeroOpcion</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="OpcionTexto">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!OpcionTexto.Value</Value>
+                                  <Style />
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>OpcionTexto</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+              </TablixRows>
+            </TablixBody>
+            <TablixColumnHierarchy>
+              <TablixMembers>
+                <TablixMember />
+                <TablixMember />
+              </TablixMembers>
+            </TablixColumnHierarchy>
+            <TablixRowHierarchy>
+              <TablixMembers>
+                <TablixMember />
+                <TablixMember>
+                  <Group Name="PreguntaTexto">
+                    <GroupExpressions>
+                      <GroupExpression>=Fields!PreguntaTexto.Value</GroupExpression>
+                    </GroupExpressions>
+                  </Group>
+                  <SortExpressions>
+                    <SortExpression>
+                      <Value>=Fields!PreguntaTexto.Value</Value>
+                    </SortExpression>
+                  </SortExpressions>
+                  <TablixMembers>
+                    <TablixMember>
+                      <KeepWithGroup>After</KeepWithGroup>
+                    </TablixMember>
+                    <TablixMember>
+                      <Group Name="Details" />
+                      <TablixMembers>
+                        <TablixMember />
+                      </TablixMembers>
+                    </TablixMember>
+                  </TablixMembers>
+                </TablixMember>
+              </TablixMembers>
+            </TablixRowHierarchy>
+            <DataSetName>dsExamenGenerado</DataSetName>
+            <Top>1.93774cm</Top>
+            <Left>0.37254cm</Left>
+            <Height>1.94817cm</Height>
+            <Width>20.30116cm</Width>
+            <ZIndex>2</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+            </Style>
+          </Tablix>
         </ReportItems>
-        <Height>4.93333in</Height>
+        <Height>11.69in</Height>
         <Style>
           <Border>
-            <Style>None</Style>
+            <Style>Solid</Style>
+            <Width>0.5pt</Width>
           </Border>
         </Style>
       </Body>
-      <Width>8.4985in</Width>
+      <Width>8.27in</Width>
       <Page>
         <PageHeader>
-          <Height>2.54cm</Height>
+          <Height>2.54113cm</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
@@ -460,17 +373,18 @@
                   <Source>Embedded</Source>
                   <Value>LogoTAS1</Value>
                   <Sizing>FitProportional</Sizing>
+                  <Top>0.10697cm</Top>
                   <Height>2.06444cm</Height>
                   <Width>2.24083cm</Width>
                   <Style>
                     <Border>
-                      <Style>Solid</Style>
+                      <Style>None</Style>
                     </Border>
                   </Style>
                 </Image>
                 <Line Name="Line1">
                   <Left>13.75833cm</Left>
-                  <Height>2.09972cm</Height>
+                  <Height>2.20669cm</Height>
                   <Width>0cm</Width>
                   <ZIndex>1</ZIndex>
                   <Style>
@@ -480,7 +394,7 @@
                   </Style>
                 </Line>
                 <Line Name="Line2">
-                  <Top>1.11759cm</Top>
+                  <Top>1.22456cm</Top>
                   <Left>2.24083cm</Left>
                   <Height>0cm</Height>
                   <Width>11.5175cm</Width>
@@ -498,7 +412,7 @@
                     <Paragraph>
                       <TextRuns>
                         <TextRun>
-                          <Value>Reporte de preguntas del cuestionario ASA</Value>
+                          <Value>=Parameters!TituloReporte.Value</Value>
                           <Style>
                             <FontSize>14pt</FontSize>
                           </Style>
@@ -510,10 +424,10 @@
                     </Paragraph>
                   </Paragraphs>
                   <rd:DefaultName>Textbox18</rd:DefaultName>
-                  <Top>0.25653cm</Top>
+                  <Top>0.3635cm</Top>
                   <Left>2.67122cm</Left>
                   <Height>0.7905cm</Height>
-                  <Width>10.247cm</Width>
+                  <Width>10.45867cm</Width>
                   <ZIndex>3</ZIndex>
                   <Style>
                     <Border>
@@ -525,26 +439,41 @@
                     <PaddingBottom>2pt</PaddingBottom>
                   </Style>
                 </Textbox>
-                <Textbox Name="EstudianteNombre">
+                <Line Name="Line4">
+                  <Left>2.246cm</Left>
+                  <Height>2.20669cm</Height>
+                  <Width>0cm</Width>
+                  <ZIndex>4</ZIndex>
+                  <Style>
+                    <Border>
+                      <Style>Solid</Style>
+                    </Border>
+                  </Style>
+                </Line>
+                <Textbox Name="GrupoNombre">
                   <CanGrow>true</CanGrow>
                   <KeepTogether>true</KeepTogether>
                   <Paragraphs>
                     <Paragraph>
                       <TextRuns>
                         <TextRun>
-                          <Value>=Parameters!EstudianteNombre.Value</Value>
-                          <Style />
+                          <Value>=Parameters!GrupoNombre.Value</Value>
+                          <Style>
+                            <FontSize>12pt</FontSize>
+                          </Style>
                         </TextRun>
                       </TextRuns>
-                      <Style />
+                      <Style>
+                        <TextAlign>Center</TextAlign>
+                      </Style>
                     </Paragraph>
                   </Paragraphs>
-                  <rd:DefaultName>EstudianteNombre</rd:DefaultName>
-                  <Top>1.41392cm</Top>
-                  <Left>2.41722cm</Left>
-                  <Height>0.57883cm</Height>
-                  <Width>11.05133cm</Width>
-                  <ZIndex>4</ZIndex>
+                  <rd:DefaultName>GrupoNombre</rd:DefaultName>
+                  <Top>1.36567cm</Top>
+                  <Left>6.18066cm</Left>
+                  <Height>0.63528cm</Height>
+                  <Width>3.47367cm</Width>
+                  <ZIndex>5</ZIndex>
                   <Style>
                     <Border>
                       <Style>None</Style>
@@ -557,9 +486,9 @@
                 </Textbox>
               </ReportItems>
               <KeepTogether>true</KeepTogether>
-              <Top>0.33444cm</Top>
+              <Top>0.22747cm</Top>
               <Left>2.19287cm</Left>
-              <Height>2.09972cm</Height>
+              <Height>2.20669cm</Height>
               <Width>16.72633cm</Width>
               <Style>
                 <Border>
@@ -595,8 +524,8 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>PageNumber</rd:DefaultName>
-              <Top>1.64254cm</Top>
-              <Left>17.4752cm</Left>
+              <Top>0.77471cm</Top>
+              <Left>17.89853cm</Left>
               <Height>0.6cm</Height>
               <Width>2.5cm</Width>
               <Style>
@@ -628,11 +557,11 @@
     </ReportSection>
   </ReportSections>
   <ReportParameters>
-    <ReportParameter Name="EstudianteNombre">
+    <ReportParameter Name="TituloReporte">
       <DataType>String</DataType>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
-    <ReportParameter Name="FechaExamen">
+    <ReportParameter Name="GrupoNombre">
       <DataType>String</DataType>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
@@ -643,14 +572,14 @@
       <NumberOfRows>2</NumberOfRows>
       <CellDefinitions>
         <CellDefinition>
-          <ColumnIndex>0</ColumnIndex>
+          <ColumnIndex>2</ColumnIndex>
           <RowIndex>0</RowIndex>
-          <ParameterName>EstudianteNombre</ParameterName>
+          <ParameterName>TituloReporte</ParameterName>
         </CellDefinition>
         <CellDefinition>
-          <ColumnIndex>1</ColumnIndex>
+          <ColumnIndex>3</ColumnIndex>
           <RowIndex>0</RowIndex>
-          <ParameterName>FechaExamen</ParameterName>
+          <ParameterName>GrupoNombre</ParameterName>
         </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>

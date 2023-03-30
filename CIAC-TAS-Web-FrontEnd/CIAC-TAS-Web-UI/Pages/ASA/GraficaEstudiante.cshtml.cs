@@ -76,7 +76,7 @@ namespace CIAC_TAS_Web_UI.Pages.ASA
 			string renderFormart = "PDF";
 			string mimetype = "";
 			int extension = 1;
-			string reportPath = Path.Combine(_environment.WebRootPath, "Reports/ASA/ReportExample.rdlc");
+			string reportPath = Path.Combine(_environment.WebRootPath, "Reports/ASA/ReporteExamenAsa.rdlc");
 			Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
 			var respuestasAsaConsolidadoServiceApi = RestService.For<IRespuestasAsaconsolidadoServiceApi>(_configuration.GetValue<string>("ServiceUrl"), new RefitSettings
@@ -117,10 +117,18 @@ namespace CIAC_TAS_Web_UI.Pages.ASA
 			}
 
 			var estudiante = estudianteResponse.Content;
+			var respuestasAsaConsolidadoFirstRow = respuestasAsaConsolidado.FirstOrDefault();
+			var fechaExamen = DateTime.Today.ToString("dd-MM-yyyy");
+			var tituloReporte = "Reporte de Practica ASA";
 
-			Dictionary<string, string> parameters = new Dictionary<string, string>();
-			parameters.Add("EstudianteNombre", estudiante.Nombre + " " + estudiante.ApellidoPaterno + " " + estudiante.ApellidoMaterno);
-			parameters.Add("FechaExamen", respuestasAsaConsolidado.FirstOrDefault()?.ConfiguracionPreguntaAsaResponse.FechaInicial.ToString("dd-MM-yyyy"));
+			if (respuestasAsaConsolidadoFirstRow.ConfiguracionPreguntaAsaResponse == null)
+			{
+				fechaExamen = respuestasAsaConsolidadoFirstRow.FechaLote.ToString("dd-MM-yyyy");
+			} else
+			{
+				fechaExamen = respuestasAsaConsolidadoFirstRow.ConfiguracionPreguntaAsaResponse.FechaInicial.ToString("dd-MM-yyyy");
+				tituloReporte = "Reporte del examen ASA";
+			}			
 
 			DataTable dataTable = new DataTable();
 			dataTable.Columns.Add("NumeroPregunta");
@@ -128,16 +136,51 @@ namespace CIAC_TAS_Web_UI.Pages.ASA
 			dataTable.Columns.Add("RespuestaTexto");
 			dataTable.Columns.Add("RespuestaCorrectaTexto");
 
+			var numeroPreguntasCorrectas = 0;
+			var numeroPreguntasIncorrectas = 0;
+			var numeroPreguntasNoRespondidas = 0;
+			var numeroPreguntasNota = 0;
+
 			foreach (var item in respuestasAsaConsolidado)
 			{
+				var respuestaCorrectaTexto = string.Empty;
 				DataRow dataRow = dataTable.NewRow();
 				dataRow["NumeroPregunta"] = item.NumeroPregunta;
 				dataRow["PreguntaTexto"] = item.PreguntaTexto;
 				dataRow["RespuestaTexto"] = item.RespuestaTexto;
-				dataRow["RespuestaCorrectaTexto"] = item.RespuestaCorrecta ? "Correcto" : "Incorrecto";
+
+				if (item.RespuestaCorrecta)
+				{
+					numeroPreguntasCorrectas++;
+					respuestaCorrectaTexto = "Correcto";
+				} else
+				{
+					respuestaCorrectaTexto = "Incorrecto";
+
+					if (item.RespuestaTexto == string.Empty)
+					{
+						numeroPreguntasNoRespondidas++;
+					} else
+					{
+						numeroPreguntasIncorrectas++;
+					}
+				}
+
+				dataRow["RespuestaCorrectaTexto"] = respuestaCorrectaTexto;				
 
 				dataTable.Rows.Add(dataRow);
 			}
+
+			numeroPreguntasNota = numeroPreguntasCorrectas;
+
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("EstudianteNombre", estudiante.Nombre + " " + estudiante.ApellidoPaterno + " " + estudiante.ApellidoMaterno);
+            parameters.Add("FechaExamen", fechaExamen);
+            parameters.Add("TituloReporte", tituloReporte);
+            parameters.Add("PreguntasCorrectas", numeroPreguntasCorrectas.ToString());
+			parameters.Add("PreguntasIncorrectas", numeroPreguntasIncorrectas.ToString());
+			parameters.Add("PreguntasNoRespondidas", numeroPreguntasNoRespondidas.ToString());
+			parameters.Add("NotaFinal", numeroPreguntasNota.ToString());
 
 			var report = new LocalReport(reportPath);
 			report.AddDataSource("dsCuestionarioASA", dataTable);

@@ -27,10 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Remove="wwwroot\Reports\ASA\ReportExample.rdlc" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="Icons\iconoavion.ico" />
   </ItemGroup>
 
@@ -1613,7 +1609,6 @@
     <None Include="wwwroot\plugins\uplot\uPlot.esm.js" />
     <None Include="wwwroot\plugins\uplot\uPlot.iife.js" />
     <None Include="wwwroot\plugins\uplot\uPlot.iife.min.js" />
-    <None Include="wwwroot\Reports\ASA\ReportExample.rdlc" />
   </ItemGroup>
 
   <ItemGroup>
@@ -1638,6 +1633,12 @@
     <Reference Include="CIAC-TAS-Service.Sdk">
       <HintPath>..\..\..\CIAC-TAS-Service-API\CIAC-TAS-Service.Sdk\bin\Release\net6.0\CIAC-TAS-Service.Sdk.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\Reports\ASA\ReporteExamenAsa.rdlc">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

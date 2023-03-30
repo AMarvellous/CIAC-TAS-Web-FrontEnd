@@ -38,7 +38,7 @@ namespace CIAC_TAS_Web_UI.Pages.Estudiante
         public async Task OnGetNewEstudianteAsync()
         {
             var identityApi = GetIIdentityApi();
-            var usersResponse = await identityApi.GetUsersAsync();
+            var usersResponse = await identityApi.GetUsersByRoleNameAsync(RolesHelper.ESTUDIANTE_ROLE);
 
             EstudianteModelView = new EstudianteModelView();
             EstudianteModelView.Fecha = DateTime.Today;
@@ -58,7 +58,7 @@ namespace CIAC_TAS_Web_UI.Pages.Estudiante
                 Message = "Por favor complete el formulario correctamente";
 
                 var identityApi = GetIIdentityApi();
-                var usersResponse = await identityApi.GetUsersAsync();
+                var usersResponse = await identityApi.GetUsersByRoleNameAsync(RolesHelper.ESTUDIANTE_ROLE);
 
                 if (usersResponse.IsSuccessStatusCode)
                 {
@@ -110,7 +110,7 @@ namespace CIAC_TAS_Web_UI.Pages.Estudiante
                 Message = String.Join(" ", errorResponse.Errors.Select(x => x.Message));
 
                 var identityApi = GetIIdentityApi();
-                var usersResponse = await identityApi.GetUsersAsync();
+                var usersResponse = await identityApi.GetUsersByRoleNameAsync(RolesHelper.ESTUDIANTE_ROLE);
 
                 if (usersResponse.IsSuccessStatusCode)
                 {
@@ -136,7 +136,7 @@ namespace CIAC_TAS_Web_UI.Pages.Estudiante
             }
 
             var identityApi = GetIIdentityApi();
-            var usersResponse = await identityApi.GetUsersAsync();
+            var usersResponse = await identityApi.GetUsersByRoleNameAsync(RolesHelper.ESTUDIANTE_ROLE);
 
             if (usersResponse.IsSuccessStatusCode)
             {
@@ -187,7 +187,7 @@ namespace CIAC_TAS_Web_UI.Pages.Estudiante
                 Message = "Por favor complete el formulario correctamente";
 
                 var identityApi = GetIIdentityApi();
-                var usersResponse = await identityApi.GetUsersAsync();
+                var usersResponse = await identityApi.GetUsersByRoleNameAsync(RolesHelper.ESTUDIANTE_ROLE);
 
                 if (usersResponse.IsSuccessStatusCode)
                 {
@@ -239,7 +239,7 @@ namespace CIAC_TAS_Web_UI.Pages.Estudiante
                 Message = String.Join(" ", errorResponse.Errors.Select(x => x.Message));
 
                 var identityApi = GetIIdentityApi();
-                var usersResponse = await identityApi.GetUsersAsync();
+                var usersResponse = await identityApi.GetUsersByRoleNameAsync(RolesHelper.ESTUDIANTE_ROLE);
 
                 if (usersResponse.IsSuccessStatusCode)
                 {

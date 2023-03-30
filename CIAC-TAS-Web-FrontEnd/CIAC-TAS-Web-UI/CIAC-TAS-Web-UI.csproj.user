@@ -15,5 +15,6 @@
     <WebStackScaffolding_IsReferencingScriptLibrariesSelected>True</WebStackScaffolding_IsReferencingScriptLibrariesSelected>
     <WebStackScaffolding_LayoutPageFile />
     <WebStackScaffolding_DbContextTypeFullName>CIAC_TAS_Web_UI.Data.CIAC_TAS_Web_UIContext</WebStackScaffolding_DbContextTypeFullName>
+    <NameOfLastUsedPublishProfile>C:\MyDirectory\CIAC TAS\Projects\CIAC-TAS-Web-FrontEnd\CIAC-TAS-Web-FrontEnd\CIAC-TAS-Web-UI\Properties\PublishProfiles\FolderProfile1.pubxml</NameOfLastUsedPublishProfile>
   </PropertyGroup>
 </Project>
