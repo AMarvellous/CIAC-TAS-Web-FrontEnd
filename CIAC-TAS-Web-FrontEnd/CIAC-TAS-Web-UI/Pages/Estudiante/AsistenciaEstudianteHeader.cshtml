@@ -1,0 +1,205 @@
+﻿@page "/AsistenciaEstudianteHeader/{handler?}/{id?}"
+@model CIAC_TAS_Web_UI.Pages.Estudiante.AsistenciaEstudianteHeaderModel
+@{
+    ViewData["Title"] = "AsistenciaEstudianteHeader";
+}
+
+<!-- From here, we should put this code as template in each page -->
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Asistencia Estudiante Page</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a asp-page="/Index">Home</a></li>
+                        <li class="breadcrumb-item active">Asistencia Estudiante Page</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- /.box-header -->
+    <div class="col-sm-12">
+        <a asp-page="/Estudiante/AsistenciaEstudianteHeaders" class="fa fa-arrow-circle-left" style="font-size:25px;"></a>
+    </div>
+    <br />
+
+    <!-- Main content -->
+    <section class="content">
+
+        <!-- Default box -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Asistencia Estudiante</h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+
+                <form method="post" enctype="multipart/form-data">
+                    <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+
+                    <div class="form-group">
+                        <label asp-for="AsistenciaEstudianteHeaderModelView.ProgramaId" class="control-label">Programa</label>
+                        <select asp-for="AsistenciaEstudianteHeaderModelView.ProgramaId" asp-items="Model.ProgramaOptions" class="form-control" placeholder="Seleccione una opcion">
+                            <option value="">Seleccione una opcion</option>
+                        </select>
+                        <span asp-validation-for="AsistenciaEstudianteHeaderModelView.ProgramaId" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="AsistenciaEstudianteHeaderModelView.GrupoId" class="control-label">Grupo</label>
+                        <select asp-for="AsistenciaEstudianteHeaderModelView.GrupoId" asp-items="Model.GrupoOptions" class="form-control" placeholder="Seleccione una opcion">
+                            <option value="">Seleccione una opcion</option>
+                        </select>
+                        <span asp-validation-for="AsistenciaEstudianteHeaderModelView.GrupoId" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="AsistenciaEstudianteHeaderModelView.MateriaId" class="control-label">Materia</label>
+                        <select asp-for="AsistenciaEstudianteHeaderModelView.MateriaId" asp-items="Model.MateriaOptions" class="form-control" placeholder="Seleccione una opcion">
+                            <option value="">Seleccione una opcion</option>
+                        </select>
+                        <span asp-validation-for="AsistenciaEstudianteHeaderModelView.MateriaId" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="AsistenciaEstudianteHeaderModelView.ModuloId" class="control-label">Modulo</label>
+                        <select asp-for="AsistenciaEstudianteHeaderModelView.ModuloId" asp-items="Model.ModuloOptions" class="form-control" placeholder="Seleccione una opcion">
+                            <option value="">Seleccione una opcion</option>
+                        </select>
+                        <span asp-validation-for="AsistenciaEstudianteHeaderModelView.ModuloId" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="AsistenciaEstudianteHeaderModelView.InstructorId" class="control-label">Instructor</label>
+                        <select asp-for="AsistenciaEstudianteHeaderModelView.InstructorId" asp-items="Model.InstructorOptions" class="form-control" placeholder="Seleccione una opcion">
+                            <option value="">Seleccione una opcion</option>
+                        </select>
+                        <span asp-validation-for="AsistenciaEstudianteHeaderModelView.InstructorId" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="AsistenciaEstudianteHeaderModelView.Fecha">Fecha</label>
+                        <input type="date" asp-for="AsistenciaEstudianteHeaderModelView.Fecha" class="form-control" placeholder="Ingrese una Fecha" class="form-control datetimepicker-input">
+                        <span asp-validation-for="AsistenciaEstudianteHeaderModelView.Fecha" style="color:red"></span>
+                    </div>
+
+
+                    @{
+                        if (Model.AsistenciaEstudianteHeaderModelView?.Id > 0)
+                        {
+                            <br />
+
+                            <div class="card-body">
+
+                                <p>
+                                    <a asp-page="/Estudiante/AsistenciaEstudiante" asp-page-handler="NewAsistenciaEstudiante" asp-route-AsistenciaEstudianteHeaderId="@Model.AsistenciaEstudianteHeaderModelView.Id" class="fa fa-plus" style="font-size:20px;"></a>
+                                </p>
+                                <table class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Estudiante</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.AsistenciaEstudianteHeaderModelView.AsistenciaEstudianteModelView)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.EstudianteNombre)
+                                                </td>
+                                                <td>
+                                                    <!-- <a asp-page-handler="EditAsistenciaEstudiante" asp-page="/Estudiante/AsistenciaEstudiante" asp-route-id="@item.Id" asp-route-AsistenciaEstudianteHeaderId="@Model.AsistenciaEstudianteHeaderModelView.Id" class="fa fa-edit" style="font-size:15px;"></a> | -->
+                                                    <!-- Button trigger modal -->
+                                                    <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modal-@item.Id">
+                                                        <span class="btn-label"><i class="fa fa-trash"></i></span>
+                                                    </button>
+
+                                                    <!-- Modal -->
+                                                    <div class="modal fade" id="modal-@item.Id" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="exampleModalLabel">Borrar Asisstencia</h5>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    Esta seguro que desea borrar este registro? <br />
+                                                                    [@item.EstudianteNombre]
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                                    <a asp-page-handler="RemoveAsistenciaEstudiante" asp-route-AsistenciaEstudianteHeaderId="@Model.AsistenciaEstudianteHeaderModelView.Id" asp-route-AsistenciaEstudianteId="@item.Id" id="deleteBtn" class="btn bg-danger mr-1">Borrar</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+
+                            </div>
+                            <!-- /.card-body -->
+                        }
+                    }
+
+
+                    <br />
+                    <div class="row">
+                        @{
+                            if (Model.AsistenciaEstudianteHeaderModelView?.Id > 0)
+                            {
+                                <div class="col-4">
+                                    <input type="submit" asp-page-handler="EditAsistenciaEstudianteHeader" class="btn btn-primary btn-block" value="Guardar">
+                                </div>
+
+                            }
+                            else
+                            {
+                                <div class="col-4">
+                                    <input type="submit" asp-page-handler="NewAsistenciaEstudianteHeader" class="btn btn-primary btn-block" value="Crear">
+                                </div>
+                            }
+                        }
+
+                        <!-- /.col -->
+                    </div>
+                </form>
+
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer">
+                @{
+                    if (Model.Message != null && Model.Message != string.Empty)
+                    {
+                        <div id="mensajeDiv" class="callout callout-danger">
+                            @Model.Message
+                        </div>
+                    }
+                }
+            </div>
+            <!-- /.card-footer-->
+        </div>
+        <!-- /.card -->
+
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+<!-- To here -->

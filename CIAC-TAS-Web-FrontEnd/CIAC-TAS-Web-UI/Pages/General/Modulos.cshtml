@@ -1,7 +1,7 @@
-﻿@page "/Instructores"
-@model CIAC_TAS_Web_UI.Pages.Instructor.InstructoresModel
+﻿@page "/Modulos"
+@model CIAC_TAS_Web_UI.Pages.General.ModulosModel
 @{
-    ViewData["Title"] = "Instructores";
+	ViewData["Title"] = "Modulos";
 }
 
 <!-- From here, we should put this code as template in each page -->
@@ -12,12 +12,12 @@
 		<div class="container-fluid">
 			<div class="row mb-2">
 				<div class="col-sm-6">
-					<h1>Instructores Page</h1>
+					<h1>Modulos Page</h1>
 				</div>
 				<div class="col-sm-6">
 					<ol class="breadcrumb float-sm-right">
 						<li class="breadcrumb-item"><a asp-page="/Index">Home</a></li>
-						<li class="breadcrumb-item active">Instructores Page</li>
+						<li class="breadcrumb-item active">Modulos Page</li>
 					</ol>
 				</div>
 			</div>
@@ -30,7 +30,7 @@
 		<!-- Default box -->
 		<div class="card">
 			<div class="card-header">
-				<h3 class="card-title">Lista Instructores</h3>
+				<h3 class="card-title">Lista Modulos</h3>
 
 				<div class="card-tools">
 					<button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -40,25 +40,23 @@
 			</div>
 			<div class="card-body">
 
-				<a asp-page="/Instructor/Instructor" asp-page-handler="NewInstructor" class="fa fa-plus" style="font-size:20px;"></a>
+				<a asp-page="/General/Modulo" asp-page-handler="NewModulo" class="fa fa-plus" style="font-size:20px;"></a>
 
 				<table id="example2" class="table table-bordered table-hover">
 					<thead>
 						<tr>
 							<th>Nombre</th>
-							<th>Licencia</th>
 							<th>Acciones</th>
 						</tr>
 					</thead>
 					<tbody>
 						@{
-							foreach (var item in Model.InstructorModelView)
+							foreach (var item in Model.ModuloModelView)
 							{
-								<tr>
-									<td>@item.Nombres</td>
-									<td>@item.NumeroLicencia</td>
-									<td><a asp-page-handler="EditInstructor" asp-page="/Instructor/Instructor" asp-route-id="@item.Id" class="fa fa-edit" style="font-size:15px;"></a></td>
-								</tr>
+										<tr>
+											<td>@item.Nombre</td>
+											<td><a asp-page-handler="EditModulo" asp-page="/General/Modulo" asp-route-id="@item.Id" class="fa fa-edit" style="font-size:15px;"></a></td>
+										</tr>
 							}
 						}
 					</tbody>
@@ -70,9 +68,9 @@
 				@{
 					if (Model.Message != null && Model.Message != string.Empty)
 					{
-						<div id="mensajeDiv" class="callout callout-danger">
+								<div id="mensajeDiv" class="callout callout-danger">
 							@Model.Message
-						</div>
+								</div>
 					}
 				}
 			</div>
@@ -88,16 +86,16 @@
 
 <script>
 	$(function () {
-	  $('#paginated-table').DataTable({
-		"paging": true,
-		"lengthChange": false,
-		"searching": true,
-		"ordering": true,
-		"info": true,
-		"autoWidth": false,
-		"responsive": true,
-		"pageLength": 30
-	  });
+		$('#paginated-table').DataTable({
+			"paging": true,
+			"lengthChange": false,
+			"searching": true,
+			"ordering": true,
+			"info": true,
+			"autoWidth": false,
+			"responsive": true,
+			"pageLength": 30
+		});
 
 		//align search box to left
 		$("#paginated-table_filter").parent().closest('div').removeClass("col-md-6").addClass("col-md-12")

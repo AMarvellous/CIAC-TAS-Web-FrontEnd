@@ -33,10 +33,10 @@ namespace CIAC_TAS_Web_UI.Pages
             if (exceptionHandlerPathFeature != null)
             {
                 var exception = exceptionHandlerPathFeature.Error;
-                var endpoint = exceptionHandlerPathFeature.Endpoint.DisplayName;
-                var path = exceptionHandlerPathFeature.Path;
+                var endpoint = exceptionHandlerPathFeature?.Endpoint?.DisplayName;
+                var path = exceptionHandlerPathFeature?.Path;
 
-                Logger.WriteLogUnhandledException(exception.Message, exception.StackTrace, endpoint, path);
+                Logger.WriteLogUnhandledException(exception.Message, exception?.StackTrace, endpoint : endpoint, path);
             } 
         }
     }

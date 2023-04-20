@@ -27,6 +27,17 @@ builder.Services.AddSession(options =>
 builder.Services.AddScoped<ICuestionarioASAHelper, CuestionarioASAHelper>();
 
 builder.Services.AddAntiforgery(o => o.HeaderName = "XSRF-TOKEN");
+builder.Services.AddAntiforgery(o => o.SuppressXFrameOptionsHeader = true);
+
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      builder =>
+                      {
+                          builder.WithOrigins("http://ciac-tas.com");
+                      });
+});
 
 var app = builder.Build();
 
@@ -43,6 +54,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseCors(MyAllowSpecificOrigins);
 
 app.UseAuthorization();
 

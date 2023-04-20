@@ -77,6 +77,18 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/MyDirectory/CIAC TAS/Projects/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/Estudiante/AsistenciaEstudiante.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXN0dWRpYW50ZVxBc2lzdGVuY2lhRXN0dWRpYW50ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/MyDirectory/CIAC TAS/Projects/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/Estudiante/AsistenciaEstudianteHeader.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXN0dWRpYW50ZVxBc2lzdGVuY2lhRXN0dWRpYW50ZUhlYWRlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/MyDirectory/CIAC TAS/Projects/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/Estudiante/AsistenciaEstudianteHeaders.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXN0dWRpYW50ZVxBc2lzdGVuY2lhRXN0dWRpYW50ZUhlYWRlcnMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/MyDirectory/CIAC TAS/Projects/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/Estudiante/Estudiante.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXN0dWRpYW50ZVxFc3R1ZGlhbnRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
@@ -93,6 +105,14 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXN0dWRpYW50ZVxFc3R1ZGlhbnRlc0dydXBvcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/MyDirectory/CIAC TAS/Projects/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/General/Administrativo.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR2VuZXJhbFxBZG1pbmlzdHJhdGl2by5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/MyDirectory/CIAC TAS/Projects/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/General/Administrativos.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR2VuZXJhbFxBZG1pbmlzdHJhdGl2b3MuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/MyDirectory/CIAC TAS/Projects/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/General/Grupo.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR2VuZXJhbFxHcnVwby5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -101,8 +121,36 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR2VuZXJhbFxHcnVwb3MuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/MyDirectory/CIAC TAS/Projects/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/General/Materia.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR2VuZXJhbFxNYXRlcmlhLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/MyDirectory/CIAC TAS/Projects/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/General/Materias.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR2VuZXJhbFxNYXRlcmlhcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/MyDirectory/CIAC TAS/Projects/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/General/Modulo.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR2VuZXJhbFxNb2R1bG8uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/MyDirectory/CIAC TAS/Projects/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/General/ModuloMateria.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR2VuZXJhbFxNb2R1bG9NYXRlcmlhLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/MyDirectory/CIAC TAS/Projects/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/General/ModuloMaterias.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR2VuZXJhbFxNb2R1bG9NYXRlcmlhcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/MyDirectory/CIAC TAS/Projects/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/General/Modulos.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR2VuZXJhbFxNb2R1bG9zLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/MyDirectory/CIAC TAS/Projects/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/MyDirectory/CIAC TAS/Projects/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/Instructor/Instructor.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5zdHJ1Y3RvclxJbnN0cnVjdG9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/MyDirectory/CIAC TAS/Projects/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/Instructor/Instructores.cshtml]
