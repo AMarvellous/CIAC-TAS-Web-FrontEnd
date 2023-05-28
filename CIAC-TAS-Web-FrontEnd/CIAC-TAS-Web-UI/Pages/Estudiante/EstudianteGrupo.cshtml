@@ -1,120 +1,128 @@
 ﻿@page "/EstudianteGrupo/{handler?}/{estudianteId?}/{grupoId?}"
 @model CIAC_TAS_Web_UI.Pages.Estudiante.EstudianteGrupoModel
 @{
-	ViewData["Title"] = "Estudiante Grupo";
+    ViewData["Title"] = "Estudiante Grupo";
 }
 
 <!-- From here, we should put this code as template in each page -->
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
-	<!-- Content Header (Page header) -->
-	<section class="content-header">
-		<div class="container-fluid">
-			<div class="row mb-2">
-				<div class="col-sm-6">
-					<h1>Estudiante Grupo Page</h1>
-				</div>
-				<div class="col-sm-6">
-					<ol class="breadcrumb float-sm-right">
-						<li class="breadcrumb-item"><a asp-page="/Index">Home</a></li>
-						<li class="breadcrumb-item active">Estudiante Grupo Page</li>
-					</ol>
-				</div>
-			</div>
-		</div><!-- /.container-fluid -->
-	</section>
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Estudiante Grupo Page</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a asp-page="/Index">Home</a></li>
+                        <li class="breadcrumb-item active">Estudiante Grupo Page</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
 
-	<!-- /.box-header -->
-	<div class="col-sm-12">
-		<a asp-page="/Estudiante/EstudiantesGrupos" class="fa fa-arrow-circle-left" style="font-size:25px;"></a>
-	</div>
-	<br />
+    <!-- /.box-header -->
+    <div class="col-sm-12">
+        <a asp-page="/Estudiante/EstudiantesGrupos" class="fa fa-arrow-circle-left" style="font-size:25px;"></a>
+    </div>
+    <br />
 
-	<!-- Main content -->
-	<section class="content">
+    <!-- Main content -->
+    <section class="content">
 
-		<!-- Default box -->
-		<div class="card">
-			<div class="card-header">
-				<h3 class="card-title">Estudiante Grupo</h3>
+        <!-- Default box -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">@Model.GrupoNombre</h3>
 
-				<div class="card-tools">
-					<button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-						<i class="fas fa-minus"></i>
-					</button>
-				</div>
-			</div>
-			<div class="card-body">
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
 
-				<form method="post" enctype="multipart/form-data">
-					<div class="text-danger" asp-validation-summary="ModelOnly"></div>
+                <form method="post" enctype="multipart/form-data">
+                    <div class="text-danger" asp-validation-summary="ModelOnly"></div>
 
-					<div class="form-group">
-						<label asp-for="EstudianteGrupoModelView.EstudianteId" class="control-label">Estudiante</label>
-						<select asp-for="EstudianteGrupoModelView.EstudianteId" asp-items="Model.EstudiantesOptions" class="form-control select2" placeholder="Seleccione una opcion">
-							<option value="">Seleccione una opcion</option>
-						</select>
-						<span asp-validation-for="EstudianteGrupoModelView.EstudianteId" class="text-danger"></span>
-					</div>
+                    <div class="form-group">
+                        <label asp-for="EstudianteGrupoModelView.EstudianteId" class="control-label">Estudiante</label>
+                        <select class="select2" multiple="multiple" asp-for="EstudianteGrupoModelView.EstudiantesIds" asp-items="Model.EstudiantesOptions" placeholder="Seleccione una opcion">
+                        </select>
+                        <span asp-validation-for="EstudianteGrupoModelView.EstudianteId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group" hidden="hidden">
+                        @Html.HiddenFor(m => m.EstudianteGrupoModelView.GrupoId);
+                    </div>
 
-					<div class="form-group">
-						<label asp-for="EstudianteGrupoModelView.GrupoId" class="control-label">Grupo</label>
-						<select asp-for="EstudianteGrupoModelView.GrupoId" asp-items="Model.GrupoOptions" class="form-control" placeholder="Seleccione una opcion">
-							<option value="">Seleccione una opcion</option>
-						</select>
-						<span asp-validation-for="EstudianteGrupoModelView.GrupoId" class="text-danger"></span>
-					</div>
+                    <br />
+                    <div class="row">
+                        <div class="col-4">
+                            @if (Model.IsNewPage)
+                            {
+                                <input type="submit" asp-page-handler="NewEstudianteGrupo" asp-route-grupoId="@ViewContext.RouteData.Values["grupoId"]" class="btn btn-primary btn-block" value="Crear">
+                            } else
+                            {
+                                <input type="submit" asp-page-handler="EstudianteGrupoAdd" class="btn btn-primary btn-block" value="Actualizar">
+                            }
 
-					<br />
-					<div class="row">
-						@*@{
-							if (Model.EstudianteGrupoModelView?.EstudianteId > 0)
-							{
-								<div class="col-4">
-									<input type="submit" asp-page-handler="EditEstudianteGrupo" class="btn btn-primary btn-block" value="Guardar">
-								</div>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                </form>
 
-							}
-							else
-							{
-								<div class="col-4">
-									<input type="submit" asp-page-handler="NewEstudianteGrupo" class="btn btn-primary btn-block" value="Crear">
-								</div>
-							}
-						}*@
+                @if (!Model.IsNewPage)
+                {
+                    <br />
+                    <table id="paginated-table" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                var i = 1;
+                                foreach (var item in Model.EstudianteGrupoModelViewList)
+                                {
+                                    <tr>
+                                        <td>@item.EstudianteNombre</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                }
 
-						<div class="col-4">
-							<input type="submit" asp-page-handler="NewEstudianteGrupo" class="btn btn-primary btn-block" value="Crear">
-						</div>
 
-						<!-- /.col -->
-					</div>
-				</form>
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer">
+                @{
+                    if (Model.Message != null && Model.Message != string.Empty)
+                    {
+                        <div id="mensajeDiv" class="callout callout-danger">
+                            @Model.Message
+                        </div>
+                    }
+                }
+            </div>
+            <!-- /.card-footer-->
+        </div>
+        <!-- /.card -->
 
-			</div>
-			<!-- /.card-body -->
-			<div class="card-footer">
-				@{
-					if (Model.Message != null && Model.Message != string.Empty)
-					{
-						<div id="mensajeDiv" class="callout callout-danger">
-							@Model.Message
-						</div>
-					}
-				}
-			</div>
-			<!-- /.card-footer-->
-		</div>
-		<!-- /.card -->
-
-	</section>
-	<!-- /.content -->
+    </section>
+    <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
 <!-- To here -->
 
 <script>
-	$(function () {
-		$('.select2').select2()
-	});
+    $(function () {
+        $('.select2').select2()
+    });
 </script>

@@ -1,5 +1,5 @@
-﻿@page "/EstudiantesGrupos"
-@model CIAC_TAS_Web_UI.Pages.Estudiante.EstudiantesGruposModel
+﻿@page "/EstudianteGrupoEdit/{handler?}/{grupoId?}"
+@model CIAC_TAS_Web_UI.Pages.Estudiante.EstudianteGrupoEditModel
 @{
     ViewData["Title"] = "Estudiantes Grupos";
 }
@@ -24,13 +24,19 @@
         </div><!-- /.container-fluid -->
     </section>
 
+    <!-- /.box-header -->
+    <div class="col-sm-12">
+        <a asp-page="/Estudiante/EstudiantesGrupos" class="fa fa-arrow-circle-left" style="font-size:25px;"></a>
+    </div>
+    <br />
+
     <!-- Main content -->
     <section class="content">
 
         <!-- Default box -->
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Lista Estudiantes y Grupos Asignados</h3>
+                <h3 class="card-title">@Model.EditGrupoNombre</h3>
 
                 <div class="card-tools">
                     <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -40,41 +46,12 @@
             </div>
             <div class="card-body">
 
-                <!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#modal-grupo">
-                    <span class="btn-label"><i class="fa fa-plus"></i></span>
-                </button>
-                <!-- Modal -->
-                <div class="modal fade" id="modal-grupo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Asignar Estudiantes a grupo</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                Seleccione un Grupo<br />
-                                <div class="form-group">
-                                    <label asp-for="NewGrupoId" class="control-label">Grupo</label>
-                                    <select asp-for="NewGrupoId" asp-items="Model.GrupoOptions" class="form-control" placeholder=" Seleccione una opcion">
-                                        <option value="">Seleccione una opcion</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                                <button type="button" id="agregarBtn" onclick="addNewEstudianteGrupo(this)" class="btn btn-primary">Agregar</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <a asp-page="/Estudiante/EstudianteGrupo" asp-page-handler="EstudianteGrupoAdd" asp-route-grupoIdParam="@Model.GrupoId" class="fa fa-plus" style="font-size:20px;"></a>
 
                 <table id="paginated-table" class="table table-bordered table-hover">
                     <thead>
                         <tr>
-                            <th>Grupo</th>
+                            <th>Nombre</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -84,9 +61,34 @@
                             foreach (var item in Model.EstudianteGrupoModelView)
                             {
                                 <tr>
-                                    <td>@item.GrupoNombre</td>
+                                    <td>@item.EstudianteNombre</td>
                                     <td>
-                                        <a asp-page-handler="EditEstudianteGrupo" asp-page="/Estudiante/EstudianteGrupoEdit" asp-route-grupoId="@item.GrupoId" class="fa fa-edit" style="font-size:15px;"></a>
+                                        <!-- Button trigger modal -->
+                                        <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modal-@item.EstudianteId">
+                                            <span class="btn-label"><i class="fa fa-trash"></i></span>
+                                        </button>
+
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="modal-@item.EstudianteId" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Borrar Grupo</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        Esta seguro que desea borrar este registro? <br />
+                                                        [@item.EstudianteNombre]
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                        <a asp-page-handler="RemoveEstudianteFromGrupo" asp-route-grupoId="@item.GrupoId" asp-route-estudianteId="@item.EstudianteId" id="deleteBtn" class="btn bg-danger mr-1">Borrar</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </td>
                                 </tr>
                             }
@@ -131,12 +133,4 @@
         //align search box to left
         $("#paginated-table_filter").parent().closest('div').removeClass("col-md-6").addClass("col-md-12")
     });
-
-    function addNewEstudianteGrupo() {
-        var grupoId = $('#NewGrupoId').val();
-        if (grupoId != '') {
-            window.location = '@Url.Page("/Estudiante/EstudianteGrupo")/?handler=NewEstudianteGrupo&grupoId=' + grupoId;
-        }
-
-    }
 </script>

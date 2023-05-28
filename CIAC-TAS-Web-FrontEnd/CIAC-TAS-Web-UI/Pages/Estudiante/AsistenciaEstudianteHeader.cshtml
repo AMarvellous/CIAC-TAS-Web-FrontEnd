@@ -26,7 +26,7 @@
 
     <!-- /.box-header -->
     <div class="col-sm-12">
-        <a asp-page="/Estudiante/AsistenciaEstudianteHeaders" class="fa fa-arrow-circle-left" style="font-size:25px;"></a>
+        <a asp-page="/Estudiante/AsistenciaEstudianteHeaders" asp-route-grupoId="@Model.GrupoId" asp-route-materiaId="@Model.MateriaId" class="fa fa-arrow-circle-left" style="font-size:25px;"></a>
     </div>
     <br />
 
@@ -36,7 +36,7 @@
         <!-- Default box -->
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Asistencia Estudiante</h3>
+                <h3 class="card-title">@Model.GrupoNombre - @Model.MateriaNombre</h3>
 
                 <div class="card-tools">
                     <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -49,45 +49,29 @@
                 <form method="post" enctype="multipart/form-data">
                     <div class="text-danger" asp-validation-summary="ModelOnly"></div>
 
-                    <div class="form-group">
-                        <label asp-for="AsistenciaEstudianteHeaderModelView.ProgramaId" class="control-label">Programa</label>
-                        <select asp-for="AsistenciaEstudianteHeaderModelView.ProgramaId" asp-items="Model.ProgramaOptions" class="form-control" placeholder="Seleccione una opcion">
-                            <option value="">Seleccione una opcion</option>
-                        </select>
-                        <span asp-validation-for="AsistenciaEstudianteHeaderModelView.ProgramaId" class="text-danger"></span>
-                    </div>
+                    @Html.HiddenFor(x => x.GrupoId)
+                    @Html.HiddenFor(x => x.MateriaId)
 
-                    <div class="form-group">
-                        <label asp-for="AsistenciaEstudianteHeaderModelView.GrupoId" class="control-label">Grupo</label>
-                        <select asp-for="AsistenciaEstudianteHeaderModelView.GrupoId" asp-items="Model.GrupoOptions" class="form-control" placeholder="Seleccione una opcion">
-                            <option value="">Seleccione una opcion</option>
-                        </select>
-                        <span asp-validation-for="AsistenciaEstudianteHeaderModelView.GrupoId" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <label asp-for="AsistenciaEstudianteHeaderModelView.MateriaId" class="control-label">Materia</label>
-                        <select asp-for="AsistenciaEstudianteHeaderModelView.MateriaId" asp-items="Model.MateriaOptions" class="form-control" placeholder="Seleccione una opcion">
-                            <option value="">Seleccione una opcion</option>
-                        </select>
-                        <span asp-validation-for="AsistenciaEstudianteHeaderModelView.MateriaId" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <label asp-for="AsistenciaEstudianteHeaderModelView.ModuloId" class="control-label">Modulo</label>
-                        <select asp-for="AsistenciaEstudianteHeaderModelView.ModuloId" asp-items="Model.ModuloOptions" class="form-control" placeholder="Seleccione una opcion">
-                            <option value="">Seleccione una opcion</option>
-                        </select>
-                        <span asp-validation-for="AsistenciaEstudianteHeaderModelView.ModuloId" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <label asp-for="AsistenciaEstudianteHeaderModelView.InstructorId" class="control-label">Instructor</label>
-                        <select asp-for="AsistenciaEstudianteHeaderModelView.InstructorId" asp-items="Model.InstructorOptions" class="form-control" placeholder="Seleccione una opcion">
-                            <option value="">Seleccione una opcion</option>
-                        </select>
-                        <span asp-validation-for="AsistenciaEstudianteHeaderModelView.InstructorId" class="text-danger"></span>
-                    </div>
+                    @{
+                        if (Model.AsistenciaEstudianteHeaderModelView?.Id > 0)
+                        {
+                            <div class="form-group">
+                                <label asp-for="AsistenciaEstudianteHeaderModelView.InstructorId" class="control-label">Instructor</label>
+                                <select asp-for="AsistenciaEstudianteHeaderModelView.InstructorId" disabled="disabled" asp-items="Model.InstructorOptions" class="form-control" placeholder="Seleccione una opcion">                                    
+                                </select>
+                            </div>
+                        } else
+                        {
+                            <div class="form-group">
+                                <label asp-for="AsistenciaEstudianteHeaderModelView.InstructorId" class="control-label">Instructor</label>
+                                <select asp-for="AsistenciaEstudianteHeaderModelView.InstructorId" asp-items="Model.InstructorOptions" class="form-control" placeholder="Seleccione una opcion">
+                                    <option value="">Seleccione una opcion</option>
+                                </select>
+                                <span asp-validation-for="AsistenciaEstudianteHeaderModelView.InstructorId" class="text-danger"></span>
+                            </div>
+                        }
+                    }
+                    
 
                     <div class="form-group">
                         <label asp-for="AsistenciaEstudianteHeaderModelView.Fecha">Fecha</label>
@@ -120,8 +104,7 @@
                                                 <td>
                                                     @Html.DisplayFor(modelItem => item.EstudianteNombre)
                                                 </td>
-                                                <td>
-                                                    <!-- <a asp-page-handler="EditAsistenciaEstudiante" asp-page="/Estudiante/AsistenciaEstudiante" asp-route-id="@item.Id" asp-route-AsistenciaEstudianteHeaderId="@Model.AsistenciaEstudianteHeaderModelView.Id" class="fa fa-edit" style="font-size:15px;"></a> | -->
+                                                <td>                                                   
                                                     <!-- Button trigger modal -->
                                                     <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modal-@item.Id">
                                                         <span class="btn-label"><i class="fa fa-trash"></i></span>
@@ -156,7 +139,7 @@
 
                             </div>
                             <!-- /.card-body -->
-                        }
+                        }                        
                     }
 
 

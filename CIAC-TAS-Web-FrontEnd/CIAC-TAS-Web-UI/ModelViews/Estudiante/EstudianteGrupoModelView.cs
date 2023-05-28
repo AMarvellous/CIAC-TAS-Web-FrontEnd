@@ -10,5 +10,7 @@ namespace CIAC_TAS_Web_UI.ModelViews.Estudiante
         [Required]
         public int GrupoId { get; set; }
         public string? GrupoNombre { get; set; }
-    }
+
+		public List<int>? EstudiantesIds { get; set; } = new List<int>();
+	}
 }

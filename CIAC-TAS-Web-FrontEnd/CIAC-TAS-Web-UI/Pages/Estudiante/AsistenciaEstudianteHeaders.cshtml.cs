@@ -11,6 +11,8 @@ namespace CIAC_TAS_Web_UI.Pages.Estudiante
     {
         [BindProperty]
         public List<AsistenciaEstudianteHeaderModelView> AsistenciaEstudianteHeaderModelView { get; set; } = new List<AsistenciaEstudianteHeaderModelView>();
+        public string GrupoNombre { get; set; }
+        public string MateriaNombre { get; set; }
 
         [TempData]
         public string Message { get; set; }
@@ -22,20 +24,30 @@ namespace CIAC_TAS_Web_UI.Pages.Estudiante
             _configuration = configuration;
         }
 
-        public async Task<IActionResult> OnGetAsync()
+        public async Task<IActionResult> OnGetAsync(int grupoId, int materiaId)
         {
             var asistenciaEstudianteHeaderServiceApi = RestService.For<IAsistenciaEstudianteHeaderServiceApi>(_configuration.GetValue<string>("ServiceUrl"), new RefitSettings
             {
                 AuthorizationHeaderValueGetter = () => Task.FromResult(HttpContext.Session.GetString(Session.SessionToken))
             });
 
-            var asistenciaEstudianteHeadersResponse = await asistenciaEstudianteHeaderServiceApi.GetAllAsync();
+            var grupoServiceApi = RestService.For<IGrupoServiceApi>(_configuration.GetValue<string>("ServiceUrl"), new RefitSettings
+            {
+                AuthorizationHeaderValueGetter = () => Task.FromResult(HttpContext.Session.GetString(Session.SessionToken))
+            });
+
+            var materiaServiceApi = RestService.For<IMateriaServiceApi>(_configuration.GetValue<string>("ServiceUrl"), new RefitSettings
+            {
+                AuthorizationHeaderValueGetter = () => Task.FromResult(HttpContext.Session.GetString(Session.SessionToken))
+            });
+
+            var asistenciaEstudianteHeadersResponse = await asistenciaEstudianteHeaderServiceApi.GetAllHeadersByGrupoIdMateriaIdAsync(grupoId, materiaId);
 
             if (!asistenciaEstudianteHeadersResponse.IsSuccessStatusCode)
             {
                 Message = "Ocurrio un error inesperado";
 
-                return Page();
+                return RedirectToPage("/Estudiante/AsistenciaEstudianteHeadersPreview");
             }
 
             var asistenciaEstudianteHeaders = asistenciaEstudianteHeadersResponse.Content.Data;
@@ -47,7 +59,20 @@ namespace CIAC_TAS_Web_UI.Pages.Estudiante
                 MateriaNombre = x.MateriaResponse.Nombre,
                 ModuloNombre = x.ModuloResponse.Nombre,
                 InstructorNombre = x.InstructorResponse.Nombres,
+                Fecha = x.Fecha
             }).ToList();
+
+            var grupoResponse = await grupoServiceApi.GetAsync(grupoId);
+            if (grupoResponse.IsSuccessStatusCode)
+            {
+                GrupoNombre = grupoResponse.Content.Nombre;
+            }
+
+            var materiaResponse = await materiaServiceApi.GetAsync(materiaId);
+            if (materiaResponse.IsSuccessStatusCode)
+            {
+                MateriaNombre = materiaResponse.Content.Nombre;
+            }
 
             return Page();
         }
