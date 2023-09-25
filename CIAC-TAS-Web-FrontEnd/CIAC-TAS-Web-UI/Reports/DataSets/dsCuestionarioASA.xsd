@@ -48,7 +48,7 @@ SELECT Id, LoteRespuestasId, UserId, ConfiguracionId, NumeroPregunta, PreguntaTe
                 </InsertCommand>
                 <SelectCommand>
                   <DbCommand CommandType="Text" ModifiedByUser="false">
-                    <CommandText>SELECT Id, LoteRespuestasId, UserId, ConfiguracionId, NumeroPregunta, PreguntaTexto, FechaLote, Opcion, RespuestaTexto, RespuestaCorrecta, EsExamen FROM dbo.RespuestasAsaConsolidado</CommandText>
+                    <CommandText>SELECT Id, LoteRespuestasId, UserId, ConfiguracionId, NumeroPregunta, PreguntaTexto, FechaLote, Opcion, RespuestaTexto, RespuestaCorrecta, EsExamen FROM RespuestasAsaConsolidado</CommandText>
                     <Parameters />
                   </DbCommand>
                 </SelectCommand>
@@ -212,33 +212,42 @@ SELECT Id, GrupoId, Fecha, ExamenGeneradoGuid, NumeroOpcion, NumeroPregunta, Opc
               </xs:element>
               <xs:element name="RespuestaCorrecta" msprop:Generator_ColumnPropNameInTable="RespuestaCorrectaColumn" msprop:Generator_ColumnPropNameInRow="RespuestaCorrecta" msprop:Generator_UserColumnName="RespuestaCorrecta" msprop:Generator_ColumnVarNameInTable="columnRespuestaCorrecta" type="xs:boolean" />
               <xs:element name="EsExamen" msprop:Generator_ColumnPropNameInTable="EsExamenColumn" msprop:Generator_ColumnPropNameInRow="EsExamen" msprop:Generator_UserColumnName="EsExamen" msprop:Generator_ColumnVarNameInTable="columnEsExamen" type="xs:boolean" />
-              <xs:element name="RespuestaCorrectaTexto" msprop:Generator_UserColumnName="RespuestaCorrectaTexto" msprop:Generator_ColumnPropNameInTable="RespuestaCorrectaTextoColumn" msprop:Generator_ColumnPropNameInRow="RespuestaCorrectaTexto" msprop:Generator_ColumnVarNameInTable="columnRespuestaCorrectaTexto" type="xs:string" minOccurs="0" />
+              <xs:element name="RespuestaCorrectaTexto" msprop:Generator_ColumnPropNameInTable="RespuestaCorrectaTextoColumn" msprop:Generator_ColumnPropNameInRow="RespuestaCorrectaTexto" msprop:Generator_UserColumnName="RespuestaCorrectaTexto" msprop:Generator_ColumnVarNameInTable="columnRespuestaCorrectaTexto" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="dsExamenGenerado" msprop:Generator_RowEvHandlerName="dsExamenGeneradoRowChangeEventHandler" msprop:Generator_RowDeletedName="dsExamenGeneradoRowDeleted" msprop:Generator_RowDeletingName="dsExamenGeneradoRowDeleting" msprop:Generator_RowEvArgName="dsExamenGeneradoRowChangeEvent" msprop:Generator_TablePropName="dsExamenGenerado" msprop:Generator_RowChangedName="dsExamenGeneradoRowChanged" msprop:Generator_RowChangingName="dsExamenGeneradoRowChanging" msprop:Generator_TableClassName="dsExamenGeneradoDataTable" msprop:Generator_RowClassName="dsExamenGeneradoRow" msprop:Generator_TableVarName="tabledsExamenGenerado" msprop:Generator_UserTableName="dsExamenGenerado">
+        <xs:element name="dsExamenGenerado" msprop:Generator_RowEvHandlerName="dsExamenGeneradoRowChangeEventHandler" msprop:Generator_RowDeletedName="dsExamenGeneradoRowDeleted" msprop:Generator_RowDeletingName="dsExamenGeneradoRowDeleting" msprop:Generator_RowEvArgName="dsExamenGeneradoRowChangeEvent" msprop:Generator_TablePropName="dsExamenGenerado" msprop:Generator_RowChangedName="dsExamenGeneradoRowChanged" msprop:Generator_UserTableName="dsExamenGenerado" msprop:Generator_RowChangingName="dsExamenGeneradoRowChanging" msprop:Generator_RowClassName="dsExamenGeneradoRow" msprop:Generator_TableClassName="dsExamenGeneradoDataTable" msprop:Generator_TableVarName="tabledsExamenGenerado">
           <xs:complexType>
             <xs:sequence>
-              <xs:element name="Id" msdata:ReadOnly="true" msdata:AutoIncrement="true" msdata:AutoIncrementSeed="-1" msdata:AutoIncrementStep="-1" msprop:Generator_ColumnPropNameInRow="Id" msprop:Generator_ColumnPropNameInTable="IdColumn" msprop:Generator_ColumnVarNameInTable="columnId" msprop:Generator_UserColumnName="Id" type="xs:int" />
-              <xs:element name="GrupoId" msprop:Generator_ColumnPropNameInRow="GrupoId" msprop:Generator_ColumnPropNameInTable="GrupoIdColumn" msprop:Generator_ColumnVarNameInTable="columnGrupoId" msprop:Generator_UserColumnName="GrupoId" type="xs:int" />
-              <xs:element name="Fecha" msprop:Generator_ColumnPropNameInRow="Fecha" msprop:Generator_ColumnPropNameInTable="FechaColumn" msprop:Generator_ColumnVarNameInTable="columnFecha" msprop:Generator_UserColumnName="Fecha" type="xs:dateTime" />
-              <xs:element name="ExamenGeneradoGuid" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" msprop:Generator_ColumnPropNameInRow="ExamenGeneradoGuid" msprop:Generator_ColumnPropNameInTable="ExamenGeneradoGuidColumn" msprop:Generator_ColumnVarNameInTable="columnExamenGeneradoGuid" msprop:Generator_UserColumnName="ExamenGeneradoGuid" type="xs:string" />
-              <xs:element name="NumeroOpcion" msprop:Generator_ColumnPropNameInRow="NumeroOpcion" msprop:Generator_ColumnPropNameInTable="NumeroOpcionColumn" msprop:Generator_ColumnVarNameInTable="columnNumeroOpcion" msprop:Generator_UserColumnName="NumeroOpcion" type="xs:int" />
-              <xs:element name="NumeroPregunta" msprop:Generator_ColumnPropNameInRow="NumeroPregunta" msprop:Generator_ColumnPropNameInTable="NumeroPreguntaColumn" msprop:Generator_ColumnVarNameInTable="columnNumeroPregunta" msprop:Generator_UserColumnName="NumeroPregunta" type="xs:int" />
-              <xs:element name="OpcionTexto" msprop:Generator_ColumnPropNameInRow="OpcionTexto" msprop:Generator_ColumnPropNameInTable="OpcionTextoColumn" msprop:Generator_ColumnVarNameInTable="columnOpcionTexto" msprop:Generator_UserColumnName="OpcionTexto">
+              <xs:element name="Id" msdata:ReadOnly="true" msdata:AutoIncrement="true" msdata:AutoIncrementSeed="-1" msdata:AutoIncrementStep="-1" msprop:Generator_ColumnPropNameInTable="IdColumn" msprop:Generator_ColumnPropNameInRow="Id" msprop:Generator_UserColumnName="Id" msprop:Generator_ColumnVarNameInTable="columnId" type="xs:int" />
+              <xs:element name="GrupoId" msprop:Generator_ColumnPropNameInTable="GrupoIdColumn" msprop:Generator_ColumnPropNameInRow="GrupoId" msprop:Generator_UserColumnName="GrupoId" msprop:Generator_ColumnVarNameInTable="columnGrupoId" type="xs:int" />
+              <xs:element name="Fecha" msprop:Generator_ColumnPropNameInTable="FechaColumn" msprop:Generator_ColumnPropNameInRow="Fecha" msprop:Generator_UserColumnName="Fecha" msprop:Generator_ColumnVarNameInTable="columnFecha" type="xs:dateTime" />
+              <xs:element name="ExamenGeneradoGuid" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" msprop:Generator_ColumnPropNameInTable="ExamenGeneradoGuidColumn" msprop:Generator_ColumnPropNameInRow="ExamenGeneradoGuid" msprop:Generator_UserColumnName="ExamenGeneradoGuid" msprop:Generator_ColumnVarNameInTable="columnExamenGeneradoGuid" type="xs:string" />
+              <xs:element name="NumeroOpcion" msprop:Generator_ColumnPropNameInTable="NumeroOpcionColumn" msprop:Generator_ColumnPropNameInRow="NumeroOpcion" msprop:Generator_UserColumnName="NumeroOpcion" msprop:Generator_ColumnVarNameInTable="columnNumeroOpcion" type="xs:int" />
+              <xs:element name="NumeroPregunta" msprop:Generator_ColumnPropNameInTable="NumeroPreguntaColumn" msprop:Generator_ColumnPropNameInRow="NumeroPregunta" msprop:Generator_UserColumnName="NumeroPregunta" msprop:Generator_ColumnVarNameInTable="columnNumeroPregunta" type="xs:int" />
+              <xs:element name="OpcionTexto" msprop:Generator_ColumnPropNameInTable="OpcionTextoColumn" msprop:Generator_ColumnPropNameInRow="OpcionTexto" msprop:Generator_UserColumnName="OpcionTexto" msprop:Generator_ColumnVarNameInTable="columnOpcionTexto">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
                     <xs:maxLength value="2147483647" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
-              <xs:element name="PreguntaTexto" msprop:Generator_ColumnPropNameInRow="PreguntaTexto" msprop:Generator_ColumnPropNameInTable="PreguntaTextoColumn" msprop:Generator_ColumnVarNameInTable="columnPreguntaTexto" msprop:Generator_UserColumnName="PreguntaTexto">
+              <xs:element name="PreguntaTexto" msprop:Generator_ColumnPropNameInTable="PreguntaTextoColumn" msprop:Generator_ColumnPropNameInRow="PreguntaTexto" msprop:Generator_UserColumnName="PreguntaTexto" msprop:Generator_ColumnVarNameInTable="columnPreguntaTexto">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
                     <xs:maxLength value="2147483647" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="dsAsistenciaEstudiante" msprop:Generator_RowClassName="dsAsistenciaEstudianteRow" msprop:Generator_RowEvHandlerName="dsAsistenciaEstudianteRowChangeEventHandler" msprop:Generator_RowDeletedName="dsAsistenciaEstudianteRowDeleted" msprop:Generator_RowDeletingName="dsAsistenciaEstudianteRowDeleting" msprop:Generator_RowEvArgName="dsAsistenciaEstudianteRowChangeEvent" msprop:Generator_TablePropName="dsAsistenciaEstudiante" msprop:Generator_RowChangedName="dsAsistenciaEstudianteRowChanged" msprop:Generator_UserTableName="dsAsistenciaEstudiante" msprop:Generator_RowChangingName="dsAsistenciaEstudianteRowChanging" msprop:Generator_TableClassName="dsAsistenciaEstudianteDataTable" msprop:Generator_TableVarName="tabledsAsistenciaEstudiante">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="EstudianteNombre" msprop:Generator_UserColumnName="EstudianteNombre" msprop:Generator_ColumnPropNameInTable="EstudianteNombreColumn" msprop:Generator_ColumnPropNameInRow="EstudianteNombre" msprop:Generator_ColumnVarNameInTable="columnEstudianteNombre" type="xs:string" minOccurs="0" />
+              <xs:element name="FechaAsistencia" msprop:Generator_UserColumnName="FechaAsistencia" msprop:Generator_ColumnPropNameInTable="FechaAsistenciaColumn" msprop:Generator_ColumnPropNameInRow="FechaAsistencia" msprop:Generator_ColumnVarNameInTable="columnFechaAsistencia" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="Asistencia" msprop:Generator_ColumnPropNameInTable="AsistenciaColumn" msprop:nullValue="_throw" msprop:Generator_ColumnPropNameInRow="Asistencia" msprop:Generator_UserColumnName="Asistencia" msprop:Generator_ColumnVarNameInTable="columnAsistencia" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

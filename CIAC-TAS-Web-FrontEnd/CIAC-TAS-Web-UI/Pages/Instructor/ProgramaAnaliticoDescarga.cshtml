@@ -1,0 +1,101 @@
+﻿@page
+@model CIAC_TAS_Web_UI.Pages.Instructor.ProgramaAnaliticoDescargaModel
+@{
+    ViewData["Title"] = "Programa Analitico";
+}
+
+<!-- From here, we should put this code as template in each page -->
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Programa Analitico Page</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a asp-page="/Index">Home</a></li>
+                        <li class="breadcrumb-item active">Programa Analitico Page</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <!-- Default box -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Programa Analitico</h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <table id="example2" class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Materia</th>
+                            <th>Gestion</th>
+                            <th>Descarga</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            foreach (var item in Model.ProgramaAnaliticoPdfModelView)
+                            {
+                                <tr>
+                                    <td>@item.MateriaNombre</td>
+                                    <td>@item.Gestion</td>
+                                    <td>
+                                        <a asp-page-handler="DownloadProgramaAnaliticoPdf" asp-route-instructorId="@Model.InstructorId" asp-route-programaAnaliticoId="@item.Id" class="fa fa-download" style="font-size:15px;"></a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer">
+                @{
+                    if (Model.Message != null && Model.Message != string.Empty)
+                    {
+                        <div id="mensajeDiv" class="callout callout-danger">
+                            @Model.Message
+                        </div>
+                    }
+                }
+            </div>
+            <!-- /.card-footer-->
+        </div>
+        <!-- /.card -->
+
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+<!-- To here -->
+<script>
+    $(function () {
+        $('#paginated-table').DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+            "pageLength": 30
+        });
+
+        //align search box to left
+        $("#paginated-table_filter").parent().closest('div').removeClass("col-md-6").addClass("col-md-12")
+    });
+</script>

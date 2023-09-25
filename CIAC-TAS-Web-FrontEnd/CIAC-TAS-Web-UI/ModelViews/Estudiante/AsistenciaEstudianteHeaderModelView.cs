@@ -29,6 +29,12 @@ namespace CIAC_TAS_Web_UI.ModelViews.Estudiante
         public string? ModuloNombre { get; set; }
         public string? InstructorNombre { get; set; }
 
+        public TimeSpan HoraInicio { get; set; }
+        public TimeSpan HoraFin { get; set; }
+        public int TotalHorasTeoricas { get; set; }
+        public int TotalHorasPracticas { get; set; }
+        public string Tema { get; set; }
+
         public List<AsistenciaEstudianteModelView>? AsistenciaEstudianteModelView { get; set; } = new List<AsistenciaEstudianteModelView>();
     }
 }

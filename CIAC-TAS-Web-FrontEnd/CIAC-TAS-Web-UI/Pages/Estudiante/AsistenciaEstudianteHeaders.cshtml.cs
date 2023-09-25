@@ -1,9 +1,14 @@
+using AspNetCore.Reporting;
+using CIAC_TAS_Service.Contracts.V1.Responses;
 using CIAC_TAS_Service.Sdk;
 using CIAC_TAS_Web_UI.Helper;
 using CIAC_TAS_Web_UI.ModelViews.Estudiante;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Refit;
+using System.Data;
+using System.Text;
+using static CIAC_TAS_Service.Contracts.V1.ApiRoute;
 
 namespace CIAC_TAS_Web_UI.Pages.Estudiante
 {
@@ -18,10 +23,12 @@ namespace CIAC_TAS_Web_UI.Pages.Estudiante
         public string Message { get; set; }
 
         private readonly IConfiguration _configuration;
+        private readonly Microsoft.AspNetCore.Hosting.IHostingEnvironment _environment;
 
-        public AsistenciaEstudianteHeadersModel(IConfiguration configuration)
+        public AsistenciaEstudianteHeadersModel(IConfiguration configuration, Microsoft.AspNetCore.Hosting.IHostingEnvironment environment)
         {
             _configuration = configuration;
+            _environment = environment;
         }
 
         public async Task<IActionResult> OnGetAsync(int grupoId, int materiaId)
@@ -75,6 +82,114 @@ namespace CIAC_TAS_Web_UI.Pages.Estudiante
             }
 
             return Page();
+        }
+
+        public async Task<IActionResult> OnGetDownloadAsistenciaEstudiantesReportAsync(int grupoId, int materiaId)
+        {
+            var asistenciaEstudianteHeaderServiceApi = RestService.For<IAsistenciaEstudianteHeaderServiceApi>(_configuration.GetValue<string>("ServiceUrl"), new RefitSettings
+            {
+                AuthorizationHeaderValueGetter = () => Task.FromResult(HttpContext.Session.GetString(Session.SessionToken))
+            });
+
+            var grupoServiceApi = RestService.For<IGrupoServiceApi>(_configuration.GetValue<string>("ServiceUrl"), new RefitSettings
+            {
+                AuthorizationHeaderValueGetter = () => Task.FromResult(HttpContext.Session.GetString(Session.SessionToken))
+            });
+
+            var materiaServiceApi = RestService.For<IMateriaServiceApi>(_configuration.GetValue<string>("ServiceUrl"), new RefitSettings
+            {
+                AuthorizationHeaderValueGetter = () => Task.FromResult(HttpContext.Session.GetString(Session.SessionToken))
+            });
+
+            var estudianteMateriaServiceApi = RestService.For<IEstudianteMateriaServiceApi>(_configuration.GetValue<string>("ServiceUrl"), new RefitSettings
+            {
+                AuthorizationHeaderValueGetter = () => Task.FromResult(HttpContext.Session.GetString(Session.SessionToken))
+            });
+
+            var asistenciaEstudianteHeadersResponse = await asistenciaEstudianteHeaderServiceApi.GetAllHeadersByGrupoIdMateriaIdAsync(grupoId, materiaId);
+
+            if (!asistenciaEstudianteHeadersResponse.IsSuccessStatusCode)
+            {
+                Message = "Ocurrio un error inesperado";
+
+                return RedirectToPage("/Estudiante/AsistenciaEstudianteHeaders", new { grupoId = grupoId, materiaId = materiaId });
+            }
+
+            var estudianteMateriaResponse = await estudianteMateriaServiceApi.GetAllByMateriaGrupoAsync(materiaId, grupoId);
+
+            if (!estudianteMateriaResponse.IsSuccessStatusCode)
+            {
+                Message = "Ocurrio un error inesperado";
+
+                return RedirectToPage("/Estudiante/AsistenciaEstudianteHeaders", new { grupoId = grupoId, materiaId = materiaId });
+            }
+
+            var estudianteMaterias = estudianteMateriaResponse.Content.Data;
+            var asistenciaEstudianteHeaders = asistenciaEstudianteHeadersResponse.Content.Data;            
+
+            var grupoResponse = await grupoServiceApi.GetAsync(grupoId);
+            var grupoNombre = string.Empty;
+            if (grupoResponse.IsSuccessStatusCode)
+            {
+                grupoNombre = grupoResponse.Content.Nombre;
+            }
+
+            var materiaResponse = await materiaServiceApi.GetAsync(materiaId);
+            var materiaNombre = string.Empty;
+            if (materiaResponse.IsSuccessStatusCode)
+            {
+                materiaNombre = materiaResponse.Content.Nombre;
+            }
+
+            string renderFormart = "PDF";
+            string mimetype = "";
+            int extension = 1;
+            string reportPath = Path.Combine(_environment.WebRootPath, "Reports/ASA/ReporteAsistenciaEstudiantes.rdlc");
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
+            DataTable dataTable = new DataTable();
+            dataTable.Columns.Add("EstudianteNombre");
+            dataTable.Columns.Add("FechaAsistencia");
+            dataTable.Columns.Add("Asistencia");
+
+            //var asistenciaEstudianteHeadersGrouped = asistenciaEstudianteHeaders
+            //    .SelectMany(h => h.AsistenciaEstudiantesResponse.Select(a => new { Header = h, Asistencia = a }))
+            //    .GroupBy(x => new { x.Asistencia.EstudianteId, x.Header.MateriaId, x.Header.GrupoId })
+            //    .Select(s => new {
+            //        s.Key.EstudianteId,
+            //        s.Key.MateriaId,                    
+            //        s.Key.GrupoId,
+            //        Items = s.Select(x => new { x.Header, x.Asistencia })
+            //    });
+
+            foreach (var item in estudianteMaterias)
+            {
+                foreach (var asistenciaEstudianteDetail in asistenciaEstudianteHeaders)
+                {
+                    DataRow dataRow = dataTable.NewRow();
+                    dataRow["EstudianteNombre"] = item.EstudianteResponse.Nombre + " " + item.EstudianteResponse.ApellidoPaterno;
+                    dataRow["FechaAsistencia"] = asistenciaEstudianteDetail.Fecha.ToString("dd-MM-yyyy");
+                    var asistencia = asistenciaEstudianteDetail.AsistenciaEstudiantesResponse
+                        .Where(x => x.EstudianteId == item.EstudianteId)
+                        .Select(x => x.TipoAsistenciaResponse.Nombre)
+                        .FirstOrDefault();
+                    dataRow["Asistencia"] = asistencia == null ? "No reportado" : asistencia;
+                    dataTable.Rows.Add(dataRow);
+                }
+            }
+
+            var report = new LocalReport(reportPath);
+            report.AddDataSource("dsAsistenciaEstudiante", dataTable);
+
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("Fecha", DateTime.Today.ToString("dd-MM-yyyy"));
+            parameters.Add("TituloReporte", "Reporte Asistencia Estudiantes");
+            parameters.Add("GrupoNombre", grupoNombre);
+            parameters.Add("MateriaNombre", materiaNombre);
+
+            var result = report.Execute(RenderType.Pdf, extension, parameters, mimetype);
+
+            return File(result.MainStream, "application/pdf", "ReporteAsistenciaEstudiantes_" + DateTime.Now.Ticks + ".pdf");
         }
     }
 }

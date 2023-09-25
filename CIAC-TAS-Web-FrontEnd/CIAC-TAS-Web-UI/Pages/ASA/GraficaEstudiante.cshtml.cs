@@ -7,13 +7,14 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Refit;
 using System.Data;
 using System.Text;
+using static CIAC_TAS_Service.Contracts.V1.ApiRoute;
 
 namespace CIAC_TAS_Web_UI.Pages.ASA
 {
     public class GraficaEstudianteModel : PageModel
     {
 		[BindProperty]
-		public IEnumerable<GraficaEstudianteModelView> GraficaEstudianteModelView { get; set; } = new List<GraficaEstudianteModelView>();
+		public List<GraficaEstudianteModelView> GraficaEstudianteModelView { get; set; } = new List<GraficaEstudianteModelView>();
 
 		[BindProperty]
 		public string UserIdWhenAdmin { get; set; } = string.Empty;
@@ -54,24 +55,45 @@ namespace CIAC_TAS_Web_UI.Pages.ASA
 			}
 
 			var respuestasAsaConsolidadosLista = respuestasAsaConsolidadoResponse.Content.Data;
-			GraficaEstudianteModelView = respuestasAsaConsolidadosLista.Select(x => new GraficaEstudianteModelView
+			foreach (var item in respuestasAsaConsolidadosLista)
 			{
-				Id = x.Id,
-				LoteRespuestasId = x.LoteRespuestasId,
-				UserId = x.UserId,
-				NumeroPregunta = x.NumeroPregunta,
-				PreguntaTexto = x.PreguntaTexto,
-				FechaLote = x.FechaLote,
-				Opcion = x.Opcion,
-				RespuestaTexto = x.RespuestaTexto,
-				RespuestaCorrecta = x.RespuestaCorrecta,
-				EsExamen = x.EsExamen,
-			});
+				GraficaEstudianteModelView.Add(new ModelViews.ASA.GraficaEstudianteModelView
+				{
+                    Id = item.Id,
+                    LoteRespuestasId = item.LoteRespuestasId,
+                    UserId = item.UserId,
+                    NumeroPregunta = item.NumeroPregunta,
+                    PreguntaTexto = item.PreguntaTexto,
+                    FechaLote = item.FechaLote,
+                    Opcion = item.Opcion,
+                    RespuestaTexto = item.RespuestaTexto,
+                    RespuestaCorrecta = item.RespuestaCorrecta,
+                    EsExamen = item.EsExamen,
+                    GrupoPreguntaAsaNombre = await GetGrupoPreguntaAsaNombreByPreguntaAsaIdAsync(item.NumeroPregunta)
+                });
+            }
 
-			return Page();
+            return Page();
         }
 
-		public async Task<IActionResult> OnGetDownloadGraficaEstudianteReportAsync(Guid loteRespuestaId, string externalUserId = null)
+        private async Task<string> GetGrupoPreguntaAsaNombreByPreguntaAsaIdAsync(int numeroPregunta)
+        {
+            string grupoPreguntaAsaNombre = string.Empty;
+            var preguntaAsaServiceApi = RestService.For<IPreguntaAsaServiceApi>(_configuration.GetValue<string>("ServiceUrl"), new RefitSettings
+            {
+                AuthorizationHeaderValueGetter = () => Task.FromResult(HttpContext.Session.GetString(Session.SessionToken))
+            });
+
+            var preguntaAsaServiceResponse = await preguntaAsaServiceApi.GetByNumeroPreguntaAsync(numeroPregunta);
+            if (preguntaAsaServiceResponse.IsSuccessStatusCode)
+            {
+                grupoPreguntaAsaNombre = preguntaAsaServiceResponse.Content.GrupoPreguntaAsaResponse.Nombre;
+            }
+
+            return grupoPreguntaAsaNombre;
+        }
+
+        public async Task<IActionResult> OnGetDownloadGraficaEstudianteReportAsync(Guid loteRespuestaId, string externalUserId = null)
 		{
 			string renderFormart = "PDF";
 			string mimetype = "";
@@ -136,12 +158,24 @@ namespace CIAC_TAS_Web_UI.Pages.ASA
 			dataTable.Columns.Add("RespuestaTexto");
 			dataTable.Columns.Add("RespuestaCorrectaTexto");
 
-			var numeroPreguntasCorrectas = 0;
+            var numeroPreguntasCorrectas = 0;
 			var numeroPreguntasIncorrectas = 0;
 			var numeroPreguntasNoRespondidas = 0;
 			var numeroPreguntasNota = 0;
 
-			foreach (var item in respuestasAsaConsolidado)
+            var respuestasCorrectasAirframe = 0;
+            var respuestasIncorrectasAirframe = 0;
+            var respuestasNoRespondidasAirframe = 0;
+
+            var respuestasCorrectasGeneral = 0;
+            var respuestasIncorrectasGeneral = 0;
+            var respuestasNoRespondidasGeneral = 0;
+
+            var respuestasCorrectasPowerPlant = 0;
+            var respuestasIncorrectasPowerPlant = 0;
+            var respuestasNoRespondidasPowerPlant = 0;
+
+            foreach (var item in respuestasAsaConsolidado)
 			{
 				var respuestaCorrectaTexto = string.Empty;
 				DataRow dataRow = dataTable.NewRow();
@@ -149,26 +183,63 @@ namespace CIAC_TAS_Web_UI.Pages.ASA
 				dataRow["PreguntaTexto"] = item.PreguntaTexto;
 				dataRow["RespuestaTexto"] = item.RespuestaTexto;
 
-				if (item.RespuestaCorrecta)
+				var grupoPreguntaAsaNombre = await GetGrupoPreguntaAsaNombreByPreguntaAsaIdAsync(item.NumeroPregunta);
+
+                if (item.RespuestaCorrecta)
 				{
 					numeroPreguntasCorrectas++;
 					respuestaCorrectaTexto = "Correcto";
-				} else
+
+					if (grupoPreguntaAsaNombre == "AIRFRAME")
+					{
+						respuestasCorrectasAirframe++;
+                    } else if (grupoPreguntaAsaNombre == "GENERAL")
+					{
+						respuestasCorrectasGeneral++;
+                    } else if (grupoPreguntaAsaNombre == "POWERPLANT")
+                    {
+                        respuestasCorrectasPowerPlant++;
+                    }
+                } else
 				{
 					respuestaCorrectaTexto = "Incorrecto";
 
 					if (item.RespuestaTexto == string.Empty)
 					{
 						numeroPreguntasNoRespondidas++;
-					} else
+                        if (grupoPreguntaAsaNombre == "AIRFRAME")
+                        {
+                            respuestasNoRespondidasAirframe++;
+                        }
+                        else if (grupoPreguntaAsaNombre == "GENERAL")
+                        {
+                            respuestasNoRespondidasGeneral++;
+                        }
+                        else if (grupoPreguntaAsaNombre == "POWERPLANT")
+                        {
+                            respuestasNoRespondidasPowerPlant++;
+                        }
+                    } else
 					{
 						numeroPreguntasIncorrectas++;
-					}
+                        if (grupoPreguntaAsaNombre == "AIRFRAME")
+                        {
+                            respuestasIncorrectasAirframe++;
+                        }
+                        else if (grupoPreguntaAsaNombre == "GENERAL")
+                        {
+                            respuestasIncorrectasGeneral++;
+                        }
+                        else if (grupoPreguntaAsaNombre == "POWERPLANT")
+                        {
+                            respuestasIncorrectasPowerPlant++;
+                        }
+                    }
 				}
 
-				dataRow["RespuestaCorrectaTexto"] = respuestaCorrectaTexto;				
+				dataRow["RespuestaCorrectaTexto"] = respuestaCorrectaTexto;
 
-				dataTable.Rows.Add(dataRow);
+                dataTable.Rows.Add(dataRow);
 			}
 
 			numeroPreguntasNota = numeroPreguntasCorrectas;
@@ -182,7 +253,19 @@ namespace CIAC_TAS_Web_UI.Pages.ASA
 			parameters.Add("PreguntasNoRespondidas", numeroPreguntasNoRespondidas.ToString());
 			parameters.Add("NotaFinal", numeroPreguntasNota.ToString());
 
-			var report = new LocalReport(reportPath);
+            parameters.Add("RespuestasCorrectasAirframe", respuestasCorrectasAirframe.ToString());
+            parameters.Add("RespuestasIncorrectasAirframe", respuestasIncorrectasAirframe.ToString());
+            parameters.Add("RespuestasNoRespondidasAirframe", respuestasNoRespondidasAirframe.ToString());
+
+            parameters.Add("RespuestasCorrectasGeneral", respuestasCorrectasGeneral.ToString());
+            parameters.Add("RespuestasIncorrectasGeneral", respuestasIncorrectasGeneral.ToString());
+            parameters.Add("RespuestasNoRespondidasGeneral", respuestasNoRespondidasGeneral.ToString());
+
+            parameters.Add("RespuestasCorrectasPowerPlant", respuestasCorrectasPowerPlant.ToString());
+            parameters.Add("RespuestasIncorrectasPowerPlant", respuestasIncorrectasPowerPlant.ToString());
+            parameters.Add("RespuestasNoRespondidasPowerPlant", respuestasNoRespondidasPowerPlant.ToString());            
+
+            var report = new LocalReport(reportPath);
 			report.AddDataSource("dsCuestionarioASA", dataTable);
 
 			var result = report.Execute(RenderType.Pdf, extension, parameters, mimetype);

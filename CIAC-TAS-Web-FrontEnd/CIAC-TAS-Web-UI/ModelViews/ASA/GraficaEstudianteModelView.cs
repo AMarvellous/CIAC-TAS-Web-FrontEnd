@@ -13,5 +13,6 @@
 		public string RespuestaTexto { get; set; }
 		public bool RespuestaCorrecta { get; set; }
 		public bool EsExamen { get; set; }
+		public string GrupoPreguntaAsaNombre { get; set; }
 	}
 }

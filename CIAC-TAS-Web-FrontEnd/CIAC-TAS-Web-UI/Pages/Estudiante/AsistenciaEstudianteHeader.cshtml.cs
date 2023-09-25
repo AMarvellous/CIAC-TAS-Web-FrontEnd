@@ -24,6 +24,8 @@ namespace CIAC_TAS_Web_UI.Pages.Estudiante
         public List<SelectListItem> MateriaOptions { get; set; }
         public List<SelectListItem> ModuloOptions { get; set; }
         public List<SelectListItem> InstructorOptions { get; set; }
+        public List<SelectListItem> TipoAsistenciaOptions { get; set; }
+        
         public int GrupoId { get; set; }
         public int MateriaId { get; set; }
         public string GrupoNombre { get; set; }
@@ -80,7 +82,12 @@ namespace CIAC_TAS_Web_UI.Pages.Estudiante
                 MateriaId = AsistenciaEstudianteHeaderModelView.MateriaId,
                 ModuloId = AsistenciaEstudianteHeaderModelView.ModuloId,
                 InstructorId = AsistenciaEstudianteHeaderModelView.InstructorId,
-                Fecha = AsistenciaEstudianteHeaderModelView.Fecha
+                Fecha = AsistenciaEstudianteHeaderModelView.Fecha,
+                HoraInicio = AsistenciaEstudianteHeaderModelView.HoraInicio,
+                HoraFin = AsistenciaEstudianteHeaderModelView.HoraFin,
+                TotalHorasTeoricas = AsistenciaEstudianteHeaderModelView.TotalHorasTeoricas,
+                TotalHorasPracticas = AsistenciaEstudianteHeaderModelView.TotalHorasPracticas,
+                Tema = AsistenciaEstudianteHeaderModelView.Tema
             };
 
             var createAsistenciaEstudianteHeaderResponse = await asistenciaEstudianteHeaderApi.CreateAsync(createAsistenciaEstudianteHeaderRequest);
@@ -96,16 +103,17 @@ namespace CIAC_TAS_Web_UI.Pages.Estudiante
                 return Page();
             }
 
-            var estudianteGrupoServiceApi = GetIEstudianteGrupoServiceApi();
-            var estudianteGrupoResponse = await estudianteGrupoServiceApi.GetAllByGrupoIdAsync(grupoId);
+            var estudianteMateriaServiceApi = GetIEstudianteMateriaServiceApi();
+            var estudianteMateriaResponse = await estudianteMateriaServiceApi.GetAllByMateriaGrupoAsync(materiaId, grupoId);
 
-            if (estudianteGrupoResponse.IsSuccessStatusCode)
+            if (estudianteMateriaResponse.IsSuccessStatusCode)
             {
-                var createAsistenciaEstudianteRequest = estudianteGrupoResponse.Content.Data
+                var createAsistenciaEstudianteRequest = estudianteMateriaResponse.Content.Data
                 .Select(x => new CreateAsistenciaEstudianteRequest
                 {
                     EstudianteId = x.EstudianteId,
-                    AsistenciaEstudianteHeaderId = createAsistenciaEstudianteHeaderResponse.Content.Id
+                    AsistenciaEstudianteHeaderId = createAsistenciaEstudianteHeaderResponse.Content.Id,
+                    TipoAsistenciaId = 1 //Tipo Asistencia Presente
                 }).ToList();
 
                 var asistenciaEstudianteServiceApi = GetIAsistenciaEstudianteServiceApi();
@@ -126,7 +134,7 @@ namespace CIAC_TAS_Web_UI.Pages.Estudiante
             {
                 Message = "Ocurrio un error inesperado";
 
-                return RedirectToPage("/Estudiante/AsistenciaEstudianteHeaders");
+                return RedirectToPage("/Estudiante/AsistenciaEstudianteHeaders", new { grupoId = grupoId, materiaId = materiaId });
             }
 
             await FillSelectListsItems();
@@ -141,19 +149,26 @@ namespace CIAC_TAS_Web_UI.Pages.Estudiante
                 ModuloId = asistenciaEstudianteHeader.ModuloId,
                 InstructorId = asistenciaEstudianteHeader.InstructorId,
                 Fecha = asistenciaEstudianteHeader.Fecha,
+                HoraInicio = asistenciaEstudianteHeader.HoraInicio,
+                HoraFin = asistenciaEstudianteHeader.HoraFin,
+                TotalHorasPracticas = asistenciaEstudianteHeader.TotalHorasPracticas,
+                TotalHorasTeoricas = asistenciaEstudianteHeader.TotalHorasTeoricas,
+                Tema = asistenciaEstudianteHeader.Tema,
                 AsistenciaEstudianteModelView = asistenciaEstudianteHeader.AsistenciaEstudiantesResponse.Select(
                     x => new AsistenciaEstudianteModelView
                     {
                         Id = x.Id,
                         EstudianteId = x.EstudianteId,
                         EstudianteNombre = x.EstudianteResponse.Nombre + " " + x.EstudianteResponse.ApellidoPaterno,
+                        TipoAsistenciaId = x.TipoAsistenciaId,
+                        TipoAsistenciaNombre = x.TipoAsistenciaResponse.Nombre
                     }).ToList(),
             };
 
             return Page();
         }
 
-        public async Task<IActionResult> OnPostEditAsistenciaEstudianteHeaderAsync(int id)
+        public async Task<IActionResult> OnPostEditAsistenciaEstudianteHeaderAsync(int id, int grupoId, int materiaId)
         {
             if (!ModelState.IsValid)
             {
@@ -173,6 +188,11 @@ namespace CIAC_TAS_Web_UI.Pages.Estudiante
                 ModuloId = AsistenciaEstudianteHeaderModelView.ModuloId,
                 InstructorId = AsistenciaEstudianteHeaderModelView.InstructorId,
                 Fecha = AsistenciaEstudianteHeaderModelView.Fecha,
+                HoraInicio = AsistenciaEstudianteHeaderModelView.HoraInicio,
+                HoraFin = AsistenciaEstudianteHeaderModelView.HoraFin,
+                TotalHorasTeoricas = AsistenciaEstudianteHeaderModelView.TotalHorasTeoricas,
+                TotalHorasPracticas = AsistenciaEstudianteHeaderModelView.TotalHorasPracticas,
+                Tema = AsistenciaEstudianteHeaderModelView.Tema
             };
 
             var asistenciaEstudianteHeaderResponse = await asistenciaEstudianteHeaderServiceApi.UpdateAsync(id, asistenciaEstudianteHeaderRequest);
@@ -187,10 +207,10 @@ namespace CIAC_TAS_Web_UI.Pages.Estudiante
                 return Page();
             }
 
-            return RedirectToPage("/Estudiante/AsistenciaEstudianteHeaders");
+            return RedirectToPage("/Estudiante/AsistenciaEstudianteHeaders", new { grupoId = grupoId, materiaId = materiaId });
         }
 
-        public async Task<IActionResult> OnGetRemoveAsistenciaEstudianteAsync(int asistenciaEstudianteHeaderId, int asistenciaEstudianteId)
+        public async Task<IActionResult> OnGetRemoveAsistenciaEstudianteAsync(int asistenciaEstudianteHeaderId, int asistenciaEstudianteId, int grupoId, int materiaId)
         {
             var asistenciaEstudianteServiceApi = GetIAsistenciaEstudianteServiceApi();
             var asistenciaEstudianteResponse = await asistenciaEstudianteServiceApi.DeleteAsync(asistenciaEstudianteId);
@@ -199,10 +219,31 @@ namespace CIAC_TAS_Web_UI.Pages.Estudiante
             {
                 Message = "Ocurrio un error inesperado";
 
-                return RedirectToPage("/Estudiante/AsistenciaEstudianteHeader", "EditAsistenciaEstudianteHeader", new { id = asistenciaEstudianteHeaderId });
+                return RedirectToPage("/Estudiante/AsistenciaEstudianteHeader", "EditAsistenciaEstudianteHeader", new { id = asistenciaEstudianteHeaderId, grupoId = grupoId, materiaId = materiaId });
             }
 
-            return RedirectToPage("/Estudiante/AsistenciaEstudianteHeader", "EditAsistenciaEstudianteHeader", new { id = asistenciaEstudianteHeaderId });
+            return RedirectToPage("/Estudiante/AsistenciaEstudianteHeader", "EditAsistenciaEstudianteHeader", new { id = asistenciaEstudianteHeaderId, grupoId = grupoId, materiaId = materiaId });
+        }
+
+        public async Task<JsonResult> OnGetPatchTipoAsistenciaAsync(int asistenciaEstudianteId, int tipoAsistenciaId)
+        {
+            if (asistenciaEstudianteId == 0 || tipoAsistenciaId == 0)
+            {
+                return new JsonResult("Error al intentar actualizar la asistencia, valores no validos");
+            }
+
+            var asistenciaEstudianteServiceApi = GetIAsistenciaEstudianteServiceApi();
+            var asistenciaEstudianteServiceResponse = await asistenciaEstudianteServiceApi.PatchTipoAsistenciaIdAsync(asistenciaEstudianteId, new PatchAsistenciaEstudianteRequest
+            {
+                TipoAsistenciaId = tipoAsistenciaId
+            });
+
+            if (!asistenciaEstudianteServiceResponse.IsSuccessStatusCode)
+            {
+                return new JsonResult("Error al intentar actualizar la asistencia");
+            }
+
+            return new JsonResult("Actualizacion correcta");
         }
 
 
@@ -278,6 +319,22 @@ namespace CIAC_TAS_Web_UI.Pages.Estudiante
             });
         }
 
+        private IEstudianteMateriaServiceApi GetIEstudianteMateriaServiceApi()
+        {
+            return RestService.For<IEstudianteMateriaServiceApi>(_configuration.GetValue<string>("ServiceUrl"), new RefitSettings
+            {
+                AuthorizationHeaderValueGetter = () => Task.FromResult(HttpContext.Session.GetString(Session.SessionToken))
+            });
+        }
+
+        private ITipoAsistenciaServiceApi GetITipoAsistenciaServiceApi()
+        {
+            return RestService.For<ITipoAsistenciaServiceApi>(_configuration.GetValue<string>("ServiceUrl"), new RefitSettings
+            {
+                AuthorizationHeaderValueGetter = () => Task.FromResult(HttpContext.Session.GetString(Session.SessionToken))
+            });
+        }
+
         private async Task FillSelectListsItems()
         {
             //var programaServiceApi = GetIProgramaServiceApi();
@@ -318,6 +375,14 @@ namespace CIAC_TAS_Web_UI.Pages.Estudiante
             if (instructorResponse.IsSuccessStatusCode)
             {
                 InstructorOptions = instructorResponse.Content.Data.Select(x => new SelectListItem { Text = x.Nombres + " " + x.ApellidoPaterno, Value = x.Id.ToString() }).ToList();
+            }
+
+            var tipoAsistenciaServiceApi = GetITipoAsistenciaServiceApi();
+            var tipoAsistenciaResponse = await tipoAsistenciaServiceApi.GetAllAsync();
+
+            if (tipoAsistenciaResponse.IsSuccessStatusCode)
+            {
+                TipoAsistenciaOptions = tipoAsistenciaResponse.Content.Data.Select(x => new SelectListItem { Text = x.Nombre, Value = x.Id.ToString() }).ToList();
             }
         }
 

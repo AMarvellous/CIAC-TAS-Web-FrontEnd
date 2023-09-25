@@ -1,0 +1,130 @@
+﻿@page
+@model CIAC_TAS_Web_UI.Pages.Instructor.ProgramasAnaliticosPdfModel
+@{
+    ViewData["Title"] = "Programa Analitico";
+}
+
+<!-- From here, we should put this code as template in each page -->
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Programa Analitico Page</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a asp-page="/Index">Home</a></li>
+                        <li class="breadcrumb-item active">Programa Analitico Page</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+        <!-- Default box -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Programa Analitico</h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <a asp-page="/Instructor/ProgramaAnaliticoPdf" asp-page-handler="NewProgramaAnaliticoPdf" class="fa fa-plus" style="font-size:20px;"></a>
+
+                <table id="example2" class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Materia</th>
+                            <th>Gestion</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            foreach (var item in Model.ProgramaAnaliticoPdfModelView)
+                            {
+                                <tr>
+                                    <td>@item.MateriaNombre</td>
+                                    <td>@item.Gestion</td>
+                                    <td>
+                                        <a asp-page-handler="EditProgramaAnaliticoPdf" asp-page="/Instructor/ProgramaAnaliticoPdf" asp-route-programaAnaliticoId="@item.Id" class="fa fa-edit" style="font-size:15px;"></a> |
+                                        <!-- Button trigger modal -->
+                                        <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modal-@item.Id">
+                                            <span class="btn-label"><i class="fa fa-trash"></i></span>
+                                        </button>
+
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="modal-@item.Id" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Borrar Opcion</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        Esta seguro que desea borrar este registro? <br />
+                                                        [@item.MateriaNombre - @item.Gestion] 
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                        <a asp-page-handler="DeleteProgramaAnaliticoPdf" asp-route-programaAnaliticoId="@item.Id" asp-route-rutaPdf="@item.RutaPdf" id="deleteBtn" class="btn bg-danger mr-1">Borrar</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer">
+                @{
+                    if (Model.Message != null && Model.Message != string.Empty)
+                    {
+                        <div id="mensajeDiv" class="callout callout-danger">
+                            @Model.Message
+                        </div>
+                    }
+                }
+            </div>
+            <!-- /.card-footer-->
+        </div>
+        <!-- /.card -->
+
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+<!-- To here -->
+<script>
+    $(function () {
+        $('#paginated-table').DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+            "pageLength": 30
+        });
+
+        //align search box to left
+        $("#paginated-table_filter").parent().closest('div').removeClass("col-md-6").addClass("col-md-12")
+    });
+</script>

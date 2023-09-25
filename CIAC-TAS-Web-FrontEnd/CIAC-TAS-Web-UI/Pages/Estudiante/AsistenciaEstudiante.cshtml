@@ -26,7 +26,7 @@
 
     <!-- /.box-header -->
     <div class="col-sm-12">
-        <a asp-page="/Estudiante/AsistenciaEstudianteHeader" asp-page-handler="EditAsistenciaEstudianteHeader" asp-route-id="@ViewContext.RouteData.Values["AsistenciaEstudianteHeaderId"]" class="fa fa-arrow-circle-left" style="font-size:25px;"></a>
+        <a asp-page="/Estudiante/AsistenciaEstudianteHeader" asp-page-handler="EditAsistenciaEstudianteHeader" asp-route-id="@ViewContext.RouteData.Values["AsistenciaEstudianteHeaderId"]" asp-route-grupoId="@Model.GrupoId" asp-route-materiaId="@Model.MateriaId" class="fa fa-arrow-circle-left" style="font-size:25px;"></a>
     </div>
     <br />
 
@@ -36,7 +36,7 @@
         <!-- Default box -->
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Asistencia Estudiante</h3>
+                <h3 class="card-title">@Model.GrupoNombre - @Model.MateriaNombre</h3>
 
                 <div class="card-tools">
                     <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -52,12 +52,20 @@
                         <div class="text-danger" asp-validation-summary="ModelOnly"></div>
 
                         <div class="form-group">
-                        <label asp-for="AsistenciaEstudianteModelView.EstudianteId" class="control-label">Materia</label>
+                        <label asp-for="AsistenciaEstudianteModelView.EstudianteId" class="control-label">Estudiante</label>
                             <select asp-for="AsistenciaEstudianteModelView.EstudianteId" asp-items="Model.EstudianteOptions" class="form-control" placeholder="Seleccione una opcion">
                             <option value="">Seleccione una opcion</option>
                         </select>
                             <span asp-validation-for="AsistenciaEstudianteModelView.EstudianteId" class="text-danger"></span>
-                    </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="AsistenciaEstudianteModelView.TipoAsistenciaId" class="control-label">Asistencia</label>
+                            <select asp-for="AsistenciaEstudianteModelView.TipoAsistenciaId" asp-items="Model.TipoAsistenciaOptions" class="form-control" placeholder="Seleccione una opcion">
+                                <option value="">Seleccione una opcion</option>
+                            </select>
+                            <span asp-validation-for="AsistenciaEstudianteModelView.TipoAsistenciaId" class="text-danger"></span>
+                        </div>
 
 
                         <br />
@@ -68,12 +76,11 @@
                                     <div class="col-4">
                                         <input type="submit" asp-page-handler="EditAsistenciaEstudiante" class="btn btn-primary btn-block" value="Guardar">
                                     </div>
-
                                 }
                                 else
                                 {
                                     <div class="col-4">
-                                        <input type="submit" asp-page-handler="NewAsistenciaEstudiante" asp-route-asistenciaEstudianteHeaderId="@ViewContext.RouteData.Values["asistenciaEstudianteHeaderId"]" class="btn btn-primary btn-block" value="Crear">
+                                        <input type="submit" asp-page-handler="NewAsistenciaEstudiante" asp-route-asistenciaEstudianteHeaderId="@ViewContext.RouteData.Values["asistenciaEstudianteHeaderId"]" asp-route-grupoId="@Model.GrupoId" asp-route-materiaId="@Model.MateriaId" class="btn btn-primary btn-block" value="Crear">
                                     </div>
                                 }
                             }

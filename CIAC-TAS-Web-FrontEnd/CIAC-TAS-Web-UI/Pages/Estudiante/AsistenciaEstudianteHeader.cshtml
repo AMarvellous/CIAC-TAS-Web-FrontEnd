@@ -60,6 +60,11 @@
                                 <select asp-for="AsistenciaEstudianteHeaderModelView.InstructorId" disabled="disabled" asp-items="Model.InstructorOptions" class="form-control" placeholder="Seleccione una opcion">                                    
                                 </select>
                             </div>
+                            @Html.HiddenFor(x => x.AsistenciaEstudianteHeaderModelView.ProgramaId)
+                            @Html.HiddenFor(x => x.AsistenciaEstudianteHeaderModelView.ModuloId)
+                            @Html.HiddenFor(x => x.AsistenciaEstudianteHeaderModelView.GrupoId)
+                            @Html.HiddenFor(x => x.AsistenciaEstudianteHeaderModelView.MateriaId)
+                            @Html.HiddenFor(x => x.AsistenciaEstudianteHeaderModelView.InstructorId)
                         } else
                         {
                             <div class="form-group">
@@ -79,6 +84,33 @@
                         <span asp-validation-for="AsistenciaEstudianteHeaderModelView.Fecha" style="color:red"></span>
                     </div>
 
+                    <div class="form-group">
+                        <label asp-for="AsistenciaEstudianteHeaderModelView.HoraInicio">Hora Inicio</label>
+                        <input type="time" asp-for="AsistenciaEstudianteHeaderModelView.HoraInicio" class="form-control" placeholder="Ingrese una Hora">
+                        <span asp-validation-for="AsistenciaEstudianteHeaderModelView.HoraInicio" style="color:red"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="AsistenciaEstudianteHeaderModelView.HoraFin">Hora Fin</label>
+                        <input type="time" asp-for="AsistenciaEstudianteHeaderModelView.HoraFin" class="form-control" placeholder="Ingrese una Hora">
+                        <span asp-validation-for="AsistenciaEstudianteHeaderModelView.HoraFin" style="color:red"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="AsistenciaEstudianteHeaderModelView.TotalHorasTeoricas">Total Horas Teoricas</label>
+                        <input type="number" asp-for="AsistenciaEstudianteHeaderModelView.TotalHorasTeoricas" class="form-control" placeholder="Ingrese una Total">
+                        <span asp-validation-for="AsistenciaEstudianteHeaderModelView.TotalHorasTeoricas" style="color:red"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="AsistenciaEstudianteHeaderModelView.TotalHorasPracticas">Total Horas Practicas</label>
+                        <input type="number" asp-for="AsistenciaEstudianteHeaderModelView.TotalHorasPracticas" class="form-control" placeholder="Ingrese una Total">
+                        <span asp-validation-for="AsistenciaEstudianteHeaderModelView.TotalHorasPracticas" style="color:red"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="AsistenciaEstudianteHeaderModelView.Tema">Tema</label>
+                        <textarea asp-for="AsistenciaEstudianteHeaderModelView.Tema" class="form-control" placeholder="Ingrese un Tema"></textarea>                       
+                        <span asp-validation-for="AsistenciaEstudianteHeaderModelView.Tema" style="color:red"></span>
+                    </div>
 
                     @{
                         if (Model.AsistenciaEstudianteHeaderModelView?.Id > 0)
@@ -88,12 +120,13 @@
                             <div class="card-body">
 
                                 <p>
-                                    <a asp-page="/Estudiante/AsistenciaEstudiante" asp-page-handler="NewAsistenciaEstudiante" asp-route-AsistenciaEstudianteHeaderId="@Model.AsistenciaEstudianteHeaderModelView.Id" class="fa fa-plus" style="font-size:20px;"></a>
+                                    <a asp-page="/Estudiante/AsistenciaEstudiante" asp-page-handler="NewAsistenciaEstudiante" asp-route-asistenciaEstudianteHeaderId="@Model.AsistenciaEstudianteHeaderModelView.Id" asp-route-grupoId="@Model.GrupoId" asp-route-materiaId="@Model.MateriaId" class="fa fa-plus" style="font-size:20px;"></a>
                                 </p>
                                 <table class="table table-bordered table-hover">
                                     <thead>
                                         <tr>
                                             <th>Estudiante</th>
+                                            <th>Asistencia</th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -103,6 +136,9 @@
                                             <tr>
                                                 <td>
                                                     @Html.DisplayFor(modelItem => item.EstudianteNombre)
+                                                </td>
+                                                <td>
+                                                    @Html.DropDownListFor(x => item.TipoAsistenciaId, new SelectList(Model.TipoAsistenciaOptions, "Value", "Text"), htmlAttributes: new { @class = "form-control", id = item.Id,  onchange = "changeTipoAsistencia(this)"})
                                                 </td>
                                                 <td>                                                   
                                                     <!-- Button trigger modal -->
@@ -126,7 +162,7 @@
                                                                 </div>
                                                                 <div class="modal-footer">
                                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                                                                    <a asp-page-handler="RemoveAsistenciaEstudiante" asp-route-AsistenciaEstudianteHeaderId="@Model.AsistenciaEstudianteHeaderModelView.Id" asp-route-AsistenciaEstudianteId="@item.Id" id="deleteBtn" class="btn bg-danger mr-1">Borrar</a>
+                                                                    <a asp-page-handler="RemoveAsistenciaEstudiante" asp-route-AsistenciaEstudianteHeaderId="@Model.AsistenciaEstudianteHeaderModelView.Id" asp-route-AsistenciaEstudianteId="@item.Id" asp-route-grupoId="@Model.GrupoId" asp-route-materiaId="@Model.MateriaId" id="deleteBtn" class="btn bg-danger mr-1">Borrar</a>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -149,7 +185,7 @@
                             if (Model.AsistenciaEstudianteHeaderModelView?.Id > 0)
                             {
                                 <div class="col-4">
-                                    <input type="submit" asp-page-handler="EditAsistenciaEstudianteHeader" class="btn btn-primary btn-block" value="Guardar">
+                                    <input type="submit" asp-page-handler="EditAsistenciaEstudianteHeader" asp-route-grupoId="@Model.GrupoId" asp-route-materiaId="@Model.MateriaId" class="btn btn-primary btn-block" value="Guardar">
                                 </div>
 
                             }
@@ -186,3 +222,26 @@
 </div>
 <!-- /.content-wrapper -->
 <!-- To here -->
+<script type="text/javascript">
+
+    function changeTipoAsistencia(radioButton) {
+        var asistenciaEstudianteIdValue = $(radioButton).attr('id');
+        var tipoAsistenciaId = radioButton.value;
+
+        $.ajax({
+            url: "@Url.Page("/Estudiante/AsistenciaEstudianteHeader")/?handler=PatchTipoAsistencia",
+            method: "GET",
+            data: "asistenciaEstudianteId=" + asistenciaEstudianteIdValue + "&tipoAsistenciaId=" + tipoAsistenciaId,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("XSRF-TOKEN",
+                    $('input:hidden[name="__RequestVerificationToken"]').val());
+            },
+            error: function (ex) {
+
+            },
+            success: function (data) {
+
+            }
+        });
+    }
+</script>

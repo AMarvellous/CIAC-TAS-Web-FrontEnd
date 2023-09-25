@@ -1,159 +1,323 @@
 ﻿@page "/GraficaEstudiante/{handler?}/{loteRespuestaId?}"
 @model CIAC_TAS_Web_UI.Pages.ASA.GraficaEstudianteModel
 @{
-	ViewData["Title"] = "Grafica Estudiante Cuestionario";
+    ViewData["Title"] = "Grafica Estudiante Cuestionario";
 }
 
 <!-- From here, we should put this code as template in each page -->
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
-	<!-- Content Header (Page header) -->
-	<section class="content-header">
-		<div class="container-fluid">
-			<div class="row mb-2">
-				<div class="col-sm-6">
-					<h1>Graficas Cuestionario Page</h1>
-				</div>
-				<div class="col-sm-6">
-					<ol class="breadcrumb float-sm-right">
-						<li class="breadcrumb-item"><a asp-page="/Index">Home</a></li>
-						<li class="breadcrumb-item active">Graficas Cuestionario Page</li>
-					</ol>
-				</div>
-			</div>
-		</div><!-- /.container-fluid -->
-	</section>
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Graficas Cuestionario Page</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a asp-page="/Index">Home</a></li>
+                        <li class="breadcrumb-item active">Graficas Cuestionario Page</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
 
-	<!-- /.box-header -->
-	<div class="col-sm-12">
-		@{
-			if (Model.UserIdWhenAdmin != string.Empty)
-			{
-				<a asp-page="/ASA/GraficasEstudiante" asp-route-userId="@Model.UserIdWhenAdmin" class="fa fa-arrow-circle-left" style="font-size:25px;"></a>
-			} else
-			{
-				<a asp-page="/ASA/GraficasEstudiante" class="fa fa-arrow-circle-left" style="font-size:25px;"></a>
-			}
-		}
-		
-	</div>
-	<br />
+    <!-- /.box-header -->
+    <div class="col-sm-12">
+        @{
+            if (Model.UserIdWhenAdmin != string.Empty)
+            {
+                <a asp-page="/ASA/GraficasEstudiante" asp-route-userId="@Model.UserIdWhenAdmin" class="fa fa-arrow-circle-left" style="font-size:25px;"></a>
+            }
+            else
+            {
+                <a asp-page="/ASA/GraficasEstudiante" class="fa fa-arrow-circle-left" style="font-size:25px;"></a>
+            }
+        }
 
-	<!-- Main content -->
-	<section class="content">
+    </div>
+    <br />
 
-		<!-- Default box -->
-		<div class="card">
-			<div class="card-header">
-				<h3 class="card-title">Grafica Cuestionario</h3>
+    <!-- Main content -->
+    <section class="content">
 
-				<div class="card-tools">
-					<button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-						<i class="fas fa-minus"></i>
-					</button>
-				</div>
-			</div>
-			<div class="card-body">
+        <!-- Default box -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Grafica Cuestionario</h3>
 
-				<!-- PIE CHART -->
-				<div class="card card-danger">
-					<div class="card-header">
-						<h3 class="card-title">Cuestionario Chart</h3>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
 
-						<div class="card-tools">
-							<button type="button" class="btn btn-tool" data-card-widget="collapse">
-								<i class="fas fa-minus"></i>
-							</button>
-						</div>
-					</div>
-					<div class="card-body">
-						<label>Numero Total de Preguntas: @Model.GraficaEstudianteModelView.Count()</label>
-						<canvas id="pieChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
-						@{
-							if (Model.UserIdWhenAdmin != string.Empty)
-							{
-								<a asp-page-handler="DownloadGraficaEstudianteReport" asp-page="/ASA/GraficaEstudiante" asp-route-loteRespuestaId="@ViewContext.RouteData.Values["loteRespuestaId"]" asp-route-externalUserId="@Model.UserIdWhenAdmin" class="fas fa-file-pdf" style="font-size:15px;"> Download PDF</a>
-							} else
-							{
-								<a asp-page-handler="DownloadGraficaEstudianteReport" asp-page="/ASA/GraficaEstudiante" asp-route-loteRespuestaId="@ViewContext.RouteData.Values["loteRespuestaId"]" class="fas fa-file-pdf" style="font-size:15px;"> Download PDF</a>
-							}
-						}						
-					</div>
-					<!-- /.card-body -->
-				</div>
-				<!-- /.card -->
+                <!-- PIE CHART -->
+                <div class="card card-danger">
+                    <div class="card-header">
+                        <h3 class="card-title">Cuestionario Chart</h3>
 
-			</div>
-			<!-- /.card-body -->
-			<div class="card-footer">
-				@{
-					if (Model.Message != null && Model.Message != string.Empty)
-					{
-						<div id="mensajeDiv" class="callout callout-danger">
-							@Model.Message
-						</div>
-					}
-				}
-			</div>
-			<!-- /.card-footer-->
-		</div>
-		<!-- /.card -->
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <label>Numero Total de Preguntas: @Model.GraficaEstudianteModelView.Count()</label>
+                        <canvas id="pieChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                        <canvas id="barChartAirframe" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                       
+                        @{
+                            if (Model.UserIdWhenAdmin != string.Empty)
+                            {
+                                <a asp-page-handler="DownloadGraficaEstudianteReport" asp-page="/ASA/GraficaEstudiante" asp-route-loteRespuestaId="@ViewContext.RouteData.Values["loteRespuestaId"]" asp-route-externalUserId="@Model.UserIdWhenAdmin" class="fas fa-file-pdf" style="font-size:15px;"> Download PDF</a>
+                            }
+                            else
+                            {
+                                <a asp-page-handler="DownloadGraficaEstudianteReport" asp-page="/ASA/GraficaEstudiante" asp-route-loteRespuestaId="@ViewContext.RouteData.Values["loteRespuestaId"]" class="fas fa-file-pdf" style="font-size:15px;"> Download PDF</a>
+                            }
+                        }
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
 
-	</section>
-	<!-- /.content -->
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer">
+                @{
+                    if (Model.Message != null && Model.Message != string.Empty)
+                    {
+                        <div id="mensajeDiv" class="callout callout-danger">
+                            @Model.Message
+                        </div>
+                    }
+                }
+            </div>
+            <!-- /.card-footer-->
+        </div>
+        <!-- /.card -->
+
+    </section>
+    <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
 <!-- To here -->
 @section scripts {
-	<script>
-		//-------------
-		//- PIE CHART -
-		//-------------
+    <script>
+        //-------------
+        //- PIE CHART -
+        //-------------
 
-		var graficaEstudianteModelView = @Html.Raw(Json.Serialize(Model.GraficaEstudianteModelView));
+        var graficaEstudianteModelView = @Html.Raw(Json.Serialize(Model.GraficaEstudianteModelView));
 
-		var numeroCorrectas = 0;
-		var numeroIncorrectas = 0;
-		var numeroNoRespondidas = 0;
+        var numeroCorrectas = 0;
+        var numeroIncorrectas = 0;
+        var numeroNoRespondidas = 0;
 
-		$.each(graficaEstudianteModelView, function (index, item) {
-			if (item.opcion == null) {
-				numeroNoRespondidas = numeroNoRespondidas + 1;
-			} else {
-				if (item.respuestaCorrecta) {
-					numeroCorrectas = numeroCorrectas + 1;
-				} else {
-					numeroIncorrectas = numeroIncorrectas + 1;
-				}
-			}
-		});
+        var numeroCorrectasAirframe = 0;
+        var numeroIncorrectasAirframe = 0;
+        var numeroNoRespondidasAirframe = 0;
 
-		var donutData = {
-			labels: [
-				'Incorrectas',
-				'Correctas',
-				'No Respondidas',
-			],
-			datasets: [
-				{
-					data: [numeroIncorrectas, numeroCorrectas, numeroNoRespondidas],
-					backgroundColor: ['#f56954', '#00a65a', '#d2d6de'],
-				}
-			]
-		}
+        var numeroCorrectasGeneral = 0;
+        var numeroIncorrectasGeneral = 0;
+        var numeroNoRespondidasGeneral = 0;
 
-		var pieChartCanvas = $('#pieChart').get(0).getContext('2d')
-		var pieData = donutData;
-		var pieOptions = {
-			maintainAspectRatio: false,
-			responsive: true,
-		}
-		//Create pie or douhnut chart
-		// You can switch between pie and douhnut using the method below.
-		new Chart(pieChartCanvas, {
-			type: 'pie',
-			data: pieData,
-			options: pieOptions
-		})
-	</script>
+        var numeroCorrectasPowerPlant = 0;
+        var numeroIncorrectasPowerPlant = 0;
+        var numeroNoRespondidasPowerPlant = 0;
+
+        $.each(graficaEstudianteModelView, function (index, item) {
+            if (item.opcion == null) {
+                numeroNoRespondidas = numeroNoRespondidas + 1;
+
+                if (item.grupoPreguntaAsaNombre == "AIRFRAME") {
+                    numeroNoRespondidasAirframe = numeroNoRespondidasAirframe + 1;
+                } else if (item.grupoPreguntaAsaNombre == "GENERAL") {
+                    numeroNoRespondidasGeneral = numeroNoRespondidasGeneral + 1;
+                } else if (item.grupoPreguntaAsaNombre == "POWERPLANT") {
+                    numeroNoRespondidasPowerPlant = numeroNoRespondidasPowerPlant + 1;
+                }
+            } else {
+                if (item.respuestaCorrecta) {
+                    numeroCorrectas = numeroCorrectas + 1;
+
+                    if (item.grupoPreguntaAsaNombre == "AIRFRAME") {
+                        numeroCorrectasAirframe = numeroCorrectasAirframe + 1;
+                    } else if (item.grupoPreguntaAsaNombre == "GENERAL") {
+                        numeroCorrectasGeneral = numeroCorrectasGeneral + 1;
+                    } else if (item.grupoPreguntaAsaNombre == "POWERPLANT") {
+                        numeroCorrectasPowerPlant = numeroCorrectasPowerPlant + 1;
+                    }
+                } else {
+                    numeroIncorrectas = numeroIncorrectas + 1;
+
+                    if (item.grupoPreguntaAsaNombre == "AIRFRAME") {
+                        numeroIncorrectasAirframe = numeroIncorrectasAirframe + 1;
+                    } else if (item.grupoPreguntaAsaNombre == "GENERAL") {
+                        numeroIncorrectasGeneral = numeroIncorrectasGeneral + 1;
+                    } else if (item.grupoPreguntaAsaNombre == "POWERPLANT") {
+                        numeroIncorrectasPowerPlant = numeroIncorrectasPowerPlant + 1;
+                    }
+                }
+            }
+        });
+
+        var donutData = {
+            labels: [
+                'Incorrectas',
+                'Correctas',
+                'No Respondidas',
+            ],
+            datasets: [
+                {
+                    data: [numeroIncorrectas, numeroCorrectas, numeroNoRespondidas],
+                    backgroundColor: ['#f56954', '#00a65a', '#d2d6de'],
+                }
+            ]
+        }
+
+        //var donutDataAirframe = {
+        //	labels: [
+        //		'Incorrectas',
+        //		'Correctas',
+        //		'No Respondidas',
+        //	],
+        //	datasets: [
+        //		{
+        //			data: [numeroIncorrectasAirframe, numeroCorrectasAirframe, numeroNoRespondidasAirframe],
+        //			backgroundColor: ['#f56954', '#00a65a', '#d2d6de'],
+        //		}
+        //	]
+        //}
+
+        //var donutDataGeneral = {
+        //	labels: [
+        //		'Incorrectas',
+        //		'Correctas',
+        //		'No Respondidas',
+        //	],
+        //	datasets: [
+        //		{
+        //			data: [numeroIncorrectasGeneral, numeroCorrectasGeneral, numeroNoRespondidasGeneral],
+        //			backgroundColor: ['#f56954', '#00a65a', '#d2d6de'],
+        //		}
+        //	]
+        //}
+
+        //var donutDataPowerPlant = {
+        //	labels: [
+        //		'Incorrectas',
+        //		'Correctas',
+        //		'No Respondidas',
+        //	],
+        //	datasets: [
+        //		{
+        //			data: [numeroIncorrectasPowerPlant, numeroCorrectasPowerPlant, numeroNoRespondidasPowerPlant],
+        //			backgroundColor: ['#f56954', '#00a65a', '#d2d6de'],
+        //		}
+        //	]
+        //}
+
+        var pieChartCanvas = $('#pieChart').get(0).getContext('2d')
+        var pieData = donutData;
+        var pieOptions = {
+            maintainAspectRatio: false,
+            responsive: true,
+        }
+        //Create pie or douhnut chart
+        // You can switch between pie and douhnut using the method below.
+        new Chart(pieChartCanvas, {
+        	type: 'pie',
+        	data: pieData,
+        	options: pieOptions
+        })
+
+        //var pieChartCanvasAirframe = $('#pieChartAirframe').get(0).getContext('2d')
+        //new Chart(pieChartCanvasAirframe, {
+        //	type: 'pie',
+        //	data: donutDataAirframe,
+        //	options: pieOptions
+        //})
+
+        //var pieChartCanvasGeneral = $('#pieChartGeneral').get(0).getContext('2d')
+        //new Chart(pieChartCanvasGeneral, {
+        //	type: 'pie',
+        //	data: donutDataGeneral,
+        //	options: pieOptions
+        //})
+
+        //var pieChartCanvasPowerPlant = $('#pieChartPowerPlant').get(0).getContext('2d')
+        //new Chart(pieChartCanvasPowerPlant, {
+        //	type: 'pie',
+        //	data: donutDataPowerPlant,
+        //	options: pieOptions
+        //})
+
+        //-------------
+        //- BAR CHART -
+        //-------------
+        var areaChartData = {
+            labels: ['Airframe', 'General', 'PowerPlant'],
+            datasets: [
+                {
+                    label: 'Correctas',
+                    backgroundColor: '#00a65a',
+                    borderColor: '#00a65a',
+                    pointRadius: false,
+                    pointColor: '#00a65a',
+                    pointStrokeColor: '#00a65a',
+                    pointHighlightFill: '#00a65a',
+                    pointHighlightStroke: '#00a65a',
+                    data: [numeroCorrectasAirframe, numeroCorrectasGeneral, numeroCorrectasPowerPlant]
+                },
+                {
+                    label: 'Incorrectas',
+                    backgroundColor: '#f56954',
+                    borderColor: '#f56954',
+                    pointRadius: false,
+                    pointColor: '#f56954',
+                    pointStrokeColor: '#f56954',
+                    pointHighlightFill: '#f56954',
+                    pointHighlightStroke: '#f56954',
+                    data: [numeroIncorrectasAirframe, numeroIncorrectasGeneral, numeroIncorrectasPowerPlant]
+                },
+                {
+                    label: 'No Respondidas',
+                    backgroundColor: '#d2d6de',
+                    borderColor: '#d2d6de',
+                    pointRadius: false,
+                    pointColor: '#d2d6de',
+                    pointStrokeColor: '#d2d6de',
+                    pointHighlightFill: '#d2d6de',
+                    pointHighlightStroke: '#d2d6de',
+                    data: [numeroNoRespondidasAirframe, numeroNoRespondidasGeneral, numeroNoRespondidasPowerPlant]
+                }
+            ]
+        }
+
+        var barChartCanvas = $('#barChartAirframe').get(0).getContext('2d')
+        var barChartData = $.extend(true, {}, areaChartData)
+        var temp0 = areaChartData.datasets[0]
+        var temp1 = areaChartData.datasets[1]
+        barChartData.datasets[0] = temp1
+        barChartData.datasets[1] = temp0
+
+        var barChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            datasetFill: false
+        }
+
+        new Chart(barChartCanvas, {
+            type: 'bar',
+            data: barChartData,
+            options: barChartOptions
+        })
+    </script>
 }

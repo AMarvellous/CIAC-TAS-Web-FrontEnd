@@ -116,6 +116,6 @@ namespace CIAC_TAS_Web_UI.Pages.ASA
             var result = report.Execute(RenderType.Pdf, extension, parameters, mimetype);
 
             return File(result.MainStream, "application/pdf", "ExamenASAGenerado_" + grupoNombre + "_" + DateTime.Now.Ticks + ".pdf");
-        }    
+        }
     }
 }

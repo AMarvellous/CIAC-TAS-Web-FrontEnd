@@ -1,0 +1,193 @@
+﻿@page "/EstudianteMateria/{grupoId?}/{estudianteId?}"
+@model CIAC_TAS_Web_UI.Pages.Estudiante.EstudianteMateriaModel
+@{
+    ViewData["Title"] = "Estudiantes Materias";
+}
+
+<!-- From here, we should put this code as template in each page -->
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Estudiantes Materias Page</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a asp-page="/Index">Home</a></li>
+                        <li class="breadcrumb-item active">Estudiantes Materias Page</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- /.box-header -->
+    <div class="col-sm-12">
+        <a asp-page="/Estudiante/EstudiantesMateriasEstudiantes" asp-route-grupoId="@ViewContext.RouteData.Values["grupoId"]" class="fa fa-arrow-circle-left" style="font-size:25px;"></a>
+    </div>
+    <br />
+
+    <!-- Main content -->
+    <section class="content">
+
+        <!-- Default box -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">@Model.NombreGrupo - @Model.NombreEstudiante</h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#modal-materia">
+                    <span class="btn-label"><i class="fa fa-plus"></i></span>
+                </button>
+                <!-- Modal -->
+                <div class="modal fade" id="modal-materia" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Asignar Estudiantes a grupo</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                Seleccione un Grupo<br />
+                                <div class="form-group">
+                                    <label asp-for="NewMateriaId" class="control-label">Grupo</label>
+                                    <select asp-for="NewMateriaId" asp-items="Model.MateriaOptions" class="form-control" placeholder=" Seleccione una opcion">
+                                        <option value="">Seleccione una opcion</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                <button type="button" id="agregarBtn" onclick="addNewEstudianteMateria(this)" class="btn btn-primary" data-estudianteId="@Model.EstudianteId" data-grupoId="@Model.GrupoId">Agregar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <a asp-page="/Estudiante/EstudianteMateria" asp-page-handler="AsignarTodasEstudianteMateria" asp-route-estudianteId="@Model.EstudianteId" asp-route-grupoId="@Model.GrupoId" class="fa fa-plus float-right btn-outline-info btn-flat">Todas las Materias</a>
+
+                <table id="paginated-table" class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Materia</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            var i = 1;
+                            foreach (var item in Model.EstudianteMateriaModelView)
+                            {
+                                        <tr>
+                                            <td>@item.MateriaNombre</td>
+                                            <td>
+                                                <!-- Button trigger modal -->
+                                                <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modal-@item.MateriaId">
+                                                    <span class="btn-label"><i class="fa fa-trash"></i></span>
+                                                </button>
+
+                                                <!-- Modal -->
+                                                <div class="modal fade" id="modal-@item.MateriaId" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLabel">Borrar Grupo</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                Esta seguro que desea borrar este registro? <br />
+                                                                [@item.MateriaNombre]
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                                <a asp-page-handler="RemoveMateriaFromEstudiante" asp-route-grupoId="@item.GrupoId" asp-route-estudianteId="@item.EstudianteId" asp-route-materiaId="@item.MateriaId" id="deleteBtn" class="btn bg-danger mr-1">Borrar</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer">
+                @{
+                    if (Model.Message != null && Model.Message != string.Empty)
+                    {
+                                <div id="mensajeDiv" class="callout callout-danger">
+                            @Model.Message
+                                </div>
+                    }
+                }
+            </div>
+            <!-- /.card-footer-->
+        </div>
+        <!-- /.card -->
+
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<!-- To here -->
+<script type="text/javascript">
+    $(function () {
+        $('#paginated-table').DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+            "pageLength": 30
+        });
+
+        //align search box to left
+        $("#paginated-table_filter").parent().closest('div').removeClass("col-md-6").addClass("col-md-12")
+    });
+
+    function addNewEstudianteMateria(btn) {
+        var materiaId = $('#NewMateriaId').val();
+        if (materiaId != '') {
+            var estudianteId = $(btn).attr('data-estudianteId');
+            var grupoId = $(btn).attr('data-grupoId');
+
+            $.ajax({
+            url: "@Url.Page("/Estudiante/EstudianteMateria")/?handler=CreateEstudianteMateria",
+            method: "GET",
+            data: "estudianteId=" + estudianteId + "&grupoId=" + grupoId + "&materiaId=" + materiaId,
+            //beforeSend: function (xhr) {
+            //    xhr.setRequestHeader("XSRF-TOKEN",
+            //        $('input:hidden[name="__RequestVerificationToken"]').val());
+            //},
+            error: function (ex) {
+
+            },
+            success: function (data) {
+                //window.location = '@Url.Page("/Estudiante/EstudianteMateria")/?grupoId=' + grupoId + '&estudianteId=' + estudianteId;
+                window.location.reload(true);
+            }
+        });
+        }
+    }
+</script>

@@ -1,0 +1,143 @@
+﻿@page
+@model CIAC_TAS_Web_UI.Pages.Instructor.ProgramaAnaliticoPdfModel
+@{
+    ViewData["Title"] = "Programa Analitico";
+}
+
+<!-- From here, we should put this code as template in each page -->
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Programa Analitico Page</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a asp-page="/Index">Home</a></li>
+                        <li class="breadcrumb-item active">Programa Analitico Page</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- /.box-header -->
+    <div class="col-sm-12">
+        <a asp-page="/Instructor/ProgramasAnaliticosPdf" class="fa fa-arrow-circle-left" style="font-size:25px;"></a>
+    </div>
+    <br />
+
+    <!-- Main content -->
+    <section class="content">
+
+        <!-- Default box -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Programa Analitico</h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+
+                    <div class="form-group">
+                        <label asp-for="ProgramaAnaliticoPdfModelView.Gestion" class="control-label"></label>
+                        <input asp-for="ProgramaAnaliticoPdfModelView.Gestion" class="form-control" />
+                        <span asp-validation-for="ProgramaAnaliticoPdfModelView.Gestion" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="ProgramaAnaliticoPdfModelView.MateriaId" class="control-label">Materia</label>
+                        <select asp-for="ProgramaAnaliticoPdfModelView.MateriaId" asp-items="Model.MateriaOptions" class="form-control" placeholder="Seleccione una opcion">
+                            <option value="">Seleccione una opcion</option>
+                        </select>
+                        <span asp-validation-for="ProgramaAnaliticoPdfModelView.MateriaId" class="text-danger"></span>
+                    </div>
+
+                    @{
+                        if (Model.ProgramaAnaliticoPdfModelView?.RutaPdf != null && Model.ProgramaAnaliticoPdfModelView?.RutaPdf != "")
+                        {
+                            <div class="item">
+                                <embed 
+                                src="@Url.Content("~/dist/uploads/ProgramaAnalitico/" + Model.ProgramaAnaliticoPdfModelView.RutaPdf)"
+                                style="width: 300px; height: 300px;"/>
+                                <input asp-for="ProgramaAnaliticoPdfModelView.RutaPdf" hidden="hidden"></input>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="form-group">
+                                <label asp-for="ProgramaAnaliticoPdfModelView.RutaPdf" class="control-label">Pdf</label>
+                                <input type="file" asp-for="UploadFile" class="form-control" accept="application/pdf" />
+                                <span asp-validation-for="ProgramaAnaliticoPdfModelView.RutaPdf" class="text-danger"></span>
+                            </div>
+                        }
+                    }
+
+                    <br />
+                    <div class="row">
+                        @{
+                            if (Model.ProgramaAnaliticoPdfModelView?.Id > 0)
+                            {
+                                <div class="col-4">
+                                    <input type="submit" asp-page-handler="EditProgramaAnalitico" asp-route-programaAnaliticoId="@Model.ProgramaAnaliticoPdfModelView.Id" asp-route-rutaPdf="@Model.ProgramaAnaliticoPdfModelView.RutaPdf" class="btn btn-primary btn-block" value="Guardar">
+                                </div>
+
+                            }
+                            else
+                            {
+                                <div class="col-4">
+                                    <input type="submit" class="btn btn-primary btn-block" value="Crear">
+                                </div>
+                            }
+                        }
+
+                        <!-- /.col -->
+                    </div>
+                </form>
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer">
+                @{
+                    if (Model.Message != null && Model.Message != string.Empty)
+                    {
+                        <div id="mensajeDiv" class="callout callout-danger">
+                            @Model.Message
+                        </div>
+                    }
+                }
+            </div>
+            <!-- /.card-footer-->
+        </div>
+        <!-- /.card -->
+
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+<!-- To here -->
+<script>
+    $(function () {
+        $('#paginated-table').DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+            "pageLength": 30
+        });
+
+        //align search box to left
+        $("#paginated-table_filter").parent().closest('div').removeClass("col-md-6").addClass("col-md-12")
+    });
+</script>
