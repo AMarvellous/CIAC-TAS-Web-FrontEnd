@@ -411,8 +411,8 @@
                                 </TablixMembers>
                               </TablixRowHierarchy>
                               <DataSetName>dsAsistenciaEstudiante</DataSetName>
-                              <Top>1.05156cm</Top>
-                              <Left>0.25917cm</Left>
+                              <Top>1.36906cm</Top>
+                              <Left>5.57201cm</Left>
                               <Height>1.2cm</Height>
                               <Width>8.38567cm</Width>
                               <ZIndex>2</ZIndex>
@@ -440,7 +440,7 @@
                               </Paragraphs>
                               <rd:DefaultName>Textbox1</rd:DefaultName>
                               <Top>2.74545cm</Top>
-                              <Left>0.25917cm</Left>
+                              <Left>7.15576cm</Left>
                               <Height>0.6cm</Height>
                               <Width>2.54233cm</Width>
                               <ZIndex>3</ZIndex>
@@ -472,7 +472,7 @@
                               </Paragraphs>
                               <rd:DefaultName>AsistenciaPorcentaje</rd:DefaultName>
                               <Top>2.74545cm</Top>
-                              <Left>2.90734cm</Left>
+                              <Left>9.80393cm</Left>
                               <Height>0.6cm</Height>
                               <Width>1.679cm</Width>
                               <ZIndex>4</ZIndex>

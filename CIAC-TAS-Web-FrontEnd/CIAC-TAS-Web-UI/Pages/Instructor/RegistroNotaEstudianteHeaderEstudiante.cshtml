@@ -1,0 +1,91 @@
+﻿@page "/RegistroNotaEstudianteHeaderEstudiante/{grupoId?}/{materiaId?}"
+@model CIAC_TAS_Web_UI.Pages.Instructor.RegistroNotaEstudianteHeaderEstudianteModel
+@{
+    ViewData["Title"] = "RegistroNotasEstudianteHeader";
+}
+
+<!-- From here, we should put this code as template in each page -->
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Registro Notas Estudiante Page</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a asp-page="/Index">Home</a></li>
+                        <li class="breadcrumb-item active">Registro Notas Estudiante Page</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+     <!-- /.box-header -->
+    <div class="col-sm-12">
+        <a asp-page-handler="ViewRegistroNotaEstudianteHeaders" asp-page="/Instructor/RegistroNotaEstudianteHeaders" asp-route-grupoId="@Model.GrupoId" asp-route-materiaId="@Model.MateriaId" asp-route-registroNotaHeaderId="@Model.RegistroNotaHeaderId" class="fa fa-arrow-circle-left" style="font-size:25px;"></a>
+    </div>
+    <br />
+
+    <!-- Main content -->
+    <section class="content">
+
+        <!-- Default box -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">@Model.GrupoNombre - @Model.MateriaNombre</h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+
+                    @Html.HiddenFor(x => x.GrupoId)
+                    @Html.HiddenFor(x => x.MateriaId)
+
+                    <div class="form-group">
+                        <label asp-for="RegistroNotaEstudianteHeaderModelView.EstudianteId" class="control-label">Estudiante</label>
+                        <select asp-for="RegistroNotaEstudianteHeaderModelView.EstudianteId" asp-items="Model.EstudianteOptions" class="form-control" placeholder="Seleccione una opcion">
+                            <option value="">Seleccione una opcion</option>
+                        </select>
+                        <span asp-validation-for="RegistroNotaEstudianteHeaderModelView.EstudianteId" class="text-danger"></span>
+                    </div>
+                    <br />
+
+                    <div class="row">
+                        <div class="col-4">
+                            <input type="submit" asp-page-handler="AddNewEstudianteRegistroNotaEstudianteHeader" asp-route-grupoId="@Model.GrupoId" asp-route-materiaId="@Model.MateriaId" asp-route-registroNotaHeaderId="@Model.RegistroNotaHeaderId" class="btn btn-primary btn-block" value="Agregar">
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                </form>
+
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer">
+                @{
+                    if (Model.Message != null && Model.Message != string.Empty)
+                    {
+                        <div id="mensajeDiv" class="callout callout-danger">
+                            @Model.Message
+                        </div>
+                    }
+                }
+            </div>
+            <!-- /.card-footer-->
+        </div>
+        <!-- /.card -->
+
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+<!-- To here -->

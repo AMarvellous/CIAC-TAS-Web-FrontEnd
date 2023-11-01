@@ -25,6 +25,8 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 builder.Services.AddScoped<ICuestionarioASAHelper, CuestionarioASAHelper>();
+builder.Services.AddScoped<InstructorSession, InstructorSession>();
+builder.Services.AddScoped<EstudianteSession, EstudianteSession>();
 
 builder.Services.AddAntiforgery(o => o.HeaderName = "XSRF-TOKEN");
 builder.Services.AddAntiforgery(o => o.SuppressXFrameOptionsHeader = true);

@@ -1,0 +1,263 @@
+﻿@page "/RegistroNota/{handler?}"
+@model CIAC_TAS_Web_UI.Pages.Instructor.RegistroNotaModel
+@{
+    ViewData["Title"] = "RegistroNotas";
+}
+
+<!-- From here, we should put this code as template in each page -->
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Registro Notas Page</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a asp-page="/Index">Home</a></li>
+                        <li class="breadcrumb-item active">Registro Notas Page</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- /.box-header -->
+    <div class="col-sm-12">
+        <a asp-page="/Instructor/RegistroNotaEstudianteHeaders" asp-page-handler="ViewRegistroNotaEstudianteHeaders" asp-route-registroNotaHeaderId="@Model.RegistroNotaHeaderId" asp-route-grupoId="@Model.GrupoId" asp-route-materiaId="@Model.MateriaId" class="fa fa-arrow-circle-left" style="font-size:25px;"></a>
+    </div>
+    <br />
+
+    <!-- Main content -->
+    <section class="content">
+
+        <!-- Default box -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">@Model.GrupoNombre - @Model.MateriaNombre - @Model.EstudianteNombre</h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+
+                    @Html.HiddenFor(x => x.GrupoId)
+                    @Html.HiddenFor(x => x.MateriaId)
+                    <br />
+
+                    <div class="float-start">
+                        @*<p>
+                        <a asp-page="/Instructor/RegistroNota" asp-page-handler="AddRegistroNotaEstudiante" asp-route-registroNotaEstudianteHeaderId="@Model.RegistroNotaEstudianteHeaderId" class="fa fa-plus" style="font-size:20px;"></a>
+                        </p>*@
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#modal-registroNotaEstudiante">
+                            <span class="btn-label"><i class="fa fa-plus"></i></span>
+                        </button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="modal-registroNotaEstudiante" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Nota Estudiante</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <label asp-for="NotaEstudianteOptionSelected" class="control-label">Tipo de Calificacion</label>
+                                            <select asp-for="NotaEstudianteOptionSelected" asp-items="Model.NotaEstudianteOptions" class="form-control" placeholder=" Seleccione una opcion">
+                                                <option value="">Seleccione una opcion</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="NotaEstudiante">Nota</label>
+                                            <input type="number" asp-for="NotaEstudiante" class="form-control" placeholder="Ingrese una Total">
+                                            <span asp-validation-for="NotaEstudiante" style="color:red"></span>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                        <button type="button" id="agregarBtn" onclick="AddRegistroNotaEstudiante(this)" class="btn btn-primary" data-registroNotaEstudianteHeaderId="@Model.RegistroNotaEstudianteHeaderId">Agregar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <table id="paginated-table" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Nota</th>
+                                <th>Tipo Nota</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.RegistroNotaEstudianteModelView)
+                            {
+                                <tr>
+                                    <td>
+                                        @item.Nota
+                                    </td>
+                                    <td>
+                                        @item.TipoNotaTexto
+                                    </td>
+                                    <td>
+                                        <!-- Button trigger modal -->
+                                        <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#modalEdit-@item.Id@item.RegistroNotaEstudianteHeaderId">
+                                            <span class="btn-label"><i class="fa fa-edit"></i></span>
+                                        </button>
+
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="modalEdit-@item.Id@item.RegistroNotaEstudianteHeaderId" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="modalLabel">Editar Nota</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="form-group">
+                                                            <label>Nota</label>
+                                                            <input type="number" id="notaEstudianteEdit_@item.Id" name="notaEstudianteEdit_@item.Id" class="form-control" placeholder="Ingrese una Total" value="@item.Nota">
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                        <button type="button" id="editBtn" onclick="EditRegistroNotaEstudiante(this)" class="btn btn-primary" data-registroNotaEstudianteId="@item.Id" data-tipoDominio="@item.TipoDominio" data-registroNotaEstudianteHeaderId="@Model.RegistroNotaEstudianteHeaderId">Actualizar</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        |
+                                        <!-- Button trigger modal -->
+                                        <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modal-@item.Id@item.RegistroNotaEstudianteHeaderId">
+                                            <span class="btn-label"><i class="fa fa-trash"></i></span>
+                                        </button>
+
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="modal-@item.Id@item.RegistroNotaEstudianteHeaderId" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Borrar Nota</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        Esta seguro que desea borrar este registro? <br />
+                                                        [@item.Nota]
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                        <a asp-page-handler="DeleteRegistroNotaEstudiante" asp-route-registroNotaEstudianteId="@item.Id" asp-route-registroNotaEstudianteHeaderId="@Model.RegistroNotaEstudianteHeaderId" asp-route-grupoId="@Model.GrupoId" asp-route-materiaId="@Model.MateriaId" asp-route-registroNotaHeaderId="@Model.RegistroNotaHeaderId" asp-route-estudianteId="@Model.EstudianteId" id="deleteBtn" class="btn bg-danger mr-1">Borrar</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer">
+                @{
+                    if (Model.Message != null && Model.Message != string.Empty)
+                    {
+                        <div id="mensajeDiv" class="callout callout-danger">
+                            @Model.Message
+                        </div>
+                    }
+                }
+            </div>
+            <!-- /.card-footer-->
+        </div>
+        <!-- /.card -->
+
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+<!-- To here -->
+
+<script>
+    $(function () {
+        $('#paginated-table').DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "searching": true,
+            "order": [[0, "desc"]],
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+            "pageLength": 30
+        });
+
+        //align search box to left
+        $("#paginated-table_filter").parent().closest('div').removeClass("col-md-6").addClass("col-md-12")
+    });
+
+    function AddRegistroNotaEstudiante(btn) {
+        var NotaEstudianteOptionSelected = $('#NotaEstudianteOptionSelected').val();
+        var NotaEstudiante = $('#NotaEstudiante').val();
+        if (NotaEstudiante != '' && NotaEstudianteOptionSelected != '') {
+            var registroNotaEstudianteHeaderId = $(btn).attr('data-registroNotaEstudianteHeaderId');
+
+            $.ajax({
+                url: "@Url.Page("/Instructor/RegistroNota")/?handler=AddregistroNotaEstudiante",
+                method: "GET",
+                data: "registroNotaEstudianteHeaderId=" + registroNotaEstudianteHeaderId + "&notaEstudianteOptionSelected=" + NotaEstudianteOptionSelected + "&notaEstudiante=" + NotaEstudiante,
+                //beforeSend: function (xhr) {
+                //    xhr.setRequestHeader("XSRF-TOKEN",
+                //        $('input:hidden[name="__RequestVerificationToken"]').val());
+                //},
+                error: function (ex) {
+
+                },
+                success: function (data) {
+                    window.location.reload(true);
+                }
+            });
+        }
+    }
+
+    function EditRegistroNotaEstudiante(btn) {
+        var registroNotaEstudianteId = $(btn).attr('data-registroNotaEstudianteId');
+        var NotaEstudianteEdit = $('#notaEstudianteEdit_' + registroNotaEstudianteId).val();
+
+        if (NotaEstudianteEdit != '') {
+            var registroNotaEstudianteHeaderId = $(btn).attr('data-registroNotaEstudianteHeaderId');
+            var registroNotaEstudianteId = $(btn).attr('data-registroNotaEstudianteId');
+            var tipoDominio = $(btn).attr('data-tipoDominio');
+
+            $.ajax({
+                url: "@Url.Page("/Instructor/RegistroNota")/?handler=EditRegistroNotaEstudiante",
+                method: "GET",
+                data: "registroNotaEstudianteId=" + registroNotaEstudianteId + "&registroNotaEstudianteHeaderId=" + registroNotaEstudianteHeaderId + "&notaEstudiante=" + NotaEstudianteEdit + "&tipoDominio=" + tipoDominio,
+                //beforeSend: function (xhr) {
+                //    xhr.setRequestHeader("XSRF-TOKEN",
+                //        $('input:hidden[name="__RequestVerificationToken"]').val());
+                //},
+                error: function (ex) {
+
+                },
+                success: function (data) {
+                    window.location.reload(true);
+                }
+            });
+        }
+    }
+</script>

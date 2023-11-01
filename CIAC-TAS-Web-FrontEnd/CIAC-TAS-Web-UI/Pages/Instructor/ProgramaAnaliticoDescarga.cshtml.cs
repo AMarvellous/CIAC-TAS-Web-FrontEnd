@@ -21,23 +21,19 @@ namespace CIAC_TAS_Web_UI.Pages.Instructor
         public IEnumerable<ProgramaAnaliticoPdfModelView> ProgramaAnaliticoPdfModelView { get; set; } = new List<ProgramaAnaliticoPdfModelView>();
         private readonly IConfiguration _configuration;
         private readonly Microsoft.AspNetCore.Hosting.IHostingEnvironment _environment;
-        public ProgramaAnaliticoDescargaModel(IConfiguration configuration, Microsoft.AspNetCore.Hosting.IHostingEnvironment environment)
+        private readonly InstructorSession _instructorSession;
+        public ProgramaAnaliticoDescargaModel(IConfiguration configuration, Microsoft.AspNetCore.Hosting.IHostingEnvironment environment, InstructorSession instructorSession)
         {
             _configuration = configuration;
             _environment = environment;
+            _instructorSession = instructorSession;
         }
 
         public async Task OnGetAsync()
         {
             var userId = HttpContext.Session.GetString(Session.SessionUserId);
-            var instructorServiceApi = GetIInstructorServiceApi();
-            var instructorResponse = await instructorServiceApi.GetByUserIdAsync(userId);
-
-            var instructorId = 0;
-            if (instructorResponse.IsSuccessStatusCode)
-            {
-                instructorId = instructorResponse.Content.Id;
-            }
+            var sessionToken = HttpContext.Session.GetString(Session.SessionToken);
+            var instructorId = await _instructorSession.GetInstructorIdByAsync(userId, sessionToken);
 
             InstructorId = instructorId;
             var instructorProgramaAnaliticoServiceApi = GetIInstructorProgramaAnaliticoServiceApi();

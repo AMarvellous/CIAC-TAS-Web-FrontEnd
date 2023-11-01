@@ -18,5 +18,14 @@ namespace CIAC_TAS_Web_UI.Helper
                 new SelectListItem { Text = "Si", Value = "True"}              
             };
         }
+
+        public static class NotaEstudiate
+        {
+            public static readonly List<SelectListItem> NotaEstudianteOptions = new List<SelectListItem>()
+            {
+                new SelectListItem { Text = "Progreso", Value = "Progreso" },
+                new SelectListItem { Text = "Dominio", Value = "Dominio"}
+            };
+        }
     }
 }

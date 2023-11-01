@@ -4,26 +4,25 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Refit;
-using static CIAC_TAS_Service.Contracts.V1.ApiRoute;
 
-namespace CIAC_TAS_Web_UI.Pages.Estudiante
+namespace CIAC_TAS_Web_UI.Pages.Instructor
 {
-    public class AsistenciaEstudianteHeadersPreviewModel : PageModel
+    public class RegistroNotasListModel : PageModel
     {
-        public List<SelectListItem> GrupoOptions { get; set; }
-        public List<SelectListItem> MateriaOptions { get; set; }
+        [TempData]
+        public string Message { get; set; }
+        [BindProperty]
+        public bool IsAdmin { get; set; } = false;
         [BindProperty]
         public int GrupoId { get; set; }
         [BindProperty]
         public int MateriaId { get; set; }
-        [BindProperty]
-        public bool IsAdmin { get; set; } = false;
-        [TempData]
-        public string Message { get; set; }
+        public List<SelectListItem> GrupoOptions { get; set; }
+        public List<SelectListItem> MateriaOptions { get; set; }
 
         private readonly IConfiguration _configuration;
         private readonly InstructorSession _instructorSession;
-        public AsistenciaEstudianteHeadersPreviewModel(IConfiguration configuration, InstructorSession instructorSession)
+        public RegistroNotasListModel(IConfiguration configuration, InstructorSession instructorSession)
         {
             _configuration = configuration;
             _instructorSession = instructorSession;
@@ -42,7 +41,8 @@ namespace CIAC_TAS_Web_UI.Pages.Estudiante
             {
                 await FillGrupoOptions();
                 await FillMateriaOptions();
-            } else
+            }
+            else
             {
                 var userId = HttpContext.Session.GetString(Session.SessionUserId);
                 var sessionToken = HttpContext.Session.GetString(Session.SessionToken);
@@ -61,13 +61,14 @@ namespace CIAC_TAS_Web_UI.Pages.Estudiante
                 {
                     await FillGrupoOptions();
                     await FillMateriaOptions();
-                } else
+                }
+                else
                 {
                     var userId = HttpContext.Session.GetString(Session.SessionUserId);
                     var sessionToken = HttpContext.Session.GetString(Session.SessionToken);
                     var instructorId = await _instructorSession.GetInstructorIdByAsync(userId, sessionToken);
                     await FillGrupoOptionsAssignedInstructorMateria(instructorId);
-                }     
+                }
 
                 return Page();
             }
@@ -80,7 +81,8 @@ namespace CIAC_TAS_Web_UI.Pages.Estudiante
                 {
                     await FillGrupoOptions();
                     await FillMateriaOptions();
-                } else 
+                }
+                else
                 {
                     var userId = HttpContext.Session.GetString(Session.SessionUserId);
                     var sessionToken = HttpContext.Session.GetString(Session.SessionToken);
@@ -88,11 +90,49 @@ namespace CIAC_TAS_Web_UI.Pages.Estudiante
                     await FillGrupoOptionsAssignedInstructorMateria(instructorId);
                     await FillMateriaOptionsAssignedInstructorMateria(instructorId, GrupoId);
                 }
-                
+
                 return Page();
             }
 
-            return RedirectToPage("/Estudiante/AsistenciaEstudianteHeaders", new { grupoId = GrupoId, materiaId = MateriaId });
+            return RedirectToPage("/Instructor/RegistroNotasHeaders", new { grupoId = GrupoId, materiaId = MateriaId });
+        }
+
+        public async Task<JsonResult> OnGetGetMateriaOptionsByGrupoIdAsync(int grupoId)
+        {
+            var userId = HttpContext.Session.GetString(Session.SessionUserId);
+            var sessionToken = HttpContext.Session.GetString(Session.SessionToken);
+            var instructorId = await _instructorSession.GetInstructorIdByAsync(userId, sessionToken);
+            Dictionary<string, string> optionsDictionary = await FillMateriaOptionsAssignedInstructorMateria(instructorId, grupoId);
+
+            return new JsonResult(optionsDictionary);
+        }
+
+        private async Task<Dictionary<string, string>> FillMateriaOptionsAssignedInstructorMateria(int instructorId, int grupoId)
+        {
+            Dictionary<string, string> optionsDictionary = new Dictionary<string, string>();
+            var materiaServiceApi = GetIMateriaServiceApi();
+            var materiaResponse = await materiaServiceApi.GetAllMateriasAssignedByInstructorGrupoAsync(instructorId, grupoId);
+
+            if (materiaResponse.IsSuccessStatusCode)
+            {
+                MateriaOptions = materiaResponse.Content.Data.Select(x => new SelectListItem { Text = x.Nombre, Value = x.Id.ToString() }).ToList();
+                materiaResponse.Content.Data.ToList().ForEach(x =>
+                    optionsDictionary.Add(x.Id.ToString(), x.Nombre)
+                );
+            }
+
+            return optionsDictionary;
+        }
+
+        private async Task FillGrupoOptionsAssignedInstructorMateria(int instructorId)
+        {
+            var grupoServiceApi = GetIGrupoServiceApi();
+            var grupoResponse = await grupoServiceApi.GetAllGruposAssignedByInstructorAsync(instructorId);
+
+            if (grupoResponse.IsSuccessStatusCode)
+            {
+                GrupoOptions = grupoResponse.Content.Data.Select(x => new SelectListItem { Text = x.Nombre, Value = x.Id.ToString() }).ToList();
+            }
         }
 
         private async Task FillGrupoOptions()
@@ -117,42 +157,12 @@ namespace CIAC_TAS_Web_UI.Pages.Estudiante
             }
         }
 
-        private async Task FillGrupoOptionsAssignedInstructorMateria(int instructorId)
+        private IRegistroNotaHeaderServiceApi GetIRegistroNotaHeaderServiceApi()
         {
-            var grupoServiceApi = GetIGrupoServiceApi();
-            var grupoResponse = await grupoServiceApi.GetAllGruposAssignedByInstructorAsync(instructorId);
-
-            if (grupoResponse.IsSuccessStatusCode)
+            return RestService.For<IRegistroNotaHeaderServiceApi>(_configuration.GetValue<string>("ServiceUrl"), new RefitSettings
             {
-                GrupoOptions = grupoResponse.Content.Data.Select(x => new SelectListItem { Text = x.Nombre, Value = x.Id.ToString() }).ToList();
-            }
-        }
-
-        private async Task<Dictionary<string, string>> FillMateriaOptionsAssignedInstructorMateria(int instructorId, int grupoId)
-        {
-            Dictionary<string, string> optionsDictionary = new Dictionary<string, string>();
-            var materiaServiceApi = GetIMateriaServiceApi();
-            var materiaResponse = await materiaServiceApi.GetAllMateriasAssignedByInstructorGrupoAsync(instructorId, grupoId);
-
-            if (materiaResponse.IsSuccessStatusCode)
-            {
-                MateriaOptions = materiaResponse.Content.Data.Select(x => new SelectListItem { Text = x.Nombre, Value = x.Id.ToString() }).ToList();
-                materiaResponse.Content.Data.ToList().ForEach(x =>
-                    optionsDictionary.Add(x.Id.ToString(), x.Nombre)
-                );
-            }
-
-            return optionsDictionary;
-        }
-
-        public async Task<JsonResult> OnGetGetMateriaOptionsByGrupoIdAsync(int grupoId)
-        {
-            var userId = HttpContext.Session.GetString(Session.SessionUserId);
-            var sessionToken = HttpContext.Session.GetString(Session.SessionToken);
-            var instructorId = await _instructorSession.GetInstructorIdByAsync(userId, sessionToken);
-            Dictionary<string, string> optionsDictionary = await FillMateriaOptionsAssignedInstructorMateria(instructorId, grupoId);
-
-            return new JsonResult(optionsDictionary);
+                AuthorizationHeaderValueGetter = () => Task.FromResult(HttpContext.Session.GetString(Session.SessionToken))
+            });
         }
 
         private IGrupoServiceApi GetIGrupoServiceApi()

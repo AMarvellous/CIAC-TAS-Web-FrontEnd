@@ -1,7 +1,7 @@
 ﻿@page
-@model CIAC_TAS_Web_UI.Pages.Estudiante.AsistenciaEstudianteHeadersPreviewModel
+@model CIAC_TAS_Web_UI.Pages.Instructor.RegistroNotasListModel
 @{
-    ViewData["Title"] = "Asistencia Estudiantes";
+    ViewData["Title"] = "Registro Notas Estudiantes";
 }
 
 <!-- From here, we should put this code as template in each page -->
@@ -12,12 +12,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Asistencia Estudiantes Page</h1>
+                    <h1>Registro Notas Estudiantes Page</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a asp-page="/Index">Home</a></li>
-                        <li class="breadcrumb-item active">Asistencia Estudiantes Page</li>
+                        <li class="breadcrumb-item active">Registro Notas Estudiantes Page</li>
                     </ol>
                 </div>
             </div>
@@ -30,7 +30,7 @@
         <!-- Default box -->
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Asistencia Estudiantes</h3>
+                <h3 class="card-title">Registro Notas Estudiantes</h3>
 
                 <div class="card-tools">
                     <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -114,7 +114,7 @@
 
             if (grupoId != '') {
                 $.ajax({
-                    url: "@Url.Page("/Estudiante/AsistenciaEstudianteHeadersPreview")/?handler=GetMateriaOptionsByGrupoId",
+                    url: "@Url.Page("/Instructor/RegistroNotasList")/?handler=GetMateriaOptionsByGrupoId",
                     method: "GET",
                     data: "grupoId=" + grupoId,
                     //beforeSend: function (xhr) {

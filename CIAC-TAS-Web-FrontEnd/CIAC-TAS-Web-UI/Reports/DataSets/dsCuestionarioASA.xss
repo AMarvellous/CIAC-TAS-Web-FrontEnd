@@ -8,7 +8,7 @@
   <Shapes>
     <Shape ID="DesignTable:dsRespuestasAsaConsolidado" ZOrder="3" X="49" Y="110" Height="365" Width="300" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="306" />
     <Shape ID="DesignTable:dsExamenGenerado" ZOrder="2" X="530" Y="74" Height="273" Width="292" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="214" />
-    <Shape ID="DesignTable:dsAsistenciaEstudiante" ZOrder="1" X="890" Y="78" Height="126" Width="300" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="122" />
+    <Shape ID="DesignTable:dsAsistenciaEstudiante" ZOrder="1" X="890" Y="78" Height="126" Width="232" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="122" />
   </Shapes>
   <Connectors />
 </DiagramLayout>

@@ -65,7 +65,7 @@ namespace CIAC_TAS_Web_UI.Pages.Estudiante
                 GrupoNombre = x.GrupoResponse.Nombre,
                 MateriaNombre = x.MateriaResponse.Nombre,
                 ModuloNombre = x.ModuloResponse.Nombre,
-                InstructorNombre = x.InstructorResponse.Nombres,
+                InstructorNombre = x.InstructorResponse.Nombres + " " + x.InstructorResponse.ApellidoPaterno,
                 Fecha = x.Fecha
             }).ToList();
 
@@ -148,9 +148,11 @@ namespace CIAC_TAS_Web_UI.Pages.Estudiante
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
             DataTable dataTable = new DataTable();
+            dataTable.Columns.Add("EstudianteId");
             dataTable.Columns.Add("EstudianteNombre");
             dataTable.Columns.Add("FechaAsistencia");
             dataTable.Columns.Add("Asistencia");
+            dataTable.Columns.Add("AsistenciaPorcentaje");
 
             //var asistenciaEstudianteHeadersGrouped = asistenciaEstudianteHeaders
             //    .SelectMany(h => h.AsistenciaEstudiantesResponse.Select(a => new { Header = h, Asistencia = a }))
@@ -162,11 +164,14 @@ namespace CIAC_TAS_Web_UI.Pages.Estudiante
             //        Items = s.Select(x => new { x.Header, x.Asistencia })
             //    });
 
+            var asistenciaTotal = asistenciaEstudianteHeaders.Count();
             foreach (var item in estudianteMaterias)
             {
+                var asistenciaEstudianteTotales = 0;
                 foreach (var asistenciaEstudianteDetail in asistenciaEstudianteHeaders)
                 {
                     DataRow dataRow = dataTable.NewRow();
+                    dataRow["EstudianteId"] = item.EstudianteId;
                     dataRow["EstudianteNombre"] = item.EstudianteResponse.Nombre + " " + item.EstudianteResponse.ApellidoPaterno;
                     dataRow["FechaAsistencia"] = asistenciaEstudianteDetail.Fecha.ToString("dd-MM-yyyy");
                     var asistencia = asistenciaEstudianteDetail.AsistenciaEstudiantesResponse
@@ -174,7 +179,20 @@ namespace CIAC_TAS_Web_UI.Pages.Estudiante
                         .Select(x => x.TipoAsistenciaResponse.Nombre)
                         .FirstOrDefault();
                     dataRow["Asistencia"] = asistencia == null ? "No reportado" : asistencia;
+                    dataRow["AsistenciaPorcentaje"] = 0;
                     dataTable.Rows.Add(dataRow);
+
+                    if (asistencia != null && (asistencia == "Justificada" || asistencia == "Presente"))
+                    {
+                        asistenciaEstudianteTotales++;
+                    }
+                }
+
+                var rows = dataTable.Select("EstudianteId=" + item.EstudianteId);
+                var asistenciaFinal = asistenciaTotal == 0 ? 0 : (asistenciaEstudianteTotales * 100) / asistenciaTotal;
+                foreach (DataRow row in rows)
+                {
+                    row["AsistenciaPorcentaje"] = asistenciaFinal;
                 }
             }
 
