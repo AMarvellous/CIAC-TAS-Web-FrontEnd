@@ -25,7 +25,9 @@ namespace CIAC_TAS_Web_UI.Pages.Estudiante
         public List<SelectListItem> ModuloOptions { get; set; }
         public List<SelectListItem> InstructorOptions { get; set; }
         public List<SelectListItem> TipoAsistenciaOptions { get; set; }
-        
+        public List<SelectListItem> TipoAsistenciaEstudianteHeaderOptions { get; set; }
+
+
         public int GrupoId { get; set; }
         public int MateriaId { get; set; }
         public string GrupoNombre { get; set; }
@@ -87,7 +89,9 @@ namespace CIAC_TAS_Web_UI.Pages.Estudiante
                 HoraFin = AsistenciaEstudianteHeaderModelView.HoraFin,
                 TotalHorasTeoricas = AsistenciaEstudianteHeaderModelView.TotalHorasTeoricas,
                 TotalHorasPracticas = AsistenciaEstudianteHeaderModelView.TotalHorasPracticas,
-                Tema = AsistenciaEstudianteHeaderModelView.Tema
+                Tema = AsistenciaEstudianteHeaderModelView.Tema,
+                IsLocked = false,
+                TipoAsistenciaEstudianteHeaderId = AsistenciaEstudianteHeaderModelView.TipoAsistenciaEstudianteHeaderId
             };
 
             var createAsistenciaEstudianteHeaderResponse = await asistenciaEstudianteHeaderApi.CreateAsync(createAsistenciaEstudianteHeaderRequest);
@@ -154,6 +158,7 @@ namespace CIAC_TAS_Web_UI.Pages.Estudiante
                 TotalHorasPracticas = asistenciaEstudianteHeader.TotalHorasPracticas,
                 TotalHorasTeoricas = asistenciaEstudianteHeader.TotalHorasTeoricas,
                 Tema = asistenciaEstudianteHeader.Tema,
+                TipoAsistenciaEstudianteHeaderId = asistenciaEstudianteHeader.TipoAsistenciaEstudianteHeaderId,
                 AsistenciaEstudianteModelView = asistenciaEstudianteHeader.AsistenciaEstudiantesResponse.Select(
                     x => new AsistenciaEstudianteModelView
                     {
@@ -192,7 +197,9 @@ namespace CIAC_TAS_Web_UI.Pages.Estudiante
                 HoraFin = AsistenciaEstudianteHeaderModelView.HoraFin,
                 TotalHorasTeoricas = AsistenciaEstudianteHeaderModelView.TotalHorasTeoricas,
                 TotalHorasPracticas = AsistenciaEstudianteHeaderModelView.TotalHorasPracticas,
-                Tema = AsistenciaEstudianteHeaderModelView.Tema
+                Tema = AsistenciaEstudianteHeaderModelView.Tema,
+                IsLocked = false,
+                TipoAsistenciaEstudianteHeaderId = AsistenciaEstudianteHeaderModelView.TipoAsistenciaEstudianteHeaderId
             };
 
             var asistenciaEstudianteHeaderResponse = await asistenciaEstudianteHeaderServiceApi.UpdateAsync(id, asistenciaEstudianteHeaderRequest);
@@ -335,6 +342,14 @@ namespace CIAC_TAS_Web_UI.Pages.Estudiante
             });
         }
 
+        private ITipoAsistenciaEstudianteHeaderServiceApi GetITipoAsistenciaEstudianteHeaderServiceApi()
+        {
+            return RestService.For<ITipoAsistenciaEstudianteHeaderServiceApi>(_configuration.GetValue<string>("ServiceUrl"), new RefitSettings
+            {
+                AuthorizationHeaderValueGetter = () => Task.FromResult(HttpContext.Session.GetString(Session.SessionToken))
+            });
+        }
+
         private async Task FillSelectListsItems()
         {
             //var programaServiceApi = GetIProgramaServiceApi();
@@ -383,6 +398,14 @@ namespace CIAC_TAS_Web_UI.Pages.Estudiante
             if (tipoAsistenciaResponse.IsSuccessStatusCode)
             {
                 TipoAsistenciaOptions = tipoAsistenciaResponse.Content.Data.Select(x => new SelectListItem { Text = x.Nombre, Value = x.Id.ToString() }).ToList();
+            }
+
+            var tipoAsistenciaEstudianteHeaderServiceApi = GetITipoAsistenciaEstudianteHeaderServiceApi();
+            var tipoAsistenciaEstudianteHeaderResponse = await tipoAsistenciaEstudianteHeaderServiceApi.GetAllAsync();
+
+            if (tipoAsistenciaEstudianteHeaderResponse.IsSuccessStatusCode)
+            {
+                TipoAsistenciaEstudianteHeaderOptions = tipoAsistenciaEstudianteHeaderResponse.Content.Data.Select(x => new SelectListItem { Text = x.Nombre, Value = x.Id.ToString() }).ToList();
             }
         }
 

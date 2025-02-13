@@ -1,7 +1,7 @@
 ﻿@page
-@model CIAC_TAS_Web_UI.Pages.Estudiante.AsistenciaEstudianteHeadersPreviewModel
+@model CIAC_TAS_Web_UI.Pages.General.CierreMateriaViewModel
 @{
-    ViewData["Title"] = "Asistencia Estudiantes";
+    ViewData["Title"] = "Cierre Materias";
 }
 
 <!-- From here, we should put this code as template in each page -->
@@ -45,21 +45,9 @@
 
                     <div class="form-group">
                         <label asp-for="GrupoId" class="control-label">Grupo</label>
-                        @{
-                            if (Model.IsAdmin)
-                            {
-                                <select asp-for="GrupoId" asp-items="Model.GrupoOptions" class="form-control" placeholder="Seleccione una opcion">
-                                    <option value="">Seleccione una opcion</option>
-                                </select>
-                            }
-                            else
-                            {
-                                <select asp-for="GrupoId" asp-items="Model.GrupoOptions" class="form-control" placeholder="Seleccione una opcion" onchange="fillMateriaBasedOnGrupoId(this)">
-                                    <option value="">Seleccione una opcion</option>
-                                </select>
-                            }
-                        }
-
+                        <select asp-for="GrupoId" asp-items="Model.GrupoOptions" class="form-control" placeholder="Seleccione una opcion">
+                            <option value="">Seleccione una opcion</option>
+                        </select>
                         <span asp-validation-for="GrupoId" class="text-danger"></span>
                     </div>
 
@@ -70,7 +58,6 @@
                         </select>
                         <span asp-validation-for="MateriaId" class="text-danger"></span>
                     </div>
-                    @Html.HiddenFor(x => x.IsAdmin)
 
                     <br />
                     <div class="row">
@@ -102,37 +89,3 @@
 </div>
 <!-- /.content-wrapper -->
 <!-- To here -->
-
-<script type="text/javascript">
-    function fillMateriaBasedOnGrupoId(selectElement) {
-        var isAdmin = $('#isAdmin').attr('data-val');
-        if (!isAdmin) {
-            var grupoId = $('#GrupoId').val();
-            var selectElement = $("#MateriaId");
-            var defaultOption = selectElement.find('option:first');
-            selectElement.find('option').not(defaultOption).remove();
-
-            if (grupoId != '') {
-                $.ajax({
-                    url: "@Url.Page("/Estudiante/AsistenciaEstudianteHeadersPreview")/?handler=GetMateriaOptionsByGrupoId",
-                    method: "GET",
-                    data: "grupoId=" + grupoId,
-                    //beforeSend: function (xhr) {
-                    //    xhr.setRequestHeader("XSRF-TOKEN",
-                    //        $('input:hidden[name="__RequestVerificationToken"]').val());
-                    //},
-                    error: function (ex) {
-
-                    },
-                    success: function (data) {
-                        for (var key in data) {
-                            if (data.hasOwnProperty(key)) {
-                                selectElement.append("<option value='" + key + "'>" + data[key] + "</option>");
-                            }
-                        }
-                    }
-                });
-            }
-        }
-    }
-</script>

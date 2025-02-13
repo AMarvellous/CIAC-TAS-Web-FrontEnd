@@ -50,6 +50,7 @@
 
                     @Html.HiddenFor(x => x.GrupoId)
                     @Html.HiddenFor(x => x.MateriaId)
+                    @Html.HiddenFor(x => x.TipoRegistroNotaHeaderId)
 
                     <div class="form-group">
                         <label asp-for="RegistroNotaHeadersModelView.InstructorId" class="control-label">Instructor</label>
@@ -59,20 +60,35 @@
                         <span asp-validation-for="RegistroNotaHeadersModelView.InstructorId" class="text-danger"></span>
                     </div>
 
-                    <div class="form-group">
-                        <label asp-for="RegistroNotaHeadersModelView.PorcentajeDominioTotal">Porcentaje Dominio Total</label>
-                        <input type="number" asp-for="RegistroNotaHeadersModelView.PorcentajeDominioTotal" class="form-control" placeholder="Ingrese una Total">
-                        <span asp-validation-for="RegistroNotaHeadersModelView.PorcentajeDominioTotal" style="color:red"></span>
-                    </div>
+                    @{
+                        if (Model.IsTurorial)
+                        {
+                            <div class="form-group">
+                                <label asp-for="RegistroNotaHeadersModelView.PorcentajeDominioTotal">Porcentaje Dominio Total</label>
+                                <input type="number" id="porcentajeDominioTotalDisabled" class="form-control" placeholder="Ingrese una Total" value="100" disabled="disabled">
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="RegistroNotaHeadersModelView.PorcentajeProgresoTotal">Porcentaje Progreso Total</label>
+                                <input type="number" id="porcentajeProgresoTotalDisabled" class="form-control" placeholder="Ingrese una Total" value="0" disabled="disabled">
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="form-group">
+                                <label asp-for="RegistroNotaHeadersModelView.PorcentajeDominioTotal">Porcentaje Dominio Total</label>
+                                <input type="number" asp-for="RegistroNotaHeadersModelView.PorcentajeDominioTotal" class="form-control" placeholder="Ingrese una Total">
+                                <span asp-validation-for="RegistroNotaHeadersModelView.PorcentajeDominioTotal" style="color:red"></span>
+                            </div>
 
-                    <div class="form-group">
-                        <label asp-for="RegistroNotaHeadersModelView.PorcentajeProgresoTotal">Porcentaje Progreso Total</label>
-                        <input type="number" asp-for="RegistroNotaHeadersModelView.PorcentajeProgresoTotal" class="form-control" placeholder="Ingrese una Total">
-                        <span asp-validation-for="RegistroNotaHeadersModelView.PorcentajeProgresoTotal" style="color:red"></span>
-                    </div>
+                            <div class="form-group">
+                                <label asp-for="RegistroNotaHeadersModelView.PorcentajeProgresoTotal">Porcentaje Progreso Total</label>
+                                <input type="number" asp-for="RegistroNotaHeadersModelView.PorcentajeProgresoTotal" class="form-control" placeholder="Ingrese una Total">
+                                <span asp-validation-for="RegistroNotaHeadersModelView.PorcentajeProgresoTotal" style="color:red"></span>
+                            </div>
+                        }
+                    }
 
                     <br />
-
                     <div class="float-start">
                         <p>
                             <a asp-page="/Instructor/RegistroNotaEstudianteHeaderEstudiante" asp-page-handler="NewEstudianteRegistroNotaEstudianteHeader" asp-route-grupoId="@Model.GrupoId" asp-route-materiaId="@Model.MateriaId" asp-route-registroNotaHeaderId="@Model.RegistroNotaHeaderId" class="fa fa-plus" style="font-size:20px;"></a>
@@ -93,7 +109,35 @@
                                         @item.EstudianteNombre
                                     </td>
                                     <td>
-                                        <a asp-page="/Instructor/RegistroNota" asp-page-handler="ViewRegistroNotaEstudiante" asp-route-registroNotaEstudianteHeaderId="@item.Id" asp-route-grupoId="@Model.GrupoId" asp-route-materiaId="@Model.MateriaId" asp-route-registroNotaHeaderId="@Model.RegistroNotaHeaderId" asp-route-estudianteId="@item.EstudianteId" class="fa fa-edit" style="font-size:15px;"></a>
+                                        <a asp-page="/Instructor/RegistroNota" asp-page-handler="ViewRegistroNotaEstudiante" asp-route-registroNotaEstudianteHeaderId="@item.Id" asp-route-grupoId="@Model.GrupoId" asp-route-materiaId="@Model.MateriaId" asp-route-registroNotaHeaderId="@Model.RegistroNotaHeaderId" asp-route-estudianteId="@item.EstudianteId" class="fa fa-edit" style="font-size:15px;"></a> |
+                                        <!-- Button trigger modal -->
+                                        <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modal-@item.Id">
+                                            <span class="btn-label"><i class="fa fa-trash"></i></span>
+                                        </button>
+
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="modal-@item.Id" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Borrar Opcion</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        Esta seguro que desea borrar este registro?<br />
+                                                        Todas las notas asociadas a este estudiante y materia<br />
+                                                        tambien seran eliminadas<br />
+                                                        Estudiante: [@item.EstudianteNombre]
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                        <a asp-page-handler="RemoveRegistroNotaEstudianteHeaderAndChildren" asp-route-registroNotaEstudianteHeaderId="@item.Id" asp-route-registroNotaHeaderId="@Model.RegistroNotaHeaderId" asp-route-grupoId="@Model.GrupoId" asp-route-materiaId="@Model.MateriaId" asp-route-tipoRegistroNotaHeaderId="@Model.TipoRegistroNotaHeaderId" id="deleteBtn" class="btn bg-danger mr-1">Borrar</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </td>
                                 </tr>
                             }
@@ -102,7 +146,7 @@
 
                     <div class="row">
                         <div class="col-4">
-                            <input type="submit" asp-page-handler="EditRegistroNotaEstudianteHeaders" asp-route-grupoId="@Model.GrupoId" asp-route-materiaId="@Model.MateriaId" asp-route-registroNotaHeaderId="@Model.RegistroNotaHeaderId" class="btn btn-primary btn-block" value="Actualizar">
+                            <input type="submit" asp-page-handler="EditRegistroNotaEstudianteHeaders" asp-route-grupoId="@Model.GrupoId" asp-route-materiaId="@Model.MateriaId" asp-route-registroNotaHeaderId="@Model.RegistroNotaHeaderId" asp-route-tipoRegistroNotaHeaderId="@Model.TipoRegistroNotaHeaderId" class="btn btn-primary btn-block" value="Actualizar">
                         </div>
                         <!-- /.col -->
                     </div>

@@ -5,54 +5,75 @@
 }
 
 <!-- From here, we should put this code as template in each page -->
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-   <!-- Content Header (Page header) -->
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
     <section class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1>Home Page</h1>
-          </div>
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a asp-page="/Index">Home</a></li>
-              <li class="breadcrumb-item active">Home Page</li>
-            </ol>
-          </div>
-        </div>
-      </div><!-- /.container-fluid -->
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Home Page</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a asp-page="/Index">Home</a></li>
+                        <li class="breadcrumb-item active">Home Page</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
     </section>
 
     <!-- Main content -->
     <section class="content">
 
-      <!-- Default box -->
-      <div class="card">
-        <div class="card-header">
-          <h3 class="card-title">CIAC TAS</h3>
+        <!-- Default box -->
+        <div class="card">
+            <div class="card-header">
+                @{
+                    if (Model.MensajeBloqueo == null)
+                    {
+                        <h3 class="card-title">CIAC TAS</h3>
+                    }
+                    else
+                    {
+                        <h3 class="card-title">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            Alertas y Mensajes
+                        </h3>
+                    }
+                }
 
-          <div class="card-tools">
-            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-              <i class="fas fa-minus"></i>
-            </button>
-          </div>
-        </div>
-        <div class="card-body">
-         
-            
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                @{
+                    if (Model.MensajeBloqueo != null)
+                    {
+                        <div class="alert alert-danger alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <h5><i class="icon fas fa-ban"></i> El Usuario a sido bloqueado por el siguiente motivo:</h5>
+                            @Model.MensajeBloqueo
+                        </div>
+                    }
+                }
 
+
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer">
+                Index
+            </div>
+            <!-- /.card-footer-->
         </div>
-        <!-- /.card-body -->
-        <div class="card-footer">
-          Index
-        </div>
-        <!-- /.card-footer-->
-      </div>
-      <!-- /.card -->
+        <!-- /.card -->
 
     </section>
     <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
-  <!-- To here -->
+</div>
+<!-- /.content-wrapper -->
+<!-- To here -->

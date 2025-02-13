@@ -7,7 +7,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using Refit;
+using System.Security.Cryptography.Pkcs;
 using static CIAC_TAS_Service.Contracts.V1.ApiRoute;
+using static CIAC_TAS_Web_UI.Helper.EnumsGlobales;
 
 namespace CIAC_TAS_Web_UI.Pages.Instructor
 {
@@ -22,6 +24,8 @@ namespace CIAC_TAS_Web_UI.Pages.Instructor
         public string GrupoNombre { get; set; }
         public string MateriaNombre { get; set; }
         public int RegistroNotaHeaderId { get; set; }
+        public bool IsTurorial { get; set; }
+        public int TipoRegistroNotaHeaderId { get; set; }
         public List<SelectListItem> InstructorOptions { get; set; }
         [TempData]
         public string Message { get; set; }
@@ -35,12 +39,18 @@ namespace CIAC_TAS_Web_UI.Pages.Instructor
             _environment = environment;
         }
 
-        public async Task OnGetViewRegistroNotaEstudianteHeadersAsync(int registroNotaHeaderId, int grupoId, int materiaId)
+        public async Task OnGetViewRegistroNotaEstudianteHeadersAsync(int registroNotaHeaderId, int grupoId, int materiaId, int tipoRegistroNotaHeaderId)
         {
             RegistroNotaHeaderId = registroNotaHeaderId;
+            TipoRegistroNotaHeaderId = tipoRegistroNotaHeaderId;
             await SetExtraData(grupoId, materiaId);
             await FillSelectListsItems();
             await SetRegistroNotaEstudianteHeaders(registroNotaHeaderId);
+
+            if (tipoRegistroNotaHeaderId == (int)TipoRegistroNotaHeaderEnum.Tutorial)
+            {
+                IsTurorial = true;
+            }
 
             var registroNotaHeaderServiceApi = GetIRegistroNotaHeaderServiceApi();
             var registroNotaHeaderResponse = await registroNotaHeaderServiceApi.GetAsync(registroNotaHeaderId);
@@ -56,12 +66,19 @@ namespace CIAC_TAS_Web_UI.Pages.Instructor
                 RegistroNotaHeadersModelView.InstructorId = registroNotaHeader.InstructorId;                
                 RegistroNotaHeadersModelView.PorcentajeDominioTotal = registroNotaHeader.PorcentajeDominioTotal;
                 RegistroNotaHeadersModelView.PorcentajeProgresoTotal = registroNotaHeader.PorcentajeProgresoTotal;
+                RegistroNotaHeadersModelView.TipoRegistroNotaHeaderId = registroNotaHeader.TipoRegistroNotaHeaderId;
             }
         }
 
-        public async Task<IActionResult> OnPostEditRegistroNotaEstudianteHeadersAsync(int grupoId, int materiaId, int registroNotaHeaderId)
+        public async Task<IActionResult> OnPostEditRegistroNotaEstudianteHeadersAsync(int grupoId, int materiaId, int registroNotaHeaderId, int tipoRegistroNotaHeaderId)
         {
             RegistroNotaHeaderId = registroNotaHeaderId;
+            TipoRegistroNotaHeaderId = tipoRegistroNotaHeaderId;
+            if (tipoRegistroNotaHeaderId == (int)TipoRegistroNotaHeaderEnum.Tutorial)
+            {
+                IsTurorial = true;
+            }
+
             if (!ModelState.IsValid)
             {
                 await SetExtraData(grupoId, materiaId);
@@ -74,7 +91,7 @@ namespace CIAC_TAS_Web_UI.Pages.Instructor
             }
 
             var porcentajeTotal = RegistroNotaHeadersModelView.PorcentajeProgresoTotal + RegistroNotaHeadersModelView.PorcentajeDominioTotal;
-            if (porcentajeTotal != 100)
+            if (porcentajeTotal != 100 && tipoRegistroNotaHeaderId == (int)TipoRegistroNotaHeaderEnum.Regular)
             {
                 await SetExtraData(grupoId, materiaId);
                 await FillSelectListsItems();
@@ -117,7 +134,8 @@ namespace CIAC_TAS_Web_UI.Pages.Instructor
                 InstructorId = RegistroNotaHeadersModelView.InstructorId,
                 IsLocked = false,
                 PorcentajeDominioTotal = RegistroNotaHeadersModelView.PorcentajeDominioTotal,
-                PorcentajeProgresoTotal = RegistroNotaHeadersModelView.PorcentajeProgresoTotal
+                PorcentajeProgresoTotal = RegistroNotaHeadersModelView.PorcentajeProgresoTotal,
+                TipoRegistroNotaHeaderId = tipoRegistroNotaHeaderId
             };
 
             var registroNotaHeaderResponse = await registroNotaHeaderServiceApi.UpdateAsync(registroNotaHeaderId, updateRegistroNotaHeader);
@@ -135,6 +153,21 @@ namespace CIAC_TAS_Web_UI.Pages.Instructor
             }
 
             return RedirectToPage("/Instructor/RegistroNotasHeaders", new { grupoId = grupoId, materiaId = materiaId });
+        }
+
+        public async Task<IActionResult> OnGetRemoveRegistroNotaEstudianteHeaderAndChildrenAsync(int registroNotaEstudianteHeaderId, int registroNotaHeaderId, int grupoId, int materiaId, int tipoRegistroNotaHeaderId)
+        {
+            var registroNotaEstudianteHeaderServiceApi = GetIRegistroNotaEstudianteHeaderServiceApi();
+            var registroNotaEstudianteHeaderResponse = await registroNotaEstudianteHeaderServiceApi.DeleteRegistroNotaEstudianteHeaderAndChildrenAsync(registroNotaEstudianteHeaderId);
+
+            if (!registroNotaEstudianteHeaderResponse.IsSuccessStatusCode)
+            {
+                Message = "Ocurrio un error inesperado";
+
+                return RedirectToPage("/Instructor/RegistroNotaEstudianteHeaders", "ViewRegistroNotaEstudianteHeaders", new { registroNotaHeaderId = registroNotaHeaderId, grupoId = grupoId, materiaId = materiaId, tipoRegistroNotaHeaderId = tipoRegistroNotaHeaderId });
+            }
+
+            return RedirectToPage("/Instructor/RegistroNotaEstudianteHeaders", "ViewRegistroNotaEstudianteHeaders", new { registroNotaHeaderId = registroNotaHeaderId, grupoId = grupoId, materiaId = materiaId, tipoRegistroNotaHeaderId = tipoRegistroNotaHeaderId });
         }
 
         private async Task SetRegistroNotaEstudianteHeaders(int registroNotaHeaderId)

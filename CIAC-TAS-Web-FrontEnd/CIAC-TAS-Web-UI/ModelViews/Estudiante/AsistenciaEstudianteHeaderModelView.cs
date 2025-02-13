@@ -34,6 +34,7 @@ namespace CIAC_TAS_Web_UI.ModelViews.Estudiante
         public int TotalHorasTeoricas { get; set; }
         public int TotalHorasPracticas { get; set; }
         public string Tema { get; set; }
+        public int TipoAsistenciaEstudianteHeaderId { get; set; }
 
         public List<AsistenciaEstudianteModelView>? AsistenciaEstudianteModelView { get; set; } = new List<AsistenciaEstudianteModelView>();
     }

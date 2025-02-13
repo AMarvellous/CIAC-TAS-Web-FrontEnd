@@ -22,11 +22,13 @@ namespace CIAC_TAS_Web_UI.ModelViews.Estudiante
         public int InstructorId { get; set; }
         public int PorcentajeDominioTotal { get; set; }
         public int PorcentajeProgresoTotal { get; set; }
+        public int TipoRegistroNotaHeaderId { get; set; }
 
         public string? ProgramaNombre { get; set; }
         public string? GrupoNombre { get; set; }
         public string? MateriaNombre { get; set; }
         public string? ModuloNombre { get; set; }
         public string? InstructorNombre { get; set; }
+        public string? TipoRegistroNotaHeaderNombre { get; set; }
     }
 }

@@ -10,6 +10,7 @@ using static CIAC_TAS_Service.Contracts.V1.ApiRoute;
 using System.Data;
 using System.Text;
 using CIAC_TAS_Service.Contracts.V1.Responses;
+using static CIAC_TAS_Web_UI.Helper.EnumsGlobales;
 
 namespace CIAC_TAS_Web_UI.Pages.Estudiante
 {
@@ -56,7 +57,7 @@ namespace CIAC_TAS_Web_UI.Pages.Estudiante
             var userId = HttpContext.Session.GetString(Session.SessionUserId);
             var sessionToken = HttpContext.Session.GetString(Session.SessionToken);
             var estudiante = await _estudianteSession.GetEstudianteByUserIdAsync(userId, sessionToken);
-
+            
             if (estudiante == null)
             {
                 Message = "Ocurrio un error inesperado";
@@ -68,6 +69,16 @@ namespace CIAC_TAS_Web_UI.Pages.Estudiante
             var asistenciaEstudianteHeaderResponse = await asistenciaEstudianteHeaderServiceApi.GetAllHeadersByGrupoMateriaAndEstudianteIdAsync(grupoId, materiaId, estudiante.Id);
             
             if (!asistenciaEstudianteHeaderResponse.IsSuccessStatusCode)
+            {
+                Message = "Ocurrio un error inesperado";
+
+                return RedirectToPage("/Estudiante/AsistenciaEstudianteView");
+            }
+
+            var estudianteMateriaServiceApi = GetIEstudianteMateriaServiceApi();
+            var estudianteMateriaResponse = await estudianteMateriaServiceApi.GetAsync(estudiante.Id, grupoId, materiaId);
+
+            if (!estudianteMateriaResponse.IsSuccessStatusCode)
             {
                 Message = "Ocurrio un error inesperado";
 
@@ -101,37 +112,65 @@ namespace CIAC_TAS_Web_UI.Pages.Estudiante
             dataTable.Columns.Add("EstudianteNombre");
             dataTable.Columns.Add("FechaAsistencia");
             dataTable.Columns.Add("Asistencia");
-            dataTable.Columns.Add("AsistenciaPorcentaje");
+            dataTable.Columns.Add("AsistenciaPorcentajeRegular");
+            dataTable.Columns.Add("AsistenciaPorcentajeTutorial");
+            dataTable.Columns.Add("InscritoTutorial");
+            dataTable.Columns.Add("TipoAsistenciaEstudiante");
 
+            var estudianteMateria = estudianteMateriaResponse.Content;
             var asistenciaEstudianteHeaders = asistenciaEstudianteHeaderResponse.Content.Data;
-            var asistenciaTotal = asistenciaEstudianteHeaders.Count();
-            var asistenciaEstudianteTotales = 0;
+            var asistenciaRegularTotal = asistenciaEstudianteHeaders
+              .Where(x => x.TipoAsistenciaEstudianteHeaderId == (int)TipoAsistenciaEstudianteHeaderEnum.Regular)
+              .Count();
+
+            var asistenciaTutorialTotal = asistenciaEstudianteHeaders
+                .Where(x => x.TipoAsistenciaEstudianteHeaderId == (int)TipoAsistenciaEstudianteHeaderEnum.Tutorial)
+                .Count();
+            var asistenciaEstudianteTotalesRegular = 0;
+            var asistenciaEstudianteTotalesTutorial = 0;
 
             foreach (var asistenciaEstudianteDetail in asistenciaEstudianteHeaders)
             {
                 DataRow dataRow = dataTable.NewRow();
                 dataRow["EstudianteId"] = estudiante.Id;
-                dataRow["EstudianteNombre"] = estudiante.Nombre + " " + estudiante.ApellidoPaterno;
+                dataRow["EstudianteNombre"] = estudiante.Nombre + " " + estudiante.ApellidoPaterno + " " + estudiante.ApellidoMaterno;
                 dataRow["FechaAsistencia"] = asistenciaEstudianteDetail.Fecha.ToString("dd-MM-yyyy");
                 var asistencia = asistenciaEstudianteDetail.AsistenciaEstudiantesResponse
                     .Where(x => x.EstudianteId == estudiante.Id)
                     .Select(x => x.TipoAsistenciaResponse.Nombre)
                     .FirstOrDefault();
                 dataRow["Asistencia"] = asistencia == null ? "No reportado" : asistencia;
-                dataRow["AsistenciaPorcentaje"] = 0;
+                dataRow["AsistenciaPorcentajeRegular"] = 0;
+                dataRow["AsistenciaPorcentajeTutorial"] = 0;
+                dataRow["InscritoTutorial"] = estudianteMateria.InscritoTutorial ? "Si" : "No";
+                dataRow["TipoAsistenciaEstudiante"] = asistenciaEstudianteDetail.TipoAsistenciaEstudianteHeaderResponse.Nombre;
+
                 dataTable.Rows.Add(dataRow);
 
                 if (asistencia != null && (asistencia == "Justificada" || asistencia == "Presente"))
                 {
-                    asistenciaEstudianteTotales++;
+                    if (estudianteMateria.InscritoTutorial && //Si el estudiante esta inscrito en Tutorial y la materia es Tutorial
+                        asistenciaEstudianteDetail.TipoAsistenciaEstudianteHeaderResponse.Nombre == "Tutorial"
+                    )
+                    {
+                        asistenciaEstudianteTotalesTutorial++;
+                    }
+                    else if (asistenciaEstudianteDetail.TipoAsistenciaEstudianteHeaderResponse.Nombre == "Regular")
+                    {
+                        asistenciaEstudianteTotalesRegular++;
+                    }
+
                 }
             }
 
             var rows = dataTable.Select("EstudianteId=" + estudiante.Id);
-            var asistenciaFinal = asistenciaTotal == 0 ? 0 : (asistenciaEstudianteTotales * 100) / asistenciaTotal;
+            var asistenciaFinalRegular = asistenciaRegularTotal == 0 ? 0 : (asistenciaEstudianteTotalesRegular * 100) / asistenciaRegularTotal;
+            var asistenciaFinalTutorial = asistenciaTutorialTotal == 0 ? 0 : (asistenciaEstudianteTotalesTutorial * 100) / asistenciaTutorialTotal;
+
             foreach (DataRow row in rows)
             {
-                row["AsistenciaPorcentaje"] = asistenciaFinal;
+                row["AsistenciaPorcentajeRegular"] = asistenciaFinalRegular;
+                row["AsistenciaPorcentajeTutorial"] = asistenciaFinalTutorial;
             }
 
             var report = new LocalReport(reportPath);

@@ -1,5 +1,7 @@
+using CIAC_TAS_Service.Contracts.V1.Responses;
 using CIAC_TAS_Service.Sdk;
 using CIAC_TAS_Web_UI.Helper;
+using CIAC_TAS_Web_UI.ModelViews.General;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -92,6 +94,52 @@ namespace CIAC_TAS_Web_UI.Pages.Estudiante
                 return Page();
             }
 
+            var cierreMateriaServiceApi = GetICierreMateriaServiceApi();
+            var cierreMateriaResponse = await cierreMateriaServiceApi.GetByGrupoIdMateriaIdAsync(GrupoId, MateriaId);
+
+            if (!cierreMateriaResponse.IsSuccessStatusCode)
+            {
+                Message = "Ocurrio un error inesperado";
+
+                if (IsAdmin)
+                {
+                    await FillGrupoOptions();
+                    await FillMateriaOptions();
+                }
+                else
+                {
+                    var userId = HttpContext.Session.GetString(Session.SessionUserId);
+                    var sessionToken = HttpContext.Session.GetString(Session.SessionToken);
+                    var instructorId = await _instructorSession.GetInstructorIdByAsync(userId, sessionToken);
+                    await FillGrupoOptionsAssignedInstructorMateria(instructorId);
+                    await FillMateriaOptionsAssignedInstructorMateria(instructorId, GrupoId);
+                }
+
+                return Page();
+            }
+
+            // If cierreMateria exists, not continue unless is Admin
+            if (cierreMateriaResponse.Content != null && !IsAdmin)
+            {
+                Message = "La Materia para el Grupo seleccionado ya se encuentra cerrada";
+
+                if (IsAdmin)
+                {
+                    await FillGrupoOptions();
+                    await FillMateriaOptions();
+                }
+                else
+                {
+                    var userId = HttpContext.Session.GetString(Session.SessionUserId);
+                    var sessionToken = HttpContext.Session.GetString(Session.SessionToken);
+                    var instructorId = await _instructorSession.GetInstructorIdByAsync(userId, sessionToken);
+                    await FillGrupoOptionsAssignedInstructorMateria(instructorId);
+                    await FillMateriaOptionsAssignedInstructorMateria(instructorId, GrupoId);
+                }
+
+                return Page();
+            }
+
             return RedirectToPage("/Estudiante/AsistenciaEstudianteHeaders", new { grupoId = GrupoId, materiaId = MateriaId });
         }
 
@@ -166,6 +214,14 @@ namespace CIAC_TAS_Web_UI.Pages.Estudiante
         private IMateriaServiceApi GetIMateriaServiceApi()
         {
             return RestService.For<IMateriaServiceApi>(_configuration.GetValue<string>("ServiceUrl"), new RefitSettings
+            {
+                AuthorizationHeaderValueGetter = () => Task.FromResult(HttpContext.Session.GetString(Session.SessionToken))
+            });
+        }
+
+        private ICierreMateriaServiceApi GetICierreMateriaServiceApi()
+        {
+            return RestService.For<ICierreMateriaServiceApi>(_configuration.GetValue<string>("ServiceUrl"), new RefitSettings
             {
                 AuthorizationHeaderValueGetter = () => Task.FromResult(HttpContext.Session.GetString(Session.SessionToken))
             });

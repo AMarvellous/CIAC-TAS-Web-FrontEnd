@@ -1,0 +1,94 @@
+﻿@page
+@model CIAC_TAS_Web_UI.Pages.General.CierreMateriaDetailModel
+@{
+    ViewData["Title"] = "Cierre Materias";
+}
+
+<!-- From here, we should put this code as template in each page -->
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Cierre Materia Page</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a asp-page="/Index">Home</a></li>
+                        <li class="breadcrumb-item active">Cierre Materia Page</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- /.box-header -->
+    <div class="col-sm-12">
+        <a asp-page="/General/CierreMateriaView" class="fa fa-arrow-circle-left" style="font-size:25px;"></a>
+    </div>
+    <br />
+
+    <!-- Main content -->
+    <section class="content">
+
+        <!-- Default box -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Cierre Materia</h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+
+                <table id="example2" class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Materia</th>
+                            <th>Grupo</th>
+                            <th>Accion</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>@Model.MateriaModelView.Nombre</td>
+                            <td>@Model.GrupoModelView.Nombre</td>
+                            @{
+                                if (Model.CierreMateriaDetailModelView == null)
+                                {
+                                    <td><a asp-page-handler="CerrarMateria" asp-route-materiaId="@Model.MateriaModelView.Id" asp-route-grupoId="@Model.GrupoModelView.Id" class="fa fa-times" style="font-size:15px;color:red"> Cerrar Materia</a></td>
+                                } else
+                                {
+                                    <td><a asp-page-handler="AbrirMateria" asp-route-materiaId="@Model.MateriaModelView.Id" asp-route-grupoId="@Model.GrupoModelView.Id" asp-route-cierreMateriaId="@Model.CierreMateriaDetailModelView.Id" class="fa fa-check" style="font-size:15px;color:green"> Habilitar Materia</a></td>
+                                }
+                            }                            
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer">
+                @{
+                    if (Model.Message != null && Model.Message != string.Empty)
+                    {
+                        <div id="mensajeDiv" class="callout callout-danger">
+                            @Model.Message
+                        </div>
+                    }
+                }
+            </div>
+            <!-- /.card-footer-->
+        </div>
+        <!-- /.card -->
+
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+<!-- To here -->

@@ -62,7 +62,8 @@ namespace CIAC_TAS_Web_UI.Pages.Estudiante
                         EstudianteId = x.EstudianteId,
                         GrupoId = x.GrupoId,
                         MateriaId = x.MateriaId,
-                        MateriaNombre = x.MateriaResponse.Nombre
+                        MateriaNombre = x.MateriaResponse.Nombre,
+                        InscritoTutorial = x.InscritoTutorial
                     });
             }
         }
@@ -74,7 +75,8 @@ namespace CIAC_TAS_Web_UI.Pages.Estudiante
             {
                 EstudianteId = estudianteId,
                 GrupoId = grupoId,
-                MateriaId = materiaId
+                MateriaId = materiaId,
+                InscritoTutorial = false
             });
 
             if (!respuestasAsaServiceResponse.IsSuccessStatusCode)
@@ -104,6 +106,24 @@ namespace CIAC_TAS_Web_UI.Pages.Estudiante
         {
             var estudianteMateriaServiceApi = GetIEstudianteMateriaServiceApi();
             var respuestasAsaServiceResponse = await estudianteMateriaServiceApi.CreateAsignAllMateriasAsync(estudianteId, grupoId);
+
+            return RedirectToPage("/Estudiante/EstudianteMateria", new { grupoId = grupoId, estudianteId = estudianteId });
+        }
+
+        public async Task<IActionResult> OnGetAsignarTutorialEstudianteAsync(int estudianteId, int grupoId, int materiaId, bool inscritoTutorial)
+        {
+            var estudianteMateriaServiceApi = GetIEstudianteMateriaServiceApi();
+            var updateRequest = new CIAC_TAS_Service.Contracts.V1.Requests.UpdateEstudianteMateriaRequest {
+                InscritoTutorial = inscritoTutorial
+            };
+            var estudianteMateriaResponse = await estudianteMateriaServiceApi.UpdateAsync(estudianteId, grupoId, materiaId, updateRequest);
+
+            if (!estudianteMateriaResponse.IsSuccessStatusCode)
+            {
+                Message = "Ocurrio un error inesperado";
+
+                return RedirectToPage("/Estudiante/EstudianteMateria", new { grupoId = grupoId, estudianteId = estudianteId });
+            }
 
             return RedirectToPage("/Estudiante/EstudianteMateria", new { grupoId = grupoId, estudianteId = estudianteId });
         }

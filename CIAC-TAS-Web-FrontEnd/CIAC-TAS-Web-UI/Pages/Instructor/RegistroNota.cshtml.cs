@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Refit;
 using static CIAC_TAS_Service.Contracts.V1.ApiRoute;
+using static CIAC_TAS_Web_UI.Helper.EnumsGlobales;
 
 namespace CIAC_TAS_Web_UI.Pages.Instructor
 {
@@ -23,7 +24,7 @@ namespace CIAC_TAS_Web_UI.Pages.Instructor
         public int RegistroNotaHeaderId { get; set; }
         public double NotaEstudiante { get; set; }
         public List<SelectListItem> NotaEstudianteOptions { get; set; }
-        public int NotaEstudianteOptionSelected { get; set; }
+        public int TipoRegistroNotaEstudianteIdSelected { get; set; }
         [TempData]
         public string Message { get; set; }
         private readonly IConfiguration _configuration;
@@ -37,7 +38,9 @@ namespace CIAC_TAS_Web_UI.Pages.Instructor
         {
             RegistroNotaEstudianteHeaderId = registroNotaEstudianteHeaderId;
             RegistroNotaHeaderId = registroNotaHeaderId;
-            NotaEstudianteOptions = PredefinedListsHelper.NotaEstudiate.NotaEstudianteOptions;
+            NotaEstudianteOptions = Enum.GetValues(typeof(TipoRegistroNotaEstudianteEnum)).Cast<TipoRegistroNotaEstudianteEnum>()
+                .Select(x => new SelectListItem { Text = x.ToString(), Value = ((int)x).ToString()})
+                .ToList();
             await SetExtraData(grupoId, materiaId, estudianteId);
 
             var registroNotaEstudianteServiceApi = GetIRegistroNotaEstudianteServiceApi();
@@ -51,28 +54,20 @@ namespace CIAC_TAS_Web_UI.Pages.Instructor
                     Id = x.Id,
                     RegistroNotaEstudianteHeaderId = x.RegistroNotaEstudianteHeaderId,
                     Nota = x.Nota,
-                    TipoDominio = x.TipoDominio,
-                    TipoNotaTexto = x.TipoDominio ? "Dominio" : "Progreso"
+                    TipoRegistroNotaEstudianteId = x.TipoRegistroNotaEstudianteId,
+                    TipoRegistroNotaEstudianteNombre = x.TipoRegistroNotaEstudiante.Nombre,
                 }).ToList();
             }
         }
 
-        public async Task<JsonResult> OnGetAddregistroNotaEstudianteAsync(int registroNotaEstudianteHeaderId, string notaEstudianteOptionSelected, double notaEstudiante)
+        public async Task<JsonResult> OnGetAddRegistroNotaEstudianteAsync(int registroNotaEstudianteHeaderId, int tipoRegistroNotaEstudianteId, double notaEstudiante)
         {
             var registroNotaEstudianteServiceApi = GetIRegistroNotaEstudianteServiceApi();
-
-            var tipoDominio = false;
-            if (notaEstudianteOptionSelected == "Dominio")
-            {
-                tipoDominio = true;
-            }
-
             var respuestasAsaServiceResponse = await registroNotaEstudianteServiceApi.CreateAsync(new CIAC_TAS_Service.Contracts.V1.Requests.CreateRegistroNotaEstudianteRequest
             {
                 RegistroNotaEstudianteHeaderId = registroNotaEstudianteHeaderId,
                 Nota = notaEstudiante,
-                TipoDominio = tipoDominio,
-                AplicaRecuperatorio = false
+                TipoRegistroNotaEstudianteId = tipoRegistroNotaEstudianteId
             });
 
             if (!respuestasAsaServiceResponse.IsSuccessStatusCode)
@@ -83,15 +78,14 @@ namespace CIAC_TAS_Web_UI.Pages.Instructor
             return new JsonResult("Creacion correcta");
         }
 
-        public async Task<JsonResult> OnGetEditRegistroNotaEstudianteAsync(int registroNotaEstudianteId, int registroNotaEstudianteHeaderId, double notaEstudiante, bool tipoDominio)
+        public async Task<JsonResult> OnGetEditRegistroNotaEstudianteAsync(int registroNotaEstudianteId, int registroNotaEstudianteHeaderId, double notaEstudiante, int tipoRegistroNotaEstudianteId)
         {
             var registroNotaEstudianteServiceApi = GetIRegistroNotaEstudianteServiceApi();
             var respuestasAsaServiceResponse = await registroNotaEstudianteServiceApi.UpdateAsync(registroNotaEstudianteId, new CIAC_TAS_Service.Contracts.V1.Requests.UpdateRegistroNotaEstudianteRequest
             {
                 RegistroNotaEstudianteHeaderId = registroNotaEstudianteHeaderId,
                 Nota = notaEstudiante,
-                TipoDominio = tipoDominio,
-                AplicaRecuperatorio = false
+                TipoRegistroNotaEstudianteId = tipoRegistroNotaEstudianteId
             });
 
             if (!respuestasAsaServiceResponse.IsSuccessStatusCode)

@@ -1,0 +1,188 @@
+﻿@page "/InhabilitarEstudianteView/{handler?}"
+@model CIAC_TAS_Web_UI.Pages.Estudiante.InhabilitarEstudianteViewModel
+@{
+    ViewData["Title"] = "InhabilitarEstudianteView";
+}
+
+<!-- From here, we should put this code as template in each page -->
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Inhabilitar Estudiante Page</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a asp-page="/Index">Home</a></li>
+                        <li class="breadcrumb-item active">Inhabilitar Estudiante Page</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+        <!-- Default box -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Inhabilitacion Estudiantes</h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+
+                <div class="float-start">
+                    <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#modal-inhabilitarEstudiante">
+                            <span class="btn-label"><i class="fa fa-plus"></i></span>
+                        </button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="modal-inhabilitarEstudiante" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Inhabilitar Estudiante</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                        <label asp-for="EstudianteSelected" class="control-label">Estudiante</label>
+                                        <select asp-for="EstudianteSelected" asp-items="Model.EstudianteOptions" class="form-control" placeholder=" Seleccione una opcion">
+                                                <option value="">Seleccione una opcion</option>
+                                            </select>
+                                        </div>
+                                    <div class="form-group">
+                                        <label asp-for="MotivoForm">Motivo</label>
+                                        <textarea asp-for="MotivoForm" class="form-control" placeholder="Ingrese un Motivo"></textarea>                       
+                                        <span asp-validation-for="MotivoForm" style="color:red"></span>
+                                    </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                        <button type="button" id="agregarBtn" onclick="AddInhabilitacionEstudiante(this)" class="btn btn-primary">Agregar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+
+                <table id="paginated-table" class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Estudiante</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.InhabilitarEstudianteModelView)
+                        {
+                            <tr>
+                                <td>
+                                    @item.EstudianteNombre
+                                </td>
+                                <td>
+                                    <!-- Button trigger modal -->
+                                    <button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#modal-@item.Id">
+                                        <span class="btn-label"><i class="fa fa-check"></i></span>
+                                    </button>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="modal-@item.Id" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Borrar Opcion</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Esta seguro que desea habilitar a este Estudiante?<br />
+                                                    Estudiante: [@item.EstudianteNombre]
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                    <a asp-page-handler="RemoveInhabilitacionEstudiante" asp-route-inhabilitacionEstudianteId="@item.Id" id="deleteBtn" class="btn bg-success mr-1">Habilitar</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer">
+                @{
+                    if (Model.Message != null && Model.Message != string.Empty)
+                    {
+                        <div id="mensajeDiv" class="callout callout-danger">
+                            @Model.Message
+                        </div>
+                    }
+                }
+            </div>
+            <!-- /.card-footer-->
+        </div>
+        <!-- /.card -->
+
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+<!-- To here -->
+<script>
+    $(function () {
+        $('#paginated-table').DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "searching": true,
+            "order": [[0, "desc"]],
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+            "pageLength": 30
+        });
+
+        //align search box to left
+        $("#paginated-table_filter").parent().closest('div').removeClass("col-md-6").addClass("col-md-12")
+    });
+
+    function AddInhabilitacionEstudiante(btn) {
+        var EstudianteSelected = $('#EstudianteSelected').val();
+        var MotivoForm = $('#MotivoForm').val();
+        if (EstudianteSelected != '' && MotivoForm != '') {
+            $.ajax({
+                url: "@Url.Page("/Estudiante/InhabilitarEstudianteView")/?handler=AddInhabilitarEstudianteView",
+                method: "GET",
+                data: "estudianteId=" + EstudianteSelected + "&motivo=" + MotivoForm,
+                //beforeSend: function (xhr) {
+                //    xhr.setRequestHeader("XSRF-TOKEN",
+                //        $('input:hidden[name="__RequestVerificationToken"]').val());
+                //},
+                error: function (ex) {
+
+                },
+                success: function (data) {
+                    window.location.reload(true);
+                }
+            });
+        } else {
+            alert('Seleccione un estudiante e ingrese un motivo')
+        }
+    }
+</script>

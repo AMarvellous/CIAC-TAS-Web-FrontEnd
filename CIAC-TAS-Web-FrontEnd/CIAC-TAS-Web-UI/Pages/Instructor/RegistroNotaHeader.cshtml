@@ -1,4 +1,5 @@
 ﻿@page
+@using static CIAC_TAS_Web_UI.Helper.EnumsGlobales;
 @model CIAC_TAS_Web_UI.Pages.Instructor.RegistroNotaHeaderModel
 @{
     ViewData["Title"] = "RegistroNotaHeader";
@@ -51,6 +52,7 @@
 
                     @Html.HiddenFor(x => x.GrupoId)
                     @Html.HiddenFor(x => x.MateriaId)
+                    @Html.HiddenFor(x => x.TipoRegistroNotaHeaderId)
 
                     <div class="form-group">
                         <label asp-for="RegistroNotaHeadersModelView.InstructorId" class="control-label">Instructor</label>
@@ -60,17 +62,33 @@
                         <span asp-validation-for="RegistroNotaHeadersModelView.InstructorId" class="text-danger"></span>
                     </div>
 
-                    <div class="form-group">
-                        <label asp-for="RegistroNotaHeadersModelView.PorcentajeDominioTotal">Porcentaje Dominio Total</label>
-                        <input type="number" asp-for="RegistroNotaHeadersModelView.PorcentajeDominioTotal" class="form-control" placeholder="Ingrese una Total">
-                        <span asp-validation-for="RegistroNotaHeadersModelView.PorcentajeDominioTotal" style="color:red"></span>
-                    </div>
+                    @{
+                        if (Model.TipoRegistroNotaHeaderId == (int)TipoRegistroNotaHeaderEnum.Tutorial)
+                        {
+                            <div class="form-group">
+                                <label asp-for="RegistroNotaHeadersModelView.PorcentajeDominioTotal">Porcentaje Dominio Total</label>
+                                <input type="number" id="porcentajeDominioTotalDisabled" class="form-control" placeholder="Ingrese una Total" value="100" disabled="disabled">
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="RegistroNotaHeadersModelView.PorcentajeProgresoTotal">Porcentaje Progreso Total</label>
+                                <input type="number" id="porcentajeProgresoTotalDisabled" class="form-control" placeholder="Ingrese una Total" value="0" disabled="disabled">
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="form-group">
+                                <label asp-for="RegistroNotaHeadersModelView.PorcentajeDominioTotal">Porcentaje Dominio Total</label>
+                                <input type="number" asp-for="RegistroNotaHeadersModelView.PorcentajeDominioTotal" class="form-control" placeholder="Ingrese una Total">
+                                <span asp-validation-for="RegistroNotaHeadersModelView.PorcentajeDominioTotal" style="color:red"></span>
+                            </div>
 
-                    <div class="form-group">
-                        <label asp-for="RegistroNotaHeadersModelView.PorcentajeProgresoTotal">Porcentaje Progreso Total</label>
-                        <input type="number" asp-for="RegistroNotaHeadersModelView.PorcentajeProgresoTotal" class="form-control" placeholder="Ingrese una Total">
-                        <span asp-validation-for="RegistroNotaHeadersModelView.PorcentajeProgresoTotal" style="color:red"></span>
-                    </div>
+                            <div class="form-group">
+                                <label asp-for="RegistroNotaHeadersModelView.PorcentajeProgresoTotal">Porcentaje Progreso Total</label>
+                                <input type="number" asp-for="RegistroNotaHeadersModelView.PorcentajeProgresoTotal" class="form-control" placeholder="Ingrese una Total">
+                                <span asp-validation-for="RegistroNotaHeadersModelView.PorcentajeProgresoTotal" style="color:red"></span>
+                            </div>
+                        }
+                    }
 
                     <br />
                     <div class="row">

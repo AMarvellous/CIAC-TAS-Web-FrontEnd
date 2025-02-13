@@ -15,5 +15,6 @@ namespace CIAC_TAS_Web_UI.ModelViews.Estudiante
         public string? MateriaNombre { get; set; }
 
         public List<int>? EstudiantesIds { get; set; } = new List<int>();
+        public bool InscritoTutorial { get; set; }
     }
 }

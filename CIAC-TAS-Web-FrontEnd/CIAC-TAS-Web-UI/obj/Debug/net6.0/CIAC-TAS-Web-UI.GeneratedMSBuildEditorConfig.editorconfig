@@ -129,12 +129,24 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXN0dWRpYW50ZVxFc3R1ZGlhbnRlc01hdGVyaWFzRXN0dWRpYW50ZXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/MyDirectory/CIAC TAS/Projects/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/Estudiante/InhabilitarEstudianteView.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXN0dWRpYW50ZVxJbmhhYmlsaXRhckVzdHVkaWFudGVWaWV3LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/MyDirectory/CIAC TAS/Projects/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/General/Administrativo.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR2VuZXJhbFxBZG1pbmlzdHJhdGl2by5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/MyDirectory/CIAC TAS/Projects/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/General/Administrativos.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR2VuZXJhbFxBZG1pbmlzdHJhdGl2b3MuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/MyDirectory/CIAC TAS/Projects/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/General/CierreMateriaDetail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR2VuZXJhbFxDaWVycmVNYXRlcmlhRGV0YWlsLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/MyDirectory/CIAC TAS/Projects/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/General/CierreMateriaView.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR2VuZXJhbFxDaWVycmVNYXRlcmlhVmlldy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/MyDirectory/CIAC TAS/Projects/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-FrontEnd/CIAC-TAS-Web-UI/Pages/General/Grupo.cshtml]

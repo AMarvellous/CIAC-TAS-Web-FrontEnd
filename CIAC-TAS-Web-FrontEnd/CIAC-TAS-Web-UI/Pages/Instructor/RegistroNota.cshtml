@@ -72,14 +72,14 @@
                                     </div>
                                     <div class="modal-body">
                                         <div class="form-group">
-                                            <label asp-for="NotaEstudianteOptionSelected" class="control-label">Tipo de Calificacion</label>
-                                            <select asp-for="NotaEstudianteOptionSelected" asp-items="Model.NotaEstudianteOptions" class="form-control" placeholder=" Seleccione una opcion">
+                                            <label asp-for="TipoRegistroNotaEstudianteIdSelected" class="control-label">Tipo de Calificacion</label>
+                                            <select asp-for="TipoRegistroNotaEstudianteIdSelected" asp-items="Model.NotaEstudianteOptions" class="form-control" placeholder=" Seleccione una opcion">
                                                 <option value="">Seleccione una opcion</option>
                                             </select>
                                         </div>
                                         <div class="form-group">
                                             <label asp-for="NotaEstudiante">Nota</label>
-                                            <input type="number" asp-for="NotaEstudiante" class="form-control" placeholder="Ingrese una Total">
+                                            <input type="number" max="100" min="0" asp-for="NotaEstudiante" class="form-control" placeholder="Ingrese una Total">
                                             <span asp-validation-for="NotaEstudiante" style="color:red"></span>
                                         </div>
                                     </div>
@@ -107,7 +107,7 @@
                                         @item.Nota
                                     </td>
                                     <td>
-                                        @item.TipoNotaTexto
+                                        @item.TipoRegistroNotaEstudianteNombre
                                     </td>
                                     <td>
                                         <!-- Button trigger modal -->
@@ -133,7 +133,7 @@
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                                                        <button type="button" id="editBtn" onclick="EditRegistroNotaEstudiante(this)" class="btn btn-primary" data-registroNotaEstudianteId="@item.Id" data-tipoDominio="@item.TipoDominio" data-registroNotaEstudianteHeaderId="@Model.RegistroNotaEstudianteHeaderId">Actualizar</button>
+                                                        <button type="button" id="editBtn" onclick="EditRegistroNotaEstudiante(this)" class="btn btn-primary" data-registroNotaEstudianteId="@item.Id" data-registroNotaEstudianteHeaderId="@Model.RegistroNotaEstudianteHeaderId" data-tipoRegistroNotaEstudianteId="@item.TipoRegistroNotaEstudianteId">Actualizar</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -211,15 +211,15 @@
     });
 
     function AddRegistroNotaEstudiante(btn) {
-        var NotaEstudianteOptionSelected = $('#NotaEstudianteOptionSelected').val();
+        var TipoRegistroNotaEstudianteId = $('#TipoRegistroNotaEstudianteIdSelected').val();
         var NotaEstudiante = $('#NotaEstudiante').val();
-        if (NotaEstudiante != '' && NotaEstudianteOptionSelected != '') {
+        if (NotaEstudiante != '' && TipoRegistroNotaEstudianteId != '' && NotaEstudiante >= 0 && NotaEstudiante <= 100) {
             var registroNotaEstudianteHeaderId = $(btn).attr('data-registroNotaEstudianteHeaderId');
 
             $.ajax({
                 url: "@Url.Page("/Instructor/RegistroNota")/?handler=AddregistroNotaEstudiante",
                 method: "GET",
-                data: "registroNotaEstudianteHeaderId=" + registroNotaEstudianteHeaderId + "&notaEstudianteOptionSelected=" + NotaEstudianteOptionSelected + "&notaEstudiante=" + NotaEstudiante,
+                data: "registroNotaEstudianteHeaderId=" + registroNotaEstudianteHeaderId + "&tipoRegistroNotaEstudianteId=" + TipoRegistroNotaEstudianteId + "&notaEstudiante=" + NotaEstudiante,
                 //beforeSend: function (xhr) {
                 //    xhr.setRequestHeader("XSRF-TOKEN",
                 //        $('input:hidden[name="__RequestVerificationToken"]').val());
@@ -231,6 +231,8 @@
                     window.location.reload(true);
                 }
             });
+        } else {
+            alert('Seleccione una calificacion y la Nota debe ser entre 0 y 100')
         }
     }
 
@@ -238,15 +240,15 @@
         var registroNotaEstudianteId = $(btn).attr('data-registroNotaEstudianteId');
         var NotaEstudianteEdit = $('#notaEstudianteEdit_' + registroNotaEstudianteId).val();
 
-        if (NotaEstudianteEdit != '') {
+        if (NotaEstudianteEdit != '' && NotaEstudianteEdit >= 0 && NotaEstudianteEdit <= 100) {
             var registroNotaEstudianteHeaderId = $(btn).attr('data-registroNotaEstudianteHeaderId');
             var registroNotaEstudianteId = $(btn).attr('data-registroNotaEstudianteId');
-            var tipoDominio = $(btn).attr('data-tipoDominio');
+            var tipoRegistroNotaEstudianteId = $(btn).attr('data-tipoRegistroNotaEstudianteId');
 
             $.ajax({
                 url: "@Url.Page("/Instructor/RegistroNota")/?handler=EditRegistroNotaEstudiante",
                 method: "GET",
-                data: "registroNotaEstudianteId=" + registroNotaEstudianteId + "&registroNotaEstudianteHeaderId=" + registroNotaEstudianteHeaderId + "&notaEstudiante=" + NotaEstudianteEdit + "&tipoDominio=" + tipoDominio,
+                data: "registroNotaEstudianteId=" + registroNotaEstudianteId + "&registroNotaEstudianteHeaderId=" + registroNotaEstudianteHeaderId + "&notaEstudiante=" + NotaEstudianteEdit + "&tipoRegistroNotaEstudianteId=" + tipoRegistroNotaEstudianteId,
                 //beforeSend: function (xhr) {
                 //    xhr.setRequestHeader("XSRF-TOKEN",
                 //        $('input:hidden[name="__RequestVerificationToken"]').val());
@@ -258,6 +260,8 @@
                     window.location.reload(true);
                 }
             });
+        } else {
+            alert('La Nota debe ser entre 0 y 100')
         }
     }
 </script>

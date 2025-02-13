@@ -7,5 +7,6 @@
         public const string SessionToken = "Token";
         public const string SessionRoles = "Roles";
         public const string SessionMenus = "Menus";
+        public const string SessionMotivoBloqueo = "MotivoBloqueo";
     }
 }

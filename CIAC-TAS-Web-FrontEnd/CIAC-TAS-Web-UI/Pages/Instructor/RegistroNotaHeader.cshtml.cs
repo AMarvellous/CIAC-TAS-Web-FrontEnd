@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using Refit;
 using static CIAC_TAS_Service.Contracts.V1.ApiRoute;
+using static CIAC_TAS_Web_UI.Helper.EnumsGlobales;
 
 namespace CIAC_TAS_Web_UI.Pages.Instructor
 {
@@ -15,6 +16,7 @@ namespace CIAC_TAS_Web_UI.Pages.Instructor
     {
         [BindProperty]
         public RegistroNotaHeadersModelView RegistroNotaHeadersModelView { get; set; }
+        public int TipoRegistroNotaHeaderId;
         public int GrupoId { get; set; }
         public int MateriaId { get; set; }
         public string GrupoNombre { get; set; }
@@ -30,18 +32,21 @@ namespace CIAC_TAS_Web_UI.Pages.Instructor
             _configuration = configuration;
         }
 
-        public async Task OnGetNewRegistroNotaHeaderAsync(int grupoId, int materiaId)
+        public async Task OnGetNewRegistroNotaHeaderAsync(int grupoId, int materiaId, string tipoRegistroNotaHeader)
         {
             await SetExtraData(grupoId, materiaId);
             await FillSelectListsItems();
+            TipoRegistroNotaHeaderEnum tipoRegistroNotaHeaderType = (TipoRegistroNotaHeaderEnum)Enum.Parse(typeof(TipoRegistroNotaHeaderEnum), tipoRegistroNotaHeader, true);
+            TipoRegistroNotaHeaderId = (int)tipoRegistroNotaHeaderType;
         }
 
-        public async Task<IActionResult> OnPostNewRegistroNotaHeaderAsync(int grupoId, int materiaId)
+        public async Task<IActionResult> OnPostNewRegistroNotaHeaderAsync(int grupoId, int materiaId, int tipoRegistroNotaHeaderId)
         {
             if (!ModelState.IsValid)
             {
                 await SetExtraData(grupoId, materiaId);
                 await FillSelectListsItems();
+                TipoRegistroNotaHeaderId = tipoRegistroNotaHeaderId;
 
                 Message = "Por favor complete el formulario correctamente";
 
@@ -49,10 +54,11 @@ namespace CIAC_TAS_Web_UI.Pages.Instructor
             }
 
             var porcentajeTotal = RegistroNotaHeadersModelView.PorcentajeProgresoTotal + RegistroNotaHeadersModelView.PorcentajeDominioTotal;
-            if (porcentajeTotal != 100)
+            if (porcentajeTotal != 100 && tipoRegistroNotaHeaderId == (int)TipoRegistroNotaHeaderEnum.Regular)
             {
                 await SetExtraData(grupoId, materiaId);
                 await FillSelectListsItems();
+                TipoRegistroNotaHeaderId = tipoRegistroNotaHeaderId;
 
                 Message = "La suma de porcentajes debe ser 100";
 
@@ -73,6 +79,7 @@ namespace CIAC_TAS_Web_UI.Pages.Instructor
             {
                 await SetExtraData(grupoId, materiaId);
                 await FillSelectListsItems();
+                TipoRegistroNotaHeaderId = tipoRegistroNotaHeaderId;
 
                 Message = "Ocurrio un error, intente nuevamente.";
 
@@ -88,11 +95,12 @@ namespace CIAC_TAS_Web_UI.Pages.Instructor
                 ModuloId = RegistroNotaHeadersModelView.ModuloId,
                 InstructorId = RegistroNotaHeadersModelView.InstructorId,
                 IsLocked = false,
-                PorcentajeDominioTotal = RegistroNotaHeadersModelView.PorcentajeDominioTotal,
-                PorcentajeProgresoTotal = RegistroNotaHeadersModelView.PorcentajeProgresoTotal
+                PorcentajeDominioTotal = tipoRegistroNotaHeaderId == (int)TipoRegistroNotaHeaderEnum.Regular ? RegistroNotaHeadersModelView.PorcentajeDominioTotal : 100,
+                PorcentajeProgresoTotal = tipoRegistroNotaHeaderId == (int)TipoRegistroNotaHeaderEnum.Regular ? RegistroNotaHeadersModelView.PorcentajeProgresoTotal : 0,
+                TipoRegistroNotaHeaderId = tipoRegistroNotaHeaderId
             };
 
-            var registroNotaHeaderResponse = await registroNotaHeaderServiceApi.CreateRegistroNotaEstudianteHeaderAsync(createRegistroNotaHeader);
+            var registroNotaHeaderResponse = tipoRegistroNotaHeaderId == (int)TipoRegistroNotaHeaderEnum.Regular ? await registroNotaHeaderServiceApi.CreateRegistroNotaEstudianteHeaderAsync(createRegistroNotaHeader) : await registroNotaHeaderServiceApi.CreateAsync(createRegistroNotaHeader);
             if (!registroNotaHeaderResponse.IsSuccessStatusCode)
             {
                 var errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(registroNotaHeaderResponse.Error.Content);
@@ -101,6 +109,7 @@ namespace CIAC_TAS_Web_UI.Pages.Instructor
 
                 await SetExtraData(grupoId, materiaId);
                 await FillSelectListsItems();
+                TipoRegistroNotaHeaderId = tipoRegistroNotaHeaderId;
 
                 return Page();
             }

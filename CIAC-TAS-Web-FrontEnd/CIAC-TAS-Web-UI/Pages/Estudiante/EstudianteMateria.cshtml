@@ -91,37 +91,49 @@
                             var i = 1;
                             foreach (var item in Model.EstudianteMateriaModelView)
                             {
-                                        <tr>
-                                            <td>@item.MateriaNombre</td>
-                                            <td>
-                                                <!-- Button trigger modal -->
-                                                <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modal-@item.MateriaId">
-                                                    <span class="btn-label"><i class="fa fa-trash"></i></span>
-                                                </button>
+                                <tr>
+                                    <td>@item.MateriaNombre</td>
+                                    <td>
+                                        <!-- Button trigger modal -->
+                                        <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modal-@item.MateriaId">
+                                            <span class="btn-label"><i class="fa fa-trash"></i></span>
+                                        </button>
 
-                                                <!-- Modal -->
-                                                <div class="modal fade" id="modal-@item.MateriaId" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLabel">Borrar Grupo</h5>
-                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                    <span aria-hidden="true">&times;</span>
-                                                                </button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                Esta seguro que desea borrar este registro? <br />
-                                                                [@item.MateriaNombre]
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                                                                <a asp-page-handler="RemoveMateriaFromEstudiante" asp-route-grupoId="@item.GrupoId" asp-route-estudianteId="@item.EstudianteId" asp-route-materiaId="@item.MateriaId" id="deleteBtn" class="btn bg-danger mr-1">Borrar</a>
-                                                            </div>
-                                                        </div>
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="modal-@item.MateriaId" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Borrar Grupo</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        Esta seguro que desea borrar este registro? <br />
+                                                        [@item.MateriaNombre]
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                        <a asp-page-handler="RemoveMateriaFromEstudiante" asp-route-grupoId="@item.GrupoId" asp-route-estudianteId="@item.EstudianteId" asp-route-materiaId="@item.MateriaId" id="deleteBtn" class="btn bg-danger mr-1">Borrar</a>
                                                     </div>
                                                 </div>
-                                            </td>
-                                        </tr>
+                                            </div>
+                                        </div>
+
+                                        @{
+                                            if (!item.InscritoTutorial)
+                                            {
+                                                @:&nbsp;&nbsp;&nbsp;
+                                                <a asp-page-handler="AsignarTutorialEstudiante" asp-route-grupoId="@item.GrupoId" asp-route-estudianteId="@item.EstudianteId" asp-route-materiaId="@item.MateriaId" asp-route-inscritoTutorial="@true" class="fa fa-indent " style="font-size:15px;color:limegreen;">Asignar Tutorial</a>
+                                            } else
+                                            {
+                                                @:&nbsp;&nbsp;&nbsp;
+                                                <a asp-page-handler="AsignarTutorialEstudiante" asp-route-grupoId="@item.GrupoId" asp-route-estudianteId="@item.EstudianteId" asp-route-materiaId="@item.MateriaId" asp-route-inscritoTutorial="@false" class="fa fa-indent" style="font-size:15px;color:red;">Desasignar Tutorial</a>
+                                            }
+                                        }                                        
+                                    </td>
+                                </tr>
                             }
                         }
                     </tbody>
@@ -133,9 +145,9 @@
                 @{
                     if (Model.Message != null && Model.Message != string.Empty)
                     {
-                                <div id="mensajeDiv" class="callout callout-danger">
+                        <div id="mensajeDiv" class="callout callout-danger">
                             @Model.Message
-                                </div>
+                        </div>
                     }
                 }
             </div>
@@ -147,7 +159,6 @@
     <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
-
 <!-- To here -->
 <script type="text/javascript">
     $(function () {
@@ -173,21 +184,21 @@
             var grupoId = $(btn).attr('data-grupoId');
 
             $.ajax({
-            url: "@Url.Page("/Estudiante/EstudianteMateria")/?handler=CreateEstudianteMateria",
-            method: "GET",
-            data: "estudianteId=" + estudianteId + "&grupoId=" + grupoId + "&materiaId=" + materiaId,
-            //beforeSend: function (xhr) {
-            //    xhr.setRequestHeader("XSRF-TOKEN",
-            //        $('input:hidden[name="__RequestVerificationToken"]').val());
-            //},
-            error: function (ex) {
+                url: "@Url.Page("/Estudiante/EstudianteMateria")/?handler=CreateEstudianteMateria",
+                method: "GET",
+                data: "estudianteId=" + estudianteId + "&grupoId=" + grupoId + "&materiaId=" + materiaId,
+                //beforeSend: function (xhr) {
+                //    xhr.setRequestHeader("XSRF-TOKEN",
+                //        $('input:hidden[name="__RequestVerificationToken"]').val());
+                //},
+                error: function (ex) {
 
-            },
-            success: function (data) {
-                //window.location = '@Url.Page("/Estudiante/EstudianteMateria")/?grupoId=' + grupoId + '&estudianteId=' + estudianteId;
-                window.location.reload(true);
-            }
-        });
+                },
+                success: function (data) {
+                    //window.location = '@Url.Page("/Estudiante/EstudianteMateria")/?grupoId=' + grupoId + '&estudianteId=' + estudianteId;
+                    window.location.reload(true);
+                }
+            });
         }
     }
 </script>
